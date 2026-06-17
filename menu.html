@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="hr" id="html-root" class="lang-hr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jelovnik / Menu — Franko's Pizza &amp; Bar, Zagreb</title>
+<meta name="description" content="Kompletan jelovnik Franko's Pizza & Bar. Napoletana pizza, kokteli, vino i više.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500;1,700&family=Outfit:wght@300;400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --black:#090807;
+  --charcoal:#131110;
+  --warm-white:#F5F2EC;
+  --off-white:#FAFAF8;
+  --cream:#EDEAD2;
+  --gold:#C9A84C;
+  --gold-lt:rgba(201,168,76,.16);
+  --gold-dim:rgba(201,168,76,.08);
+  --text:#0C0B09;
+  --muted:#6A6459;
+  --subtle:#A09890;
+  --ff-d:'Cormorant Garamond',Georgia,serif;
+  --ff-b:'Inter',system-ui,sans-serif;
+  --ff-ui:'Outfit',system-ui,sans-serif;
+  --ease:cubic-bezier(.16,1,.3,1);
+  --ease2:cubic-bezier(.45,0,.55,1);
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--ff-b);font-size:15px;line-height:1.6;
+  color:var(--text);background:var(--off-white);
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;
+  text-rendering:optimizeLegibility
+}
+
+/* ── NAV ── */
+#nav{
+  position:fixed;top:0;left:0;right:0;z-index:800;
+  height:72px;padding:0 60px;
+  display:grid;grid-template-columns:1fr auto 1fr;
+  align-items:center;
+  background:rgba(9,8,7,.96);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(192,145,58,.1)
+}
+.nav-logo{
+  display:flex;flex-direction:column;gap:3px;
+  text-decoration:none;
+}
+.nav-logo-name{
+  font-family:var(--ff-ui);font-size:13px;font-weight:400;
+  letter-spacing:.36em;text-transform:uppercase;
+  color:var(--warm-white);
+}
+.nav-logo-sub{
+  font-family:var(--ff-ui);font-size:7.5px;font-weight:300;
+  letter-spacing:.26em;color:rgba(245,242,236,.38);
+}
+.nav-right{
+  display:flex;align-items:center;justify-content:flex-end;gap:20px;
+}
+.nav-links{display:flex;gap:44px;list-style:none;justify-self:center}
+.nav-links a{
+  font-family:var(--ff-ui);
+  font-size:10px;letter-spacing:.24em;text-transform:uppercase;
+  color:rgba(245,242,236,.5);text-decoration:none;
+  position:relative;padding-bottom:3px;transition:color 180ms
+}
+.nav-links a::after{
+  content:'';position:absolute;bottom:0;left:0;
+  width:0;height:1px;background:var(--gold);
+  transition:width 280ms var(--ease)
+}
+.nav-links a:hover{color:rgba(245,242,236,.95)}
+.nav-links a:hover::after{width:100%}
+.nav-links a.active{color:rgba(245,242,236,.95)}
+.nav-links a.active::after{width:100%}
+.nav-reserve{
+  font-family:var(--ff-ui);
+  font-size:9px;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--gold);border:1px solid rgba(192,145,58,.35);
+  padding:9px 24px;text-decoration:none;
+  transition:background 200ms,color 200ms,border-color 200ms,transform 150ms
+}
+.nav-reserve:hover{background:var(--gold);color:var(--black);border-color:var(--gold);transform:translateY(-1px)}
+.nav-burger{
+  display:none;background:none;border:none;cursor:pointer;
+  flex-direction:column;gap:6px;padding:6px;align-items:flex-end
+}
+.nav-burger span{
+  display:block;height:1px;background:var(--warm-white);
+  transition:transform 320ms var(--ease),opacity 200ms,width 300ms var(--ease)
+}
+.nav-burger span:nth-child(1){width:24px}
+.nav-burger span:nth-child(2){width:16px}
+.nav-burger span:nth-child(3){width:20px}
+.nav-burger.open span:nth-child(1){transform:rotate(45deg) translate(2px,3px);width:22px}
+.nav-burger.open span:nth-child(2){opacity:0;width:0}
+.nav-burger.open span:nth-child(3){transform:rotate(-45deg) translate(2px,-3px);width:22px}
+
+/* ── MOBILE NAV ── */
+#mnav{
+  position:fixed;inset:0;z-index:790;
+  background:var(--charcoal);
+  display:flex;flex-direction:column;
+  justify-content:flex-end;
+  padding:0 48px 72px;
+  transform:translateY(-100%);
+  transition:transform 500ms var(--ease)
+}
+#mnav.open{transform:translateY(0)}
+.mnav-links{display:flex;flex-direction:column;gap:4px;margin-bottom:60px}
+.mnav-links a{
+  font-family:var(--ff-d);
+  font-size:clamp(42px,10vw,68px);font-weight:300;
+  color:rgba(245,242,236,.55);text-decoration:none;
+  letter-spacing:.02em;line-height:1.2;
+  opacity:0;transform:translateX(-24px);transition:color 200ms
+}
+#mnav.open .mnav-links a{opacity:1;transform:translateX(0)}
+#mnav.open .mnav-links a:nth-child(1){transition:color 200ms,opacity 450ms var(--ease) 60ms,transform 450ms var(--ease) 60ms}
+#mnav.open .mnav-links a:nth-child(2){transition:color 200ms,opacity 450ms var(--ease) 130ms,transform 450ms var(--ease) 130ms}
+#mnav.open .mnav-links a:nth-child(3){transition:color 200ms,opacity 450ms var(--ease) 200ms,transform 450ms var(--ease) 200ms}
+#mnav.open .mnav-links a:nth-child(4){transition:color 200ms,opacity 450ms var(--ease) 270ms,transform 450ms var(--ease) 270ms}
+.mnav-links a:hover{color:var(--gold)}
+.mnav-meta{display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(192,145,58,.1);padding-top:28px}
+.mnav-meta p{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:rgba(245,242,236,.25);line-height:1.9}
+
+/* ── MENU HERO ── */
+#menu-hero{
+  background:var(--charcoal);
+  padding:172px 60px 88px;
+  position:relative;overflow:hidden
+}
+#menu-hero::before{
+  content:'';position:absolute;
+  bottom:0;left:0;right:0;height:1px;
+  background:linear-gradient(to right,transparent,rgba(192,145,58,.15),transparent)
+}
+.mh-kicker{
+  font-size:8.5px;letter-spacing:.38em;text-transform:uppercase;
+  color:var(--gold);display:flex;align-items:center;gap:14px;
+  margin-bottom:20px;
+  opacity:0;animation:fadeup 700ms var(--ease) 100ms forwards
+}
+.mh-kicker::before{content:'';width:16px;height:1px;background:var(--gold);flex-shrink:0}
+.mh-title{
+  font-family:var(--ff-d);
+  font-size:clamp(72px,11vw,152px);
+  font-weight:300;line-height:.86;
+  color:var(--warm-white);text-transform:uppercase;letter-spacing:-.01em;
+  opacity:0;animation:fadeup 900ms var(--ease) 200ms forwards
+}
+.mh-title em{font-style:italic;color:var(--gold)}
+.mh-note{
+  font-family:var(--ff-d);font-size:18px;font-weight:300;
+  font-style:italic;color:rgba(245,242,236,.38);
+  margin-top:32px;max-width:520px;line-height:1.7;
+  opacity:0;animation:fadeup 700ms var(--ease) 420ms forwards
+}
+@keyframes fadeup{to{opacity:1;transform:translateY(0)}}
+
+/* ── STICKY TABS ── */
+#menu-tabs{
+  position:sticky;top:72px;z-index:300;
+  background:#17130E;
+  border-bottom:1px solid rgba(192,145,58,.14);
+  padding:0 60px;
+  display:flex;gap:0;align-items:stretch;overflow-x:auto;
+  scrollbar-width:none
+}
+#menu-tabs::-webkit-scrollbar{display:none}
+.tab-btn{
+  font-size:10px;letter-spacing:.2em;text-transform:uppercase;
+  color:rgba(245,242,236,.35);padding:20px 28px 19px;
+  background:none;border:none;border-bottom:2px solid transparent;
+  cursor:pointer;font-family:var(--ff-b);white-space:nowrap;
+  transition:color 180ms,border-color 180ms;margin-bottom:-1px
+}
+.tab-btn:hover{color:rgba(245,242,236,.8)}
+.tab-btn.active{color:var(--warm-white);border-bottom-color:var(--gold)}
+
+/* ── MENU CONTENT ── */
+#menu-content{padding:0 60px 120px;background:#17130E}
+
+/* ── PANEL ── */
+.panel{display:none}
+.panel.active{display:block}
+
+/* ── CATEGORY NAV ── */
+.cat-nav{
+  display:flex;gap:6px;flex-wrap:wrap;
+  padding:24px 0;
+  margin-bottom:8px;
+  border-bottom:1px solid rgba(192,145,58,.1)
+}
+.cat-btn{
+  font-size:8.5px;letter-spacing:.16em;text-transform:uppercase;
+  color:rgba(245,242,236,.35);background:none;
+  border:1px solid rgba(192,145,58,.15);
+  padding:7px 18px;cursor:pointer;
+  font-family:var(--ff-b);
+  transition:all 160ms
+}
+.cat-btn.active,.cat-btn:hover{
+  background:var(--gold);border-color:var(--gold);color:var(--black)
+}
+
+/* ── CATEGORY SECTION ── */
+.cat-section{display:none;padding-top:52px}
+.cat-section.active{display:block}
+.cat-headline{
+  font-family:var(--ff-d);font-size:14px;font-weight:300;font-style:italic;
+  color:rgba(245,242,236,.62);margin-bottom:32px;padding-bottom:18px;
+  border-bottom:1px solid rgba(192,145,58,.1);
+  line-height:1.7
+}
+
+/* ── MENU ITEMS GRID ── */
+.items-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(640px,1fr));
+  gap:0 56px
+}
+.menu-item{
+  padding:22px 0;
+  border-bottom:1px solid rgba(192,145,58,.09);
+  display:flex;flex-wrap:wrap;align-items:baseline;
+  opacity:0;transform:translateY(10px);
+  transition:opacity 420ms var(--ease),transform 420ms var(--ease)
+}
+.menu-item.vis{opacity:1;transform:translateY(0)}
+.item-name{
+  font-family:var(--ff-d);font-size:21px;font-weight:400;
+  color:var(--warm-white);line-height:1.3;
+  flex:1;min-width:0;
+  background-image:radial-gradient(circle,rgba(192,145,58,.25) 1px,transparent 1px);
+  background-size:6px 1px;background-position:bottom;background-repeat:repeat-x;
+  padding-bottom:5px;margin-bottom:-5px;
+  padding-right:10px
+}
+.item-price{
+  font-family:var(--ff-d);font-size:20px;font-weight:400;color:var(--gold);
+  white-space:nowrap;flex-shrink:0;
+  letter-spacing:.03em;padding-bottom:5px;margin-bottom:-5px
+}
+.item-desc{
+  flex:0 0 100%;
+  font-size:13px;color:rgba(245,242,236,.65);font-weight:300;
+  line-height:1.6;margin-top:8px;font-style:italic
+}
+.menu-item{
+  transition:background 200ms,opacity 420ms var(--ease),transform 420ms var(--ease)
+}
+.menu-item:hover{background:rgba(201,168,76,.04)}
+.badge{
+  display:inline-block;font-size:7px;letter-spacing:.12em;
+  text-transform:uppercase;padding:2px 7px;
+  margin-left:8px;vertical-align:middle;
+  position:relative;top:-1px;border-radius:1px;
+  font-family:var(--ff-ui)
+}
+.b-v{background:rgba(52,106,52,.15);color:#5a9e5a;border:1px solid rgba(52,106,52,.3)}
+.b-s{background:rgba(160,50,30,.15);color:#d04828;border:1px solid rgba(160,50,30,.3)}
+.b-award{background:rgba(201,168,76,.14);color:var(--gold);border:1px solid rgba(201,168,76,.35)}
+.b-chef{background:rgba(245,242,236,.07);color:rgba(245,242,236,.75);border:1px solid rgba(245,242,236,.18)}
+.b-pop{background:rgba(80,140,80,.12);color:#7bc47b;border:1px solid rgba(80,140,80,.28)}
+.menu-item--featured .item-name{color:var(--gold)}
+.menu-item--featured{border-left:2px solid rgba(201,168,76,.45);padding-left:14px}
+.spicy-note{
+  font-size:12px;color:rgba(245,242,236,.42);font-style:italic;
+  margin-top:28px;padding:14px 20px;
+  border-left:2px solid var(--gold);background:rgba(192,145,58,.07)
+}
+
+/* ── DRINKS ── */
+.drinks-h{
+  font-family:var(--ff-d);font-size:30px;font-weight:300;
+  font-style:italic;color:var(--warm-white);
+  margin-top:56px;margin-bottom:20px;
+  padding-bottom:12px;border-bottom:1px solid rgba(192,145,58,.12)
+}
+.drinks-h:first-child{margin-top:0}
+.drinks-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(340px,1fr));
+  gap:0 52px
+}
+.drink-item{
+  padding:16px 0;border-bottom:1px solid rgba(192,145,58,.07);
+  display:flex;justify-content:space-between;
+  align-items:baseline;gap:18px;
+  opacity:0;transform:translateY(8px);
+  transition:opacity 380ms var(--ease),transform 380ms var(--ease)
+}
+.drink-item.vis{opacity:1;transform:translateY(0)}
+.drink-info{flex:1}
+.drink-name{
+  font-family:var(--ff-d);font-size:18px;font-weight:400;
+  color:var(--warm-white);display:block;line-height:1.2
+}
+.drink-sub{font-size:12px;color:rgba(245,242,236,.58);font-style:italic;display:block;margin-top:3px;line-height:1.5}
+.drink-price{font-family:var(--ff-d);font-size:17px;font-weight:400;color:var(--gold);white-space:nowrap;flex-shrink:0;letter-spacing:.03em}
+.deg-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin-top:12px}
+.deg-card{
+  border:1px solid rgba(192,145,58,.2);padding:24px 26px;
+  background:rgba(192,145,58,.07);
+  transition:border-color 220ms,background 220ms
+}
+.deg-card:hover{border-color:rgba(192,145,58,.45);background:rgba(192,145,58,.14)}
+.deg-card-title{font-size:8px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+.deg-card-items{font-family:var(--ff-d);font-size:16px;color:rgba(245,242,236,.75);line-height:1.75}
+.deg-card-price{font-family:var(--ff-d);font-size:24px;color:var(--gold);margin-top:12px}
+
+/* ── FOOTER ── */
+footer{
+  background:var(--black);
+  border-top:1px solid rgba(192,145,58,.1);
+  padding:52px 60px;
+  display:flex;align-items:center;justify-content:space-between
+}
+.foot-logo{height:72px;width:auto;display:block}
+.foot-copy{font-size:9px;letter-spacing:.05em;color:var(--subtle)}
+.foot-links{display:flex;gap:28px;list-style:none}
+.foot-links a{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--subtle);text-decoration:none;transition:color 160ms}
+.foot-links a:hover{color:var(--gold)}
+
+/* ── LANGUAGE MODAL ── */
+#lang-modal{
+  position:fixed;inset:0;z-index:2000;
+  background:rgba(9,8,7,.97);
+  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  display:flex;align-items:center;justify-content:center;
+  transition:opacity 500ms var(--ease),visibility 500ms
+}
+#lang-modal.hidden{opacity:0;visibility:hidden;pointer-events:none}
+.lm-inner{
+  text-align:center;padding:80px 48px;
+  max-width:560px;width:100%;
+  animation:fadeup 700ms var(--ease) both
+}
+.lm-logo{
+  font-family:var(--ff-d);font-size:28px;font-weight:500;
+  letter-spacing:.28em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:10px
+}
+.lm-sub{
+  font-size:8.5px;letter-spacing:.32em;text-transform:uppercase;
+  color:rgba(245,242,236,.22);margin-bottom:64px
+}
+.lm-prompt{
+  font-family:var(--ff-d);font-size:18px;font-weight:300;
+  font-style:italic;color:rgba(245,242,236,.35);
+  margin-bottom:40px;letter-spacing:.04em
+}
+.lm-btns{display:flex;gap:2px}
+.lm-btn{
+  flex:1;background:rgba(245,242,236,.03);
+  border:1px solid rgba(192,145,58,.12);
+  padding:44px 28px;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+  transition:background 220ms,border-color 220ms,transform 200ms var(--ease);
+  font-family:var(--ff-b)
+}
+.lm-btn:hover{
+  background:rgba(192,145,58,.07);
+  border-color:rgba(192,145,58,.4);
+  transform:translateY(-2px)
+}
+.lm-btn-name{
+  font-family:var(--ff-d);font-size:36px;font-weight:300;
+  color:var(--warm-white);letter-spacing:.04em;line-height:1
+}
+.lm-btn-sub{
+  font-size:8px;letter-spacing:.26em;text-transform:uppercase;
+  color:var(--subtle)
+}
+
+/* ── NAV LANGUAGE TOGGLE ── */
+.nav-lang{
+  display:flex;align-items:center;gap:2px;
+  padding:5px 8px;
+  border:1px solid rgba(192,145,58,.12)
+}
+.lang-btn{
+  background:none;border:none;cursor:pointer;
+  font-size:8.5px;letter-spacing:.2em;text-transform:uppercase;
+  color:rgba(245,242,236,.32);padding:4px 7px;
+  font-family:var(--ff-b);transition:color 160ms
+}
+.lang-btn:hover{color:rgba(245,242,236,.75)}
+.lang-btn.active{color:var(--gold)}
+.nav-lang-sep{
+  font-size:8px;color:rgba(192,145,58,.2);
+  pointer-events:none;padding:0 1px
+}
+
+/* ── MNAV LANG ── */
+.mnav-lang{display:flex;align-items:center;gap:4px}
+.mnav-lang .lang-btn{font-size:11px;color:rgba(245,242,236,.3);padding:6px 8px}
+.mnav-lang .lang-btn.active{color:var(--gold)}
+.mnav-lang .mnav-lang-sep{color:rgba(245,242,236,.15);font-size:10px;pointer-events:none}
+
+/* ── LANGUAGE VISIBILITY ── */
+.lang-hr .en-only{display:none!important}
+.lang-en .hr-only{display:none!important}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  #nav{padding:0 28px;grid-template-columns:auto 1fr}
+  .nav-links,.nav-reserve{display:none}
+  .nav-burger{display:flex}
+  .nav-right{grid-column:2;justify-content:flex-end}
+  #menu-hero{padding:148px 28px 72px}
+  #menu-tabs{padding:0 28px}
+  #menu-content{padding:0 28px 96px}
+  .items-grid{grid-template-columns:1fr;gap:0}
+  .drinks-grid{grid-template-columns:1fr}
+  .deg-grid{grid-template-columns:1fr}
+  footer{flex-direction:column;gap:20px;text-align:center;padding:40px 28px}
+  #mnav{padding:0 28px 60px}
+  .lm-btns{flex-direction:column}
+  .lm-inner{padding:60px 28px}
+}
+@media(max-width:480px){
+  .mh-title{font-size:clamp(60px,16vw,80px)}
+  .tab-btn{padding:18px 18px 17px;font-size:9.5px}
+}
+</style>
+</head>
+<body>
+
+<!-- LANGUAGE MODAL -->
+<div id="lang-modal">
+  <div class="lm-inner">
+    <div class="lm-logo">Franko's</div>
+    <p class="lm-sub">Zagreb · Pizza &amp; Bar</p>
+    <p class="lm-prompt">Odaberite jezik / Choose your language</p>
+    <div class="lm-btns">
+      <button class="lm-btn" data-lang="hr">
+        <span class="lm-btn-name">Hrvatski</span>
+        <span class="lm-btn-sub">Croatian</span>
+      </button>
+      <button class="lm-btn" data-lang="en">
+        <span class="lm-btn-name">English</span>
+        <span class="lm-btn-sub">Engleski</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- MOBILE NAV -->
+<div id="mnav">
+  <div class="mnav-links">
+    <a href="index.html"><span class="hr-only">Početna</span><span class="en-only">Home</span></a>
+    <a href="index.html#philosophy"><span class="hr-only">O nama</span><span class="en-only">About</span></a>
+    <a href="index.html#visit"><span class="hr-only">Posjetite nas</span><span class="en-only">Visit Us</span></a>
+    <a href="tel:+38516530884"><span class="hr-only">Rezervirajte</span><span class="en-only">Reserve</span></a>
+  </div>
+  <div class="mnav-meta">
+    <p>Kneza Branimira 71A<br><span class="hr-only">Zagreb, Hrvatska</span><span class="en-only">Zagreb, Croatia</span></p>
+    <div class="mnav-lang">
+      <button class="lang-btn active" data-lang="hr">HR</button>
+      <span class="mnav-lang-sep">·</span>
+      <button class="lang-btn" data-lang="en">EN</button>
+    </div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="index.html" class="nav-logo">
+    <span class="nav-logo-name">FRANKO'S</span>
+    <span class="nav-logo-sub">pizza &amp; bar</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="menu.html" class="active"><span class="hr-only">Jelovnik</span><span class="en-only">Menu</span></a></li>
+    <li><a href="index.html#philosophy"><span class="hr-only">O nama</span><span class="en-only">About</span></a></li>
+    <li><a href="index.html#visit"><span class="hr-only">Posjetite nas</span><span class="en-only">Visit Us</span></a></li>
+  </ul>
+  <div class="nav-right">
+    <div class="nav-lang">
+      <button class="lang-btn active" data-lang="hr">HR</button>
+      <span class="nav-lang-sep">·</span>
+      <button class="lang-btn" data-lang="en">EN</button>
+    </div>
+    <a href="tel:+38516530884" class="nav-reserve"><span class="hr-only">Rezervirajte</span><span class="en-only">Reserve</span></a>
+    <button class="nav-burger" id="burger" aria-label="Navigation">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- MENU HERO -->
+<header id="menu-hero">
+  <p class="mh-kicker">Franko's Pizza &amp; Bar</p>
+  <h1 class="mh-title">
+    <span class="hr-only">Jelov<em>nik</em></span>
+    <span class="en-only">Me<em>nu</em></span>
+  </h1>
+  <p class="mh-note">
+    <span class="hr-only">Napoletana i A la Romana pizza, signature kokteli, curirani vinski list.<br>
+    San Marzano DOP · Fior di latte · DOP certificirani sastojci.</span>
+    <span class="en-only">Neapolitan and A la Romana pizza, signature cocktails, curated wine list.<br>
+    San Marzano DOP · Fior di latte · DOP certified ingredients.</span>
+  </p>
+</header>
+
+<!-- PRIMARY TABS -->
+<div id="menu-tabs">
+  <button class="tab-btn active" data-panel="food"><span class="hr-only">Hrana</span><span class="en-only">Food</span></button>
+  <button class="tab-btn" data-panel="drinks"><span class="hr-only">Pića</span><span class="en-only">Drinks</span></button>
+</div>
+
+<!-- MENU CONTENT -->
+<main id="menu-content">
+
+  <!-- FOOD PANEL -->
+  <div class="panel active" id="panel-food">
+    <div class="cat-nav">
+      <button class="cat-btn active" data-cat="predjela"><span class="hr-only">Predjela</span><span class="en-only">Starters</span></button>
+      <button class="cat-btn" data-cat="pizza">Pizza</button>
+      <button class="cat-btn" data-cat="stara"><span class="hr-only">Stara škola</span><span class="en-only">Old School</span></button>
+      <button class="cat-btn" data-cat="calzone">Calzone</button>
+      <button class="cat-btn" data-cat="tjestenina"><span class="hr-only">Tjestenina</span><span class="en-only">Pasta</span></button>
+      <button class="cat-btn" data-cat="salate"><span class="hr-only">Salate</span><span class="en-only">Salads</span></button>
+      <button class="cat-btn" data-cat="pladnjevi"><span class="hr-only">Pladnjevi</span><span class="en-only">Platters</span></button>
+      <button class="cat-btn" data-cat="djeca"><span class="hr-only">Za djecu</span><span class="en-only">Kids</span></button>
+      <button class="cat-btn" data-cat="desert"><span class="hr-only">Desert</span><span class="en-only">Dessert</span></button>
+    </div>
+
+    <div class="cat-section active" id="cat-predjela">
+      <div class="items-grid">
+        <div class="menu-item"><span class="item-name">Burrata <span class="badge b-v">Veggie</span></span><span class="item-price">9,00€</span><span class="item-desc"><span class="hr-only">Burrata, cherry rajčice, bosiljak, maslinovo ulje</span><span class="en-only">Burrata, cherry tomatoes, basil, olive oil</span></span></div>
+        <div class="menu-item"><span class="item-name">Spring Rolls <span class="badge b-v">Veggie</span></span><span class="item-price">8,00€</span><span class="item-desc"><span class="hr-only">Povrće, stakleni rezanci, sweet chilli umak — 3 komada</span><span class="en-only">Vegetables, glass noodles, sweet chilli sauce — 3 pieces</span></span></div>
+        <div class="menu-item"><span class="item-name">Spring Rolls Pulled Pork</span><span class="item-price">8,50€</span><span class="item-desc"><span class="hr-only">Trgana svinjetina, povrće, sweet chilli umak — 3 komada</span><span class="en-only">Pulled pork, vegetables, sweet chilli sauce — 3 pieces</span></span></div>
+        <div class="menu-item"><span class="item-name">Arancini Franko's <span class="badge b-v">Veggie</span></span><span class="item-price">7,00€</span><span class="item-desc"><span class="hr-only">Pohane kuglice punjene rižom, mozzarellom i šunkom — 3 komada</span><span class="en-only">Breaded balls filled with rice, mozzarella and ham — 3 pieces</span></span></div>
+        <div class="menu-item"><span class="item-name">Mozzarella Balls <span class="badge b-v">Veggie</span></span><span class="item-price">6,00€</span><span class="item-desc"><span class="hr-only">Pohane kuglice mozzarelle — 3 komada</span><span class="en-only">Breaded mozzarella balls — 3 pieces</span></span></div>
+      </div>
+    </div>
+
+    <div class="cat-section" id="cat-pizza">
+      <p class="cat-headline">
+        <span class="hr-only">Sve pizze dostupne u hrskavoj a la romana ili prozračnoj napoletana izvedbi. Ljuta verzija s umakom od baranjske paprike +1,20€.</span>
+        <span class="en-only">All pizzas available in crispy a la romana or airy napoletana style. Spicy version with Baranja pepper sauce +1.20€.</span>
+      </p>
+      <div class="items-grid">
+        <div class="menu-item"><span class="item-name">Chef's Marinara <span class="badge b-v">Veggie</span></span><span class="item-price">9,50€</span><span class="item-desc"><span class="hr-only">San Marzano DOP, polusušena žuta rajčica, Grana Padano, češnjak, svježi bosiljak, maslinovo ulje</span><span class="en-only">San Marzano DOP, semi-dried yellow tomato, Grana Padano, garlic, fresh basil, olive oil</span></span></div>
+        <div class="menu-item"><span class="item-name">Margherita <span class="badge b-v">Veggie</span><span class="badge b-pop"><span class="hr-only">Najpopularnija</span><span class="en-only">Best Seller</span></span></span><span class="item-price">10,00€</span><span class="item-desc"><span class="hr-only">San Marzano DOP, fior di latte, Grana Padano, svježi bosiljak, maslinovo ulje</span><span class="en-only">San Marzano DOP, fior di latte, Grana Padano, fresh basil, olive oil</span></span></div>
+        <div class="menu-item"><span class="item-name">Bufala <span class="badge b-v">Veggie</span></span><span class="item-price">13,00€</span><span class="item-desc"><span class="hr-only">San Marzano DOP, mozzarella di Bufala, mozzarellina, svježi bosiljak, maslinovo ulje</span><span class="en-only">San Marzano DOP, mozzarella di Bufala, mozzarellina, fresh basil, olive oil</span></span></div>
+        <div class="menu-item"><span class="item-name">Sei Formaggi <span class="badge b-v">Veggie</span></span><span class="item-price">13,50€</span><span class="item-desc"><span class="hr-only">Fior di latte, taleggio, ricotta, Grana Padano, sir Kolan, Bra Duro DOP, svježi bosiljak, maslinovo ulje</span><span class="en-only">Fior di latte, taleggio, ricotta, Grana Padano, Kolan cheese, Bra Duro DOP, fresh basil, olive oil</span></span></div>
+        <div class="menu-item"><span class="item-name">Classic</span><span class="item-price">14,50€</span><span class="item-desc"><span class="hr-only">San Marzano DOP, dimljena šunka, fior di latte, zlatni šampinjoni, svježi bosiljak, maslinovo ulje</span><span class="en-only">San Marzano DOP, smoked ham, fior di latte, golden mushrooms, fresh basil, olive oil</span></span></div>
+        <div class="menu-item"><span class="item-name">Guanciale Nero <span class="badge b-chef"><span class="hr-only">Izbor kuhara</span><span class="en-only">Chef's Choice</span></span></span><span class="item-price">15,00€</span><span class="item-desc"><span class="hr-only">San Marzano DOP, fior di latte, mozzarellina, guanciale, panjevčice, ukiseljene lučice, češnjak, bosiljak, maslinovo ulje</span><span class="en-only">San Marzano DOP, fior di latte, mozzarellina, guanciale, chanterelles, pickled shallots, garlic, basil, olive oil</span></span></div>
+        <div class="menu-item"><span class="item-name">Easy Daisy <span class="badge b-v">Veggie</span></span><span class="item-price">14,00€</span><span class="item-desc"><span class="hr-only">Maslinovo ulje, mozzarella di Bufala, zlatni šampinjoni, polusušena crvena rajčica, Grana Padano, bosiljak</span><span class="en-only">Olive oil, mozzarella di Bufala, golden mushrooms, semi-dried red tomato, Grana Padano, basil</span></span></div>
+        <div class="menu-item"><span class="item-name">La Passione Rustica</span><span class="item-price">15,00€</span><span class="item-desc"><span class="hr-only">San Marzano DOP, fior di latte, ricotta, Bra duro DOP, pršut, mozzarellina, krema od aceto balsamica, matovilac, bosiljak, maslinovo ulje</span><span class="en-only">San Marzano DOP, fior di latte, ricotta, Bra duro DOP, prosciutto, mozzarellina, balsamic cream, lamb's lettuce, basil, olive oil</span></span></div>
+        <div class="menu-item"><span class="item-name">Calabrian Red <span class="badge b-s"><span class="hr-only">Ljuto</span><span class="en-only">Spicy</span></span></span><span class="item-price">15,00€</span><span class="item-desc"><span class="hr-only">San Marzano DOP, fior di latte, salsiccia kobasica, 'Nduja, sušene niti chillija, ukiseljene lučice, maslinovo ulje, svježi bosiljak</span><span class="en-only">San Marzano DOP, fior di latte, salsiccia sausage, 'Nduja, dried chilli threads, pickled shallots, olive oil, fresh basil</span></span></div>
+        <div class="menu-item"><span class="item-name">Wild Wild Boar</span><span class="item-price">16,00€</span><span class="item-desc"><span class="hr-only">Ricotta, fior di latte, mortadela od vepra s tartufima, krema od pistacija, masline, perle od aceto balsamica, Grana Padano, bosiljak, maslinovo ulje</span><span class="en-only">Ricotta, fior di latte, truffle boar mortadella, pistachio cream, olives, balsamic pearls, Grana Padano, basil, olive oil</span></span></div>
+        <div class="menu-item"><span class="item-name">Il Respiro del Mare</span><span class="item-price">17,00€</span><span class="item-desc"><span class="hr-only">Namaz od žute tikve, ricotta, mozzarella di Bufala, jadranske kozice, polusušene crvene rajčice, perle od naranče, limeta, jestivo cvijeće, češnjak, svježi bosiljak, maslinovo ulje</span><span class="en-only">Yellow squash spread, ricotta, mozzarella di Bufala, Adriatic prawns, semi-dried red tomatoes, orange pearls, lime, edible flowers, garlic, fresh basil, olive oil</span></span></div>
+        <div class="menu-item"><span class="item-name">Meet the Smoke</span><span class="item-price">15,50€</span><span class="item-desc"><span class="hr-only">Fior di latte, dimljena mozzarella di Bufala, odležana junetina, polusušene rajčice, karameliziran luk, sir Kolan, svježi bosiljak, maslinovo ulje</span><span class="en-only">Fior di latte, smoked mozzarella di Bufala, aged beef, semi-dried tomatoes, caramelised onion, Kolan cheese, fresh basil, olive oil</span></span></div>
+        <div class="menu-item"><span class="item-name">Pulled Pork</span><span class="item-price">14,50€</span><span class="item-desc"><span class="hr-only">Mozzarella di Bufala, žuta rajčica, trgana svinjetina, karameliziran luk, cherry rajčice</span><span class="en-only">Mozzarella di Bufala, yellow tomato, pulled pork, caramelised onion, cherry tomatoes</span></span></div>
+        <div class="menu-item"><span class="item-name">Deep in the Woods</span><span class="item-price">17,00€</span><span class="item-desc"><span class="hr-only">Fior di latte, krema od vrganja, crni tartuf, guanciale nero, svježi bosiljak</span><span class="en-only">Fior di latte, porcini cream, black truffle, guanciale nero, fresh basil</span></span></div>
+        <div class="menu-item"><span class="item-name">Dommy's Yellow</span><span class="item-price">14,50€</span><span class="item-desc"><span class="hr-only">Žuta rajčica, fior di latte, dimljena šunka, karameliziran luk, žute polusušene rajčice, jestivo cvijeće, bosiljak, maslinovo ulje</span><span class="en-only">Yellow tomato, fior di latte, smoked ham, caramelised onion, semi-dried yellow tomatoes, edible flowers, basil, olive oil</span></span></div>
+        <div class="menu-item"><span class="item-name">After Rain <span class="badge b-v">Veggie</span></span><span class="item-price">14,50€</span><span class="item-desc"><span class="hr-only">Pesto umak, fior di latte, odležani Bra duro DOP, žuta polusušena rajčica, grilane tikvice, grilana paprika, grilane artičoke, masline, bosiljak, maslinovo ulje</span><span class="en-only">Pesto sauce, fior di latte, aged Bra duro DOP, semi-dried yellow tomato, grilled courgette, grilled peppers, grilled artichokes, olives, basil, olive oil</span></span></div>
+        <div class="menu-item"><span class="item-name">Creamy Baranja</span><span class="item-price">16,50€</span><span class="item-desc"><span class="hr-only">San Marzano DOP, fior di latte, Baranjski kulen, burrata</span><span class="en-only">San Marzano DOP, fior di latte, Baranja kulen sausage, burrata</span></span></div>
+        <div class="menu-item"><span class="item-name">Mixed Emotions</span><span class="item-price">14,50€</span><span class="item-desc"><span class="hr-only">Krema od ljubičastog batata, žuta rajčica, burrata, odležana junetina, Bra Duro DOP, maslinovo ulje, Franko's hot sauce</span><span class="en-only">Purple sweet potato cream, yellow tomato, burrata, aged beef, Bra Duro DOP, olive oil, Franko's hot sauce</span></span></div>
+        <div class="menu-item"><span class="item-name">Pi5tachio B.</span><span class="item-price">14,50€</span><span class="item-desc"><span class="hr-only">Fior di latte Julienne, pistacio salsa, crvene polusušene rajčice, burrata, mrvljena pistacija, bresaola, čips Grane Padano</span><span class="en-only">Fior di latte Julienne, pistachio salsa, semi-dried red tomatoes, burrata, crushed pistachio, bresaola, Grana Padano crisp</span></span></div>
+        <div class="menu-item"><span class="item-name">No Fake Truffles 2.0 Istria</span><span class="item-price">17,00€</span><span class="item-desc"><span class="hr-only">Krema od ricotte, šparoga, krema od datulja i džema od smokve, pancettosa, tartufi</span><span class="en-only">Ricotta cream, asparagus, date and fig jam cream, pancettosa, truffles</span></span></div>
+        <div class="menu-item"><span class="item-name">Island 14 <span class="badge b-v">Veggie</span></span><span class="item-price">16,00€</span><span class="item-desc"><span class="hr-only">Paški sir (ZOI), kotarac, Žigljen iz komine od maraske, skuta</span><span class="en-only">Pag cheese (PDO), kotarac, Žigljen from marasca marc, skuta cheese</span></span></div>
+        <div class="menu-item menu-item--featured"><span class="item-name">Trofeo No. 1 <span class="badge b-award">Caputo Trofeo</span></span><span class="item-price">17,50€</span><span class="item-desc"><span class="hr-only">Fior di latte, pršut, gorgonzola, kruška, med, orasi, rikola — Caputo Trofeo pobjednička pizza</span><span class="en-only">Fior di latte, prosciutto, gorgonzola, pear, honey, walnuts, rocket — Caputo Trofeo winning pizza</span></span></div>
+      </div>
+      <p class="spicy-note"><span class="hr-only">Ljuta verzija s umakom od baranjske paprike dostupna za sve pizze — +1,20€</span><span class="en-only">Spicy version with Baranja pepper sauce available for all pizzas — +1.20€</span></p>
+    </div>
+
+    <div class="cat-section" id="cat-stara">
+      <p class="cat-headline">
+        <span class="hr-only">Klasične pizze — jednostavne, iskrene, neprolazne. Dostupne i u ljutoj verziji +1,20€.</span>
+        <span class="en-only">Classic pizzas — simple, honest, timeless. Also available in a spicy version +1.20€.</span>
+      </p>
+      <div class="items-grid">
+        <div class="menu-item"><span class="item-name">Just Pizza <span class="badge b-v">Veggie</span></span><span class="item-price">9,00€</span><span class="item-desc"><span class="hr-only">Pelat, fior di latte Julienne, origano · Veganski 10,70€</span><span class="en-only">Crushed tomato, fior di latte Julienne, oregano · Vegan 10.70€</span></span></div>
+        <div class="menu-item"><span class="item-name">Funghi <span class="badge b-v">Veggie</span></span><span class="item-price">9,50€</span><span class="item-desc"><span class="hr-only">Pelat, fior di latte Julienne, šampinjoni, origano · Veganski 11,50€</span><span class="en-only">Crushed tomato, fior di latte Julienne, mushrooms, oregano · Vegan 11.50€</span></span></div>
+        <div class="menu-item"><span class="item-name">Vesuvio</span><span class="item-price">9,90€</span><span class="item-desc"><span class="hr-only">Pelat, fior di latte Julienne, šunka, origano</span><span class="en-only">Crushed tomato, fior di latte Julienne, ham, oregano</span></span></div>
+        <div class="menu-item"><span class="item-name">Say Cheese <span class="badge b-v">Veggie</span></span><span class="item-price">9,90€</span><span class="item-desc"><span class="hr-only">Fior di latte Julienne, ricotta, Grana Padano, mozzarelline, origano</span><span class="en-only">Fior di latte Julienne, ricotta, Grana Padano, mozzarelline, oregano</span></span></div>
+        <div class="menu-item"><span class="item-name"><span class="hr-only">Miješana</span><span class="en-only">Mixed</span></span><span class="item-price">10,80€</span><span class="item-desc"><span class="hr-only">Pelat, fior di latte Julienne, šunka, šampinjoni, origano</span><span class="en-only">Crushed tomato, fior di latte Julienne, ham, mushrooms, oregano</span></span></div>
+        <div class="menu-item"><span class="item-name"><span class="hr-only">Ljuta</span><span class="en-only">Spicy</span> <span class="badge b-s"><span class="hr-only">Ljuto</span><span class="en-only">Spicy</span></span></span><span class="item-price">11,50€</span><span class="item-desc"><span class="hr-only">Pelat, fior di latte Julienne, šunka, guanciale, ljuti feferoni, vrhnje, origano</span><span class="en-only">Crushed tomato, fior di latte Julienne, ham, guanciale, hot peppers, cream, oregano</span></span></div>
+        <div class="menu-item"><span class="item-name">Mediterana <span class="badge b-v">Veggie</span></span><span class="item-price">9,50€</span><span class="item-desc"><span class="hr-only">Pelat, fior di latte Julienne, matovilac, cherry rajčica, Grana Padano, masline, maslinovo ulje s češnjakom, origano</span><span class="en-only">Crushed tomato, fior di latte Julienne, lamb's lettuce, cherry tomato, Grana Padano, olives, garlic olive oil, oregano</span></span></div>
+        <div class="menu-item"><span class="item-name">Slavonska <span class="badge b-s"><span class="hr-only">Ljuto</span><span class="en-only">Spicy</span></span></span><span class="item-price">11,20€</span><span class="item-desc"><span class="hr-only">Pelat, fior di latte Julienne, salsiccia, guanciale, ljuti feferoni, masline, origano</span><span class="en-only">Crushed tomato, fior di latte Julienne, salsiccia, guanciale, hot peppers, olives, oregano</span></span></div>
+      </div>
+    </div>
+
+    <div class="cat-section" id="cat-calzone">
+      <div class="items-grid">
+        <div class="menu-item"><span class="item-name">Calzone Margherita <span class="badge b-v">Veggie</span></span><span class="item-price">8,90€</span><span class="item-desc"><span class="hr-only">San Marzano DOP, fior di latte, Grana Padano, bosiljak, maslinovo ulje</span><span class="en-only">San Marzano DOP, fior di latte, Grana Padano, basil, olive oil</span></span></div>
+        <div class="menu-item"><span class="item-name">Calzone Original</span><span class="item-price">9,60€</span><span class="item-desc"><span class="hr-only">San Marzano DOP, mozzarella fior di latte, dimljena šunka, bosiljak, maslinovo ulje</span><span class="en-only">San Marzano DOP, mozzarella fior di latte, smoked ham, basil, olive oil</span></span></div>
+        <div class="menu-item"><span class="item-name">Calzone Say Cheese <span class="badge b-v">Veggie</span></span><span class="item-price">10,70€</span><span class="item-desc"><span class="hr-only">Fior di latte Julienne, ricotta, Grana Padano, mozzareline</span><span class="en-only">Fior di latte Julienne, ricotta, Grana Padano, mozzareline</span></span></div>
+        <div class="menu-item"><span class="item-name">Calzone Pulled Pork</span><span class="item-price">11,00€</span><span class="item-desc"><span class="hr-only">Mozzarella di Bufala, žuta rajčica, trgana svinjetina, karamelizirani luk, cherry rajčice</span><span class="en-only">Mozzarella di Bufala, yellow tomato, pulled pork, caramelised onion, cherry tomatoes</span></span></div>
+        <div class="menu-item"><span class="item-name">Calzone Calabrian Red <span class="badge b-s"><span class="hr-only">Ljuto</span><span class="en-only">Spicy</span></span></span><span class="item-price">11,80€</span><span class="item-desc"><span class="hr-only">San Marzano DOP, fior di latte, salsiccia, 'Nduja, chili niti, maslinovo ulje</span><span class="en-only">San Marzano DOP, fior di latte, salsiccia, 'Nduja, chilli threads, olive oil</span></span></div>
+      </div>
+    </div>
+
+    <div class="cat-section" id="cat-tjestenina">
+      <div class="items-grid">
+        <div class="menu-item"><span class="item-name">Cannelloni Emilia Romagna</span><span class="item-price">11,50€</span><span class="item-desc"><span class="hr-only">Bolognese, bešamel, San Marzano DOP</span><span class="en-only">Bolognese, béchamel, San Marzano DOP</span></span></div>
+        <div class="menu-item"><span class="item-name"><span class="hr-only">Mediteranski Cannelloni</span><span class="en-only">Mediterranean Cannelloni</span></span><span class="item-price">12,50€</span><span class="item-desc"><span class="hr-only">Jadranske kozice, ricotta, mozzarella, blitva, San Marzano DOP, maslinovo ulje, bešamel</span><span class="en-only">Adriatic prawns, ricotta, mozzarella, Swiss chard, San Marzano DOP, olive oil, béchamel</span></span></div>
+      </div>
+    </div>
+
+    <div class="cat-section" id="cat-salate">
+      <p class="cat-headline">Salate by Borka K.</p>
+      <div class="items-grid">
+        <div class="menu-item"><span class="item-name">Beefsteak</span><span class="item-price">15,00€</span><span class="item-desc"><span class="hr-only">Zelena salata, biftek, Grana Padano, aceto balsamico</span><span class="en-only">Green salad, beef steak, Grana Padano, balsamic vinegar</span></span></div>
+        <div class="menu-item"><span class="item-name">Mozzarellina <span class="badge b-v">Veggie</span></span><span class="item-price">9,50€</span><span class="item-desc"><span class="hr-only">Zelena salata, pohane mozzarelline, cherry rajčice, limun, maslinovo ulje, dresing od senfa, majoneze i meda</span><span class="en-only">Green salad, breaded mozzarelline, cherry tomatoes, lemon, olive oil, mustard honey mayo dressing</span></span></div>
+        <div class="menu-item"><span class="item-name">Crispy Chicken</span><span class="item-price">10,00€</span><span class="item-desc"><span class="hr-only">Zelena salata, crispy piletina, žute i crvene cherry rajčice, krastavac, limun, maslinovo ulje, dresing</span><span class="en-only">Green salad, crispy chicken, yellow and red cherry tomatoes, cucumber, lemon, olive oil, dressing</span></span></div>
+        <div class="menu-item"><span class="item-name"><span class="hr-only">Kozice</span><span class="en-only">Prawns</span></span><span class="item-price">12,50€</span><span class="item-desc"><span class="hr-only">Zelena salata, pečene kozice, kapari, feta sir, limun, maslinovo ulje</span><span class="en-only">Green salad, sautéed prawns, capers, feta cheese, lemon, olive oil</span></span></div>
+      </div>
+    </div>
+
+    <div class="cat-section" id="cat-pladnjevi">
+      <div class="items-grid">
+        <div class="menu-item"><span class="item-name">Endonismo</span><span class="item-price">30,00€</span><span class="item-desc"><span class="hr-only">Dalmatinski pršut, odležani Bra Duro DOP, sir Kolan, Grana Padano, orasi, masline, ukiseljene lučice, focaccia, maslinovo ulje</span><span class="en-only">Dalmatian prosciutto, aged Bra Duro DOP, Kolan cheese, Grana Padano, walnuts, olives, pickled shallots, focaccia, olive oil</span></span></div>
+        <div class="menu-item"><span class="item-name"><span class="hr-only">Izbor sireva</span><span class="en-only">Cheese Selection</span> <span class="badge b-v">Veggie</span></span><span class="item-price">25,00€</span><span class="item-desc"><span class="hr-only">Odležani Bra Duro DOP, sir Kolan, Grana Padano, dimljena mozzarella di Bufala, mozzarelline, orasi, masline, focaccia, maslinovo ulje</span><span class="en-only">Aged Bra Duro DOP, Kolan cheese, Grana Padano, smoked mozzarella di Bufala, mozzarelline, walnuts, olives, focaccia, olive oil</span></span></div>
+      </div>
+    </div>
+
+    <div class="cat-section" id="cat-djeca">
+      <div class="items-grid">
+        <div class="menu-item"><span class="item-name"><span class="hr-only">Dječja Stara Škola</span><span class="en-only">Kids Old School</span></span><span class="item-price">8,90€</span><span class="item-desc"><span class="hr-only">San Marzano DOP, fior di latte, šunka</span><span class="en-only">San Marzano DOP, fior di latte, ham</span></span></div>
+        <div class="menu-item"><span class="item-name"><span class="hr-only">Dječja Napoletana Vesuvio</span><span class="en-only">Kids Napoletana Vesuvio</span></span><span class="item-price">11,00€</span><span class="item-desc"><span class="hr-only">San Marzano DOP, mozzarella fior di latte, šunka</span><span class="en-only">San Marzano DOP, mozzarella fior di latte, ham</span></span></div>
+        <div class="menu-item"><span class="item-name">Franko's Nuggets</span><span class="item-price">8,50€</span><span class="item-desc"><span class="hr-only">Pileći nuggetsi u corn fleaksu s krumpirićima</span><span class="en-only">Chicken nuggets in cornflakes with fries</span></span></div>
+      </div>
+    </div>
+
+    <div class="cat-section" id="cat-desert">
+      <div class="items-grid">
+        <div class="menu-item"><span class="item-name"><span class="hr-only">Kolač dana</span><span class="en-only">Cake of the Day</span></span><span class="item-price">5,50€</span><span class="item-desc"><span class="hr-only">Pitajte naše osoblje za današnji izbor</span><span class="en-only">Ask our staff for today's selection</span></span></div>
+      </div>
+    </div>
+  </div><!-- /panel-food -->
+
+  <!-- DRINKS PANEL -->
+  <div class="panel" id="panel-drinks">
+    <div class="cat-nav">
+      <button class="cat-btn active" data-cat="kokteli"><span class="hr-only">Kokteli</span><span class="en-only">Cocktails</span></button>
+      <button class="cat-btn" data-cat="pivo"><span class="hr-only">Pivo &amp; Cider</span><span class="en-only">Beer &amp; Cider</span></button>
+      <button class="cat-btn" data-cat="vino"><span class="hr-only">Vino</span><span class="en-only">Wine</span></button>
+      <button class="cat-btn" data-cat="zestoka"><span class="hr-only">Žestoka pića</span><span class="en-only">Spirits</span></button>
+      <button class="cat-btn" data-cat="kava"><span class="hr-only">Kava &amp; Bezalkoholno</span><span class="en-only">Coffee &amp; Soft Drinks</span></button>
+    </div>
+
+    <div class="cat-section active" id="cat-kokteli">
+      <h3 class="drinks-h"><span class="hr-only">Franko's izbor spritza</span><span class="en-only">Franko's Spritz Selection</span></h3>
+      <div class="drinks-grid">
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">Aperol Spritz</span><span class="drink-sub">Aperol, pjenušac, S. Pellegrino</span></div><span class="drink-price">7,00€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">Italicus Spritz</span><span class="drink-sub">Vermouth, Italicus, <span class="hr-only">limunska trava</span><span class="en-only">lemongrass</span></span></div><span class="drink-price">8,50€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">Lillet Hugo Spritz</span><span class="drink-sub">Lillet blanc, <span class="hr-only">limunov sok, bazga sirup</span><span class="en-only">lemon juice, elderflower syrup</span>, pjenušac</span></div><span class="drink-price">8,50€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">Limoncello Spritz</span><span class="drink-sub">Limoncello, pjenušac, S. Pellegrino</span></div><span class="drink-price">7,50€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">Che-Che Spritz</span><span class="drink-sub">Rosé pjenušac, rose limonada</span></div><span class="drink-price">7,50€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">Lillet Rose Tonic</span><span class="drink-sub">Lillet rosé, tonik</span></div><span class="drink-price">7,50€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">Martini Fiero Tonic</span><span class="drink-sub">Martini Fiero, tonik</span></div><span class="drink-price">7,50€</span></div>
+      </div>
+      <h3 class="drinks-h">Franko's Gin &amp; Tonic</h3>
+      <div class="drinks-grid">
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">Ki No Bi G&T</span><span class="drink-sub">Ki No Bi gin, tonik, <span class="hr-only">kora grejpa</span><span class="en-only">grapefruit peel</span></span></div><span class="drink-price">12,00€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">Old Pilot's G&T</span><span class="drink-sub">Old Pilot's, LEC tonik, <span class="hr-only">kora naranče</span><span class="en-only">orange peel</span></span></div><span class="drink-price">10,00€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">Pink Lee G&T</span><span class="drink-sub">Beefeater Pink, <span class="hr-only">liker od lubenice</span><span class="en-only">watermelon liqueur</span>, St. Germain, tonik</span></div><span class="drink-price">10,00€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">Gin 'n' Roses</span><span class="drink-sub">Beefeater, rose limonada, limeta, <span class="hr-only">pupoljak ruže</span><span class="en-only">rose bud</span></span></div><span class="drink-price">10,00€</span></div>
+      </div>
+      <h3 class="drinks-h"><span class="hr-only">Signature kokteli</span><span class="en-only">Signature Cocktails</span></h3>
+      <div class="drinks-grid">
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">Rum Old Fashioned</span><span class="drink-sub">La Hechicera 21, Demerara sirup, <span class="hr-only">čokoladni bitter, narančin bitter</span><span class="en-only">chocolate bitters, orange bitters</span></span></div><span class="drink-price">11,00€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">Jameson Kick</span><span class="drink-sub">Chivas Regal, Jameson, limun, orgeat</span></div><span class="drink-price">10,00€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">Sweet Franko's</span><span class="drink-sub">Beefeater Pink, hibiskus, limun, rose limonada</span></div><span class="drink-price">10,00€</span></div>
+      </div>
+      <h3 class="drinks-h"><span class="hr-only">Klasični kokteli</span><span class="en-only">Classic Cocktails</span></h3>
+      <div class="drinks-grid">
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">Whiskey Old Fashioned</span><span class="drink-sub">Bulleit bourbon, Demerara sirup, Angostura bitter</span></div><span class="drink-price">9,00€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">Negroni</span><span class="drink-sub">Beefeater, Campari, Vermut</span></div><span class="drink-price">10,00€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">Moscow Mule</span><span class="drink-sub"><span class="hr-only">Votka, limeta, đumbirovo pivo</span><span class="en-only">Vodka, lime, ginger beer</span></span></div><span class="drink-price">10,00€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">London Mule</span><span class="drink-sub">Beefeater, limeta, đumbirovo pivo</span></div><span class="drink-price">10,00€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">Jalisco Mule</span><span class="drink-sub">Avion Silver, limeta, đumbirovo pivo</span></div><span class="drink-price">11,00€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">Pornstar Martini</span><span class="drink-sub"><span class="hr-only">Votka, vanilija, passion fruit, prosecco</span><span class="en-only">Vodka, vanilla, passion fruit, prosecco</span></span></div><span class="drink-price">10,00€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">Espresso Martini</span><span class="drink-sub"><span class="hr-only">Votka, espresso, Demerara sirup</span><span class="en-only">Vodka, espresso, Demerara syrup</span></span></div><span class="drink-price">10,00€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">Paloma</span><span class="drink-sub">Arette Blanco, limeta, pink tonik</span></div><span class="drink-price">10,00€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">Gin Sour</span><span class="drink-sub">Beefeater, limun, Angostura bitter</span></div><span class="drink-price">10,00€</span></div>
+      </div>
+      <h3 class="drinks-h"><span class="hr-only">Bezalkoholni kokteli</span><span class="en-only">Non-Alcoholic Cocktails</span></h3>
+      <div class="drinks-grid">
+        <div class="drink-item"><div class="drink-info"><span class="drink-name"><span class="hr-only">Majka Zemlja</span><span class="en-only">Mother Earth</span></span><span class="drink-sub"><span class="hr-only">Sirup od ružmarina i bosiljka, limun, tonik</span><span class="en-only">Rosemary and basil syrup, lemon, tonic</span></span></div><span class="drink-price">4,70€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name"><span class="hr-only">Rajski Otok</span><span class="en-only">Paradise Island</span></span><span class="drink-sub"><span class="hr-only">Passion fruit, madagaskar vanilija, vanilin šećer, tonik</span><span class="en-only">Passion fruit, Madagascar vanilla, vanilla sugar, tonic</span></span></div><span class="drink-price">4,70€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">Ladies' Choice</span><span class="drink-sub">Monin ruža, bergamot, grenadine, <span class="hr-only">sok od limuna</span><span class="en-only">lemon juice</span>, rose limonada</span></div><span class="drink-price">4,70€</span></div>
+      </div>
+    </div>
+
+    <div class="cat-section" id="cat-pivo">
+      <h3 class="drinks-h"><span class="hr-only">Točeno</span><span class="en-only">Draft</span></h3>
+      <div class="drinks-grid">
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">Carlsberg 0,33 l</span></div><span class="drink-price">3,30€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">Carlsberg 0,50 l</span></div><span class="drink-price">4,90€</span></div>
+      </div>
+      <h3 class="drinks-h"><span class="hr-only">Boca</span><span class="en-only">Bottle</span></h3>
+      <div class="drinks-grid">
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">1664 Blanc</span></div><span class="drink-price">4,20€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">Grimbergen Blanche</span><span class="drink-sub">0,33 l</span></div><span class="drink-price">5,10€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">Grimbergen Blonde</span><span class="drink-sub">0,33 l</span></div><span class="drink-price">5,10€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">Grimbergen Double Ambrée</span><span class="drink-sub">0,33 l</span></div><span class="drink-price">5,10€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">Bayreuther Hell Lager</span><span class="drink-sub">4,9% · 0,33 l</span></div><span class="drink-price">5,20€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">Varionica Pale Ale</span><span class="drink-sub">5,2% · 0,50 l</span></div><span class="drink-price">5,50€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">Varionica Neon Stout</span><span class="drink-sub">6,2% · 0,50 l</span></div><span class="drink-price">5,50€</span></div>
+      </div>
+      <h3 class="drinks-h">Cider — Somersby</h3>
+      <div class="drinks-grid">
+        <div class="drink-item"><div class="drink-info"><span class="drink-name"><span class="hr-only">Jabuka</span><span class="en-only">Apple</span></span><span class="drink-sub">4,5% · 0,33 l</span></div><span class="drink-price">5,00€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name"><span class="hr-only">Borovnica</span><span class="en-only">Blueberry</span></span><span class="drink-sub">4,5% · 0,33 l</span></div><span class="drink-price">5,00€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name"><span class="hr-only">Mango i limeta</span><span class="en-only">Mango &amp; Lime</span></span><span class="drink-sub">4,5% · 0,33 l</span></div><span class="drink-price">5,00€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name"><span class="hr-only">Kruška</span><span class="en-only">Pear</span></span><span class="drink-sub">4,5% · 0,33 l</span></div><span class="drink-price">5,00€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name"><span class="hr-only">Jagoda i limeta</span><span class="en-only">Strawberry &amp; Lime</span></span><span class="drink-sub">0% <span class="hr-only">alkohola</span><span class="en-only">alcohol</span> · 0,33 l</span></div><span class="drink-price">5,00€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name"><span class="hr-only">Mandarina</span><span class="en-only">Mandarin</span></span><span class="drink-sub">0% <span class="hr-only">alkohola</span><span class="en-only">alcohol</span> · 0,33 l</span></div><span class="drink-price">5,00€</span></div>
+      </div>
+    </div>
+
+    <div class="cat-section" id="cat-vino">
+      <h3 class="drinks-h"><span class="hr-only">Bijelo vino — na čaše</span><span class="en-only">White Wine — by the glass</span></h3>
+      <div class="drinks-grid">
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">Graševina Mitrovac Krauthaker</span><span class="drink-sub"><span class="hr-only">Slavonija</span><span class="en-only">Slavonia</span> · 0,15 l</span></div><span class="drink-price">5,30€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">Malvazija Istarska Benvenuti</span><span class="drink-sub"><span class="hr-only">Istra</span><span class="en-only">Istria</span> · 0,15 l</span></div><span class="drink-price">6,50€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">Mala Nevina</span><span class="drink-sub">0,15 l</span></div><span class="drink-price">6,90€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">Gavi di Gavi Ascheri</span><span class="drink-sub"><span class="hr-only">Italija</span><span class="en-only">Italy</span> · 0,15 l</span></div><span class="drink-price">6,30€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">Diel Dorsheimer Riesling</span><span class="drink-sub"><span class="hr-only">Njemačka</span><span class="en-only">Germany</span> · 0,15 l</span></div><span class="drink-price">7,50€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">Erdoro Pinot Gris</span><span class="drink-sub"><span class="hr-only">Dalmacija</span><span class="en-only">Dalmatia</span> · 0,15 l</span></div><span class="drink-price">6,40€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">Erdoro Sauvignon Blanc</span><span class="drink-sub"><span class="hr-only">Dalmacija</span><span class="en-only">Dalmatia</span> · 0,15 l</span></div><span class="drink-price">6,80€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">St. Hills Posh</span><span class="drink-sub">0,15 l</span></div><span class="drink-price">7,90€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">Domaine Faiveley Bourgogne Chardonnay</span><span class="drink-sub"><span class="hr-only">Francuska</span><span class="en-only">France</span> · 0,15 l</span></div><span class="drink-price">8,90€</span></div>
+      </div>
+      <h3 class="drinks-h"><span class="hr-only">Rosé vino — na čaše</span><span class="en-only">Rosé Wine — by the glass</span></h3>
+      <div class="drinks-grid">
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">Erdoro Rosé</span><span class="drink-sub">0,15 l</span></div><span class="drink-price">5,80€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">Minuty M Rosé</span><span class="drink-sub">Provence · 0,15 l</span></div><span class="drink-price">8,20€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">St. Hills Rosé</span><span class="drink-sub">0,15 l</span></div><span class="drink-price">8,60€</span></div>
+      </div>
+      <h3 class="drinks-h"><span class="hr-only">Crveno vino — na čaše</span><span class="en-only">Red Wine — by the glass</span></h3>
+      <div class="drinks-grid">
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">Hugel Pinot Noir Classic</span><span class="drink-sub"><span class="hr-only">Alzas</span><span class="en-only">Alsace</span> · 0,15 l</span></div><span class="drink-price">6,90€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">Syrah Escudo Rojo</span><span class="drink-sub"><span class="hr-only">Čile</span><span class="en-only">Chile</span> · 0,15 l</span></div><span class="drink-price">8,00€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">Krauthaker Merlot</span><span class="drink-sub"><span class="hr-only">Slavonija</span><span class="en-only">Slavonia</span> · 0,15 l</span></div><span class="drink-price">6,90€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">St. Hills Black</span><span class="drink-sub">0,15 l</span></div><span class="drink-price">6,90€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">Querciabella Chianti Classico DOCG</span><span class="drink-sub"><span class="hr-only">Toskana</span><span class="en-only">Tuscany</span> · 0,15 l</span></div><span class="drink-price">8,80€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">Teran Livio Benvenuti</span><span class="drink-sub"><span class="hr-only">Istra</span><span class="en-only">Istria</span> · 0,15 l</span></div><span class="drink-price">8,00€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">Duet Lex Edi Simčič</span><span class="drink-sub"><span class="hr-only">Slovenija</span><span class="en-only">Slovenia</span> · 0,15 l</span></div><span class="drink-price">13,20€</span></div>
+      </div>
+      <h3 class="drinks-h"><span class="hr-only">Šampanjci i pjenušci — na čaše</span><span class="en-only">Champagnes &amp; Sparkling — by the glass</span></h3>
+      <div class="drinks-grid">
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">Tomac Diplomat Extra Brut</span><span class="drink-sub"><span class="hr-only">Hrvatska</span><span class="en-only">Croatia</span> · 0,10 l</span></div><span class="drink-price">6,70€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">Tomac Brut Rosé</span><span class="drink-sub"><span class="hr-only">Hrvatska</span><span class="en-only">Croatia</span> · 0,10 l</span></div><span class="drink-price">6,70€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">Terra Falconis Extra Brut</span><span class="drink-sub">0,10 l</span></div><span class="drink-price">6,20€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">Hebrart Champagne BdB 1er Cru</span><span class="drink-sub">Champagne · 0,10 l</span></div><span class="drink-price">12,00€</span></div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:32px;font-style:italic;font-family:var(--ff-d)">
+        <span class="hr-only">Boce dostupne — zamolite naše osoblje za kompletan vinski list uključujući Meneghetti Red, Amarone Bertani, Billecart-Salmon Champagne i više.</span>
+        <span class="en-only">Bottles available — ask our staff for the full wine list including Meneghetti Red, Amarone Bertani, Billecart-Salmon Champagne and more.</span>
+      </p>
+    </div>
+
+    <div class="cat-section" id="cat-zestoka">
+      <h3 class="drinks-h"><span class="hr-only">Degustacijski meniji</span><span class="en-only">Tasting Menus</span></h3>
+      <div class="deg-grid">
+        <div class="deg-card"><p class="deg-card-title"><span class="hr-only">Meni I — Scotch</span><span class="en-only">Menu I — Scotch</span></p><p class="deg-card-items">Aberlour 14yo · The Glenlivet 18yo · Aberlour A'Bunadh</p><p class="deg-card-price">13,00€</p></div>
+        <div class="deg-card"><p class="deg-card-title"><span class="hr-only">Meni II — Irski</span><span class="en-only">Menu II — Irish</span></p><p class="deg-card-items">Jameson Crested · Green Spot · Redbreast 12yo</p><p class="deg-card-price">13,00€</p></div>
+        <div class="deg-card"><p class="deg-card-title"><span class="hr-only">Meni III — Rum</span><span class="en-only">Menu III — Rum</span></p><p class="deg-card-items">Havana 7yo · La Hechicera Extra Añejo Solera · Bumbu XO</p><p class="deg-card-price">13,00€</p></div>
+      </div>
+      <h3 class="drinks-h">Gin · 0,03 l</h3>
+      <div class="drinks-grid">
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">Malfy Original / Rosa / Con Limone / Con Arancia</span></div><span class="drink-price">4,50€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">Old Pilot's</span></div><span class="drink-price">5,00€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">Monkey 47</span></div><span class="drink-price">5,50€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">Ki No Bi Gin</span></div><span class="drink-price">7,00€</span></div>
+      </div>
+      <h3 class="drinks-h">Rum · 0,03 l</h3>
+      <div class="drinks-grid">
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">Havana Club 3yo / Especial / 7yo</span></div><span class="drink-price"><span class="hr-only">od</span><span class="en-only">from</span> 4,00€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">Bumbu Original / XO / Cream</span></div><span class="drink-price"><span class="hr-only">od</span><span class="en-only">from</span> 6,50€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">La Hechicera Extra Añejo Solera 21</span></div><span class="drink-price">8,00€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">Havana Club 15yo</span></div><span class="drink-price">20,00€</span></div>
+      </div>
+      <h3 class="drinks-h"><span class="hr-only">Viski — Single Malt &amp; Scotch · 0,03 l</span><span class="en-only">Whisky — Single Malt &amp; Scotch · 0,03 l</span></h3>
+      <div class="drinks-grid">
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">Chivas Regal 12yo / XV / 18yo</span></div><span class="drink-price"><span class="hr-only">od</span><span class="en-only">from</span> 4,00€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">Laphroaig / Lagavulin 16yo</span></div><span class="drink-price"><span class="hr-only">od</span><span class="en-only">from</span> 5,00€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">The Glenlivet 12 / 15 / 18yo</span></div><span class="drink-price"><span class="hr-only">od</span><span class="en-only">from</span> 5,00€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">Aberlour 12yo / 14yo / A'Bunadh</span></div><span class="drink-price"><span class="hr-only">od</span><span class="en-only">from</span> 6,00€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">The Macallan 12yo</span></div><span class="drink-price">9,00€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">Glenmorangie Original 10yo</span></div><span class="drink-price">7,00€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">Nikka from the Barrel</span></div><span class="drink-price">7,30€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">Kavalan Concert Master</span></div><span class="drink-price">10,00€</span></div>
+      </div>
+      <h3 class="drinks-h"><span class="hr-only">Tekila · 0,03 l</span><span class="en-only">Tequila · 0,03 l</span></h3>
+      <div class="drinks-grid">
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">Avion Silver / Reposado / Extra Añejo 44</span></div><span class="drink-price"><span class="hr-only">od</span><span class="en-only">from</span> 10,00€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">Arette Blanco</span></div><span class="drink-price">10,00€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">Del Maguey Vida (Mezcal)</span></div><span class="drink-price">7,00€</span></div>
+      </div>
+      <h3 class="drinks-h"><span class="hr-only">Votka · 0,03 l</span><span class="en-only">Vodka · 0,03 l</span></h3>
+      <div class="drinks-grid">
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">Absolut</span></div><span class="drink-price">4,00€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">Absolut Elyx</span></div><span class="drink-price">7,50€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">Grey Goose</span></div><span class="drink-price">4,50€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">Belvedere</span></div><span class="drink-price">4,50€</span></div>
+      </div>
+    </div>
+
+    <div class="cat-section" id="cat-kava">
+      <h3 class="drinks-h"><span class="hr-only">Kava</span><span class="en-only">Coffee</span></h3>
+      <div class="drinks-grid">
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">Espresso</span></div><span class="drink-price">1,70€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name"><span class="hr-only">Espresso bez kofeina</span><span class="en-only">Decaf Espresso</span></span></div><span class="drink-price">2,00€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">Espresso machiato</span></div><span class="drink-price">2,00€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name"><span class="hr-only">Kava s mlijekom</span><span class="en-only">Coffee with milk</span></span></div><span class="drink-price">2,10€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name"><span class="hr-only">Bijela kava</span><span class="en-only">White coffee</span></span></div><span class="drink-price">2,20€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name"><span class="hr-only">Čaj</span><span class="en-only">Tea</span></span></div><span class="drink-price">2,50€</span></div>
+      </div>
+      <h3 class="drinks-h"><span class="hr-only">Bezalkoholna pića</span><span class="en-only">Soft Drinks</span></h3>
+      <div class="drinks-grid">
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">Coca-Cola / Zero / Fanta / Sprite</span><span class="drink-sub">0,25 l</span></div><span class="drink-price">4,10€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">San Pellegrino Aranciata / Limonata</span><span class="drink-sub">0,33 l</span></div><span class="drink-price">4,90€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">Red Bull</span><span class="drink-sub">0,25 l</span></div><span class="drink-price">6,00€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">Fentimans Rose Lemonade</span><span class="drink-sub">0,20 l</span></div><span class="drink-price">6,00€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name"><span class="hr-only">Svježe limunade</span><span class="en-only">Fresh lemonades</span></span><span class="drink-sub"><span class="hr-only">Borovnica, Mango, Kivi · 0,40 l</span><span class="en-only">Blueberry, Mango, Kiwi · 0,40 l</span></span></div><span class="drink-price">5,00€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name"><span class="hr-only">Limonada s đumbirom</span><span class="en-only">Ginger Lemonade</span></span><span class="drink-sub">0,40 l</span></div><span class="drink-price">4,50€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name"><span class="hr-only">Cijeđena naranča</span><span class="en-only">Freshly squeezed orange</span></span><span class="drink-sub">0,20 l</span></div><span class="drink-price">5,50€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name"><span class="hr-only">Domaći ledeni čaj</span><span class="en-only">House iced tea</span></span><span class="drink-sub">0,30 l</span></div><span class="drink-price">5,00€</span></div>
+      </div>
+      <h3 class="drinks-h"><span class="hr-only">Voda</span><span class="en-only">Water</span></h3>
+      <div class="drinks-grid">
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">Acqua Panna</span><span class="drink-sub">0,25 l / 0,75 l</span></div><span class="drink-price">3,60€ / 5,90€</span></div>
+        <div class="drink-item"><div class="drink-info"><span class="drink-name">S. Pellegrino</span><span class="drink-sub">0,25 l / 0,75 l</span></div><span class="drink-price">3,70€ / 6,00€</span></div>
+      </div>
+    </div>
+  </div><!-- /panel-drinks -->
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <img src="Assets/Frankos logo.png" alt="Franko's" class="foot-logo">
+  <span class="foot-copy">© 2025 Franko's Pizza &amp; Bar · Zagreb · GREEN CORNER d.o.o.</span>
+  <ul class="foot-links">
+    <li><a href="index.html"><span class="hr-only">Početna</span><span class="en-only">Home</span></a></li>
+    <li><a href="index.html#visit"><span class="hr-only">Kontakt</span><span class="en-only">Contact</span></a></li>
+  </ul>
+</footer>
+
+<script>
+(function(){
+
+/* ── LANGUAGE ── */
+const root = document.getElementById('html-root');
+const modal = document.getElementById('lang-modal');
+
+function setLang(lang){
+  sessionStorage.setItem('frankos-lang', lang);
+  root.className = 'lang-' + lang;
+  root.lang = lang;
+  document.querySelectorAll('.lang-btn').forEach(btn=>{
+    btn.classList.toggle('active', btn.dataset.lang === lang);
+  });
+}
+
+const saved = sessionStorage.getItem('frankos-lang');
+if(saved){
+  setLang(saved);
+  if(modal) modal.classList.add('hidden');
+} else {
+  if(modal){
+    modal.querySelectorAll('.lm-btn').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        setLang(btn.dataset.lang);
+        modal.classList.add('hidden');
+      });
+    });
+  }
+}
+
+document.querySelectorAll('.lang-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>setLang(btn.dataset.lang));
+});
+
+/* ── MOBILE NAV ── */
+const burger = document.getElementById('burger');
+const mnav = document.getElementById('mnav');
+burger.addEventListener('click',()=>{
+  const open = mnav.classList.toggle('open');
+  burger.classList.toggle('open',open);
+  document.body.style.overflow = open ? 'hidden' : '';
+});
+mnav.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{
+  mnav.classList.remove('open');
+  burger.classList.remove('open');
+  document.body.style.overflow='';
+}));
+
+/* ── PRIMARY TABS ── */
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const id='panel-'+btn.dataset.panel;
+    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+    const panel=document.getElementById(id);
+    if(panel){
+      panel.classList.add('active');
+      const firstCat=panel.querySelector('.cat-btn');
+      if(firstCat)firstCat.click();
+    }
+  });
+});
+
+/* ── CATEGORY BUTTONS ── */
+function initCatNav(panel){
+  panel.querySelectorAll('.cat-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      panel.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      panel.querySelectorAll('.cat-section').forEach(s=>s.classList.remove('active'));
+      const sec=document.getElementById('cat-'+btn.dataset.cat);
+      if(sec){sec.classList.add('active');requestAnimationFrame(observeItems);}
+    });
+  });
+}
+document.querySelectorAll('.panel').forEach(initCatNav);
+
+/* ── ITEM REVEAL ── */
+const io=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(!e.isIntersecting)return;
+    const d=+(e.target.dataset.delay||0);
+    setTimeout(()=>e.target.classList.add('vis'),d);
+    io.unobserve(e.target);
+  });
+},{threshold:0.06,rootMargin:'0px 0px -20px 0px'});
+
+function observeItems(){
+  document.querySelectorAll('.menu-item:not(.vis),.drink-item:not(.vis)').forEach((el,i)=>{
+    el.dataset.delay=Math.min(i*30,300);
+    io.observe(el);
+  });
+}
+observeItems();
+document.querySelectorAll('.cat-btn,.tab-btn').forEach(b=>b.addEventListener('click',()=>setTimeout(observeItems,60)));
+
+})();
+</script>
+</body>
+</html>
