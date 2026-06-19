@@ -85,7 +85,7 @@ body::after{
   position:absolute;bottom:52px;left:50%;transform:translateX(-50%);
   width:96px;height:1px;background:rgba(196,123,58,.1);overflow:hidden
 }
-.pre-bar-fill{height:100%;width:0;background:var(--flame);transition:width 2.3s linear}
+.pre-bar-fill{height:100%;width:0;background:var(--flame);transition:width .42s linear}
 .pre-bar-fill.run{width:100%}
 
 /* ══ LANGUAGE MODAL ══ */
@@ -346,8 +346,8 @@ body::after{
 }
 .process-slide.active{opacity:1}
 .ps-bg{position:absolute;inset:0;z-index:0}
-.ps-bg video,.ps-bg img{width:100%;height:100%;object-fit:cover;filter:brightness(.13) saturate(.45)}
-#ps-5 .ps-bg video{filter:brightness(.3) saturate(.7)}
+.ps-bg video,.ps-bg img{width:100%;height:100%;object-fit:cover;filter:brightness(.22) saturate(.55)}
+#ps-5 .ps-bg img{filter:brightness(.32) saturate(.72)}
 .ps-content{position:relative;z-index:2;max-width:760px}
 .ps-num{
   font-size:7.5px;letter-spacing:.46em;text-transform:uppercase;
@@ -388,20 +388,20 @@ body::after{
 }
 
 /* ══ RECOGNITION (SIGNATURE MOMENT 4: text writes itself out of darkness) ══ */
-#recognition{background:#000;padding:160px 56px;position:relative;overflow:hidden}
+#recognition{background:#000;padding:140px 56px 160px;position:relative;overflow:hidden}
 .rec-inner{max-width:920px;margin:0 auto}
 .rec-pre{
   font-size:8px;letter-spacing:.42em;text-transform:uppercase;
-  color:rgba(196,123,58,.32);display:flex;align-items:center;gap:16px;
+  color:var(--flame);display:flex;align-items:center;gap:16px;
   margin-bottom:88px;opacity:0;transform:translateY(14px);
   transition:opacity .8s var(--ease),transform .8s var(--ease)
 }
 .rec-pre.vis{opacity:1;transform:none}
-.rec-pre::before{content:'';width:18px;height:1px;background:rgba(196,123,58,.22);flex-shrink:0}
+.rec-pre::before{content:'';width:18px;height:1px;background:rgba(196,123,58,.5);flex-shrink:0}
 .rec-lines{margin-bottom:108px}
 .rec-line{
   font-family:var(--ff-d);font-size:clamp(32px,5.8vw,72px);
-  font-weight:300;color:rgba(237,232,222,.75);
+  font-weight:300;color:rgba(237,232,222,.88);
   line-height:1.1;margin-bottom:6px;
   clip-path:inset(0 100% 0 0);
   transition:clip-path 1.35s var(--ease)
@@ -410,24 +410,24 @@ body::after{
 .rec-line em{font-style:italic;color:var(--flame)}
 .rec-badges{
   display:flex;flex-wrap:wrap;
-  border-top:1px solid rgba(196,123,58,.07);padding-top:72px;
+  border-top:1px solid rgba(196,123,58,.14);padding-top:72px;
   opacity:0;transform:translateY(14px);
   transition:opacity .8s var(--ease) .5s,transform .8s var(--ease) .5s
 }
 .rec-badges.vis{opacity:1;transform:none}
 .rec-badge{
-  flex:1;min-width:130px;padding:28px 20px;text-align:center;
-  border-right:1px solid rgba(196,123,58,.06);transition:background .25s
+  flex:1;min-width:130px;padding:32px 20px;text-align:center;
+  border-right:1px solid rgba(196,123,58,.1);transition:background .3s,transform .3s var(--ease)
 }
 .rec-badge:last-child{border-right:none}
-.rec-badge:hover{background:rgba(196,123,58,.05)}
+.rec-badge:hover{background:rgba(196,123,58,.07);transform:translateY(-4px)}
 .rec-badge img{
-  height:52px;width:auto;object-fit:contain;
-  filter:brightness(.65) saturate(.35);
-  transition:filter .28s,transform .28s;display:block;margin:0 auto 10px
+  height:110px;width:auto;object-fit:contain;
+  filter:brightness(.9) saturate(.6) contrast(1.05);
+  transition:filter .35s,transform .35s var(--ease);display:block;margin:0 auto 14px
 }
-.rec-badge:hover img{filter:brightness(1.05) saturate(.8);transform:scale(1.05)}
-.rec-badge-name{font-size:7px;letter-spacing:.2em;text-transform:uppercase;color:rgba(237,232,222,.18)}
+.rec-badge:hover img{filter:brightness(1.1) saturate(.95) contrast(1.1);transform:scale(1.06)}
+.rec-badge-name{font-size:7px;letter-spacing:.22em;text-transform:uppercase;color:rgba(237,232,222,.38)}
 
 /* ══ VOICES ══ */
 #voices{background:var(--cream);padding:140px 56px;position:relative}
@@ -592,6 +592,7 @@ footer{
   .mg-visual{min-height:65vw}
   .mg-film{width:78%}
 }
+
 @media(max-width:900px){
   .stmt-split{grid-template-columns:1fr;gap:40px}
   .stmt-facts{gap:40px;flex-wrap:wrap}
@@ -605,10 +606,12 @@ footer{
   .nav-links,.nav-cta{display:none!important}
   .nav-burger{display:flex}
   .nav-right{gap:12px}
+  .hero-name{font-size:clamp(38px,9vw,64px);letter-spacing:.08em}
   .hero-meta{left:24px;bottom:40px}
   .hero-scroll{right:24px;bottom:32px}
   .hero-award{right:24px;top:80px}
   #statement{padding:100px 24px 80px}
+  #process{height:350vh}
   .process-slide{padding:0 24px}
   .process-counter{right:24px;font-size:35vw}
   .process-dots{right:24px;bottom:36px}
@@ -810,81 +813,93 @@ footer{
 <section id="process">
   <div class="process-sticky">
 
-    <!-- SLIDE 1: FLOUR -->
+    <!-- SLIDE 1: CRAFTSMANSHIP -->
     <div class="process-slide active" id="ps-1">
+      <div class="ps-bg">
+        <img src="Assets/Pizza cutting something.jpg" alt="" aria-hidden="true">
+      </div>
       <div class="ps-content">
         <div class="ps-num">01</div>
-        <span class="ps-label">CAPUTO 00 &nbsp;·&nbsp; NAPOLI, ITALIA</span>
-        <span class="ps-word hr-only">Brašno.</span>
-        <span class="ps-word en-only">Flour.</span>
-        <span class="ps-origin hr-only">Bijelo platno svakog majstora</span>
-        <span class="ps-origin en-only">The white canvas of every master</span>
-        <p class="ps-sub hr-only">Svaka savršena pizza počinje ovdje. Caputo 00 — mljevena generacijama za savršenu elastičnost i nježno tijesto.</p>
-        <p class="ps-sub en-only">Every great pizza begins here. Caputo 00 — milled for generations to achieve perfect elasticity and a delicate dough.</p>
+        <span class="ps-label hr-only">ZANATSTVO &nbsp;·&nbsp; FRANKO'S KITCHEN</span>
+        <span class="ps-label en-only">CRAFTSMANSHIP &nbsp;·&nbsp; FRANKO'S KITCHEN</span>
+        <span class="ps-word hr-only">Ruka.</span>
+        <span class="ps-word en-only">The hand.</span>
+        <span class="ps-origin hr-only">Prije prvog zalogaja</span>
+        <span class="ps-origin en-only">Before the first bite</span>
+        <p class="ps-sub hr-only">Mozzarella ne pada slučajno. Svaki pokret, svaki sloj — isti standard koji je ovoj kuhinji donio ugled.</p>
+        <p class="ps-sub en-only">Mozzarella doesn't fall by accident. Every stretch, every layer — the same standard that earned this kitchen its reputation.</p>
       </div>
     </div>
 
-    <!-- SLIDE 2: TOMATO -->
+    <!-- SLIDE 2: SIGNATURE -->
     <div class="process-slide" id="ps-2">
+      <div class="ps-bg">
+        <img src="Assets/2 pizzas.jpg" alt="" aria-hidden="true">
+      </div>
       <div class="ps-content">
         <div class="ps-num">02</div>
-        <span class="ps-label">SAN MARZANO DOP &nbsp;·&nbsp; PIANURA CAMPANA</span>
-        <span class="ps-word hr-only">Rajčica.</span>
-        <span class="ps-word en-only">Tomato.</span>
-        <span class="ps-origin hr-only">Uzgojena na vulkanskom tlu Vezuva</span>
-        <span class="ps-origin en-only">Grown in the volcanic soil of Vesuvius</span>
-        <p class="ps-sub hr-only">Slatka, složena, živa. Bez kuhanja, bez šećera — samo istina koja dolazi iz tla.</p>
-        <p class="ps-sub en-only">Sweet, complex, alive. No cooking, no sugar — just the truth that comes from the earth.</p>
+        <span class="ps-label hr-only">POTPIS &nbsp;·&nbsp; NAPOLETANA &amp; A LA ROMANA</span>
+        <span class="ps-label en-only">SIGNATURE &nbsp;·&nbsp; NAPOLETANA &amp; A LA ROMANA</span>
+        <span class="ps-word hr-only">Razlog.</span>
+        <span class="ps-word en-only">The reason.</span>
+        <span class="ps-origin hr-only">Zašto se o nama priča</span>
+        <span class="ps-origin en-only">Why people talk about us</span>
+        <p class="ps-sub hr-only">Imat ćete favorita. Večina gostiju ima. Ali obje će vas natjerati da zaboravite što ste mislili da znate o pizzi.</p>
+        <p class="ps-sub en-only">You will have a preference. Most guests do. But both will make you forget what you thought you knew about pizza.</p>
       </div>
     </div>
 
-    <!-- SLIDE 3: TIME -->
+    <!-- SLIDE 3: BEYOND PIZZA -->
     <div class="process-slide" id="ps-3">
+      <div class="ps-bg">
+        <img src="Assets/Lasagne.jpg" alt="" aria-hidden="true">
+      </div>
       <div class="ps-content">
         <div class="ps-num">03</div>
-        <span class="ps-label hr-only">48 SATI FERMENTACIJE &nbsp;·&nbsp; STRPLJENJE</span>
-        <span class="ps-label en-only">48 HOURS FERMENTATION &nbsp;·&nbsp; PATIENCE</span>
-        <span class="ps-word hr-only">Vrijeme.</span>
-        <span class="ps-word en-only">Time.</span>
-        <span class="ps-origin hr-only">Sastojak koji nitko ne vidi</span>
-        <span class="ps-origin en-only">The ingredient nobody sees</span>
-        <p class="ps-sub hr-only">Strpljenje nije kompromis — to je tehnika. Tijesto diše, razvija se, postaje nešto više od brašna i vode.</p>
-        <p class="ps-sub en-only">Patience isn't a compromise — it's a technique. The dough breathes, develops, becomes something more than flour and water.</p>
+        <span class="ps-label hr-only">ŠIRE OD PIZZE &nbsp;·&nbsp; PASTA &amp; LAZANJA</span>
+        <span class="ps-label en-only">BEYOND PIZZA &nbsp;·&nbsp; PASTA &amp; LASAGNE</span>
+        <span class="ps-word hr-only">Ostatak.</span>
+        <span class="ps-word en-only">The rest.</span>
+        <span class="ps-origin hr-only">Pizza vas je dovela. Stol vas zadržava.</span>
+        <span class="ps-origin en-only">The pizza brought you. The table keeps you.</span>
+        <p class="ps-sub hr-only">Ručno vučena pasta. Sporo pečena lazanja. Kuhinja koja od svog drugog čina zahtijeva jednako koliko i od prvog.</p>
+        <p class="ps-sub en-only">Hand-stretched pasta. Slow-braised lasagne. A kitchen that demands as much from its second act as its first.</p>
       </div>
     </div>
 
-    <!-- SLIDE 4: FIRE -->
+    <!-- SLIDE 4: INDULGENCE -->
     <div class="process-slide" id="ps-4">
+      <div class="ps-bg">
+        <img src="Assets/BURGER.jpg" alt="" aria-hidden="true">
+      </div>
       <div class="ps-content">
         <div class="ps-num">04</div>
-        <span class="ps-label hr-only">450°C &nbsp;·&nbsp; DRVO HRASTA</span>
-        <span class="ps-label en-only">450°C &nbsp;·&nbsp; OAK WOOD</span>
-        <span class="ps-word hr-only">Vatra.</span>
-        <span class="ps-word en-only">Fire.</span>
-        <span class="ps-origin hr-only">90 sekundi. Desetljeće vještine.</span>
-        <span class="ps-origin en-only">90 seconds. A decade of skill.</span>
-        <p class="ps-sub hr-only">Peć od 450°C ne oprašta pogrešku. Majstor zna točno kada je pizza gotova — ne gledajući sat, nego vatru.</p>
-        <p class="ps-sub en-only">A 450°C oven forgives nothing. The master knows exactly when the pizza is done — not by watching the clock, but the fire.</p>
+        <span class="ps-label hr-only">PREDANOST &nbsp;·&nbsp; NEOČEKIVANO</span>
+        <span class="ps-label en-only">INDULGENCE &nbsp;·&nbsp; UNEXPECTED</span>
+        <span class="ps-word hr-only">Neočekivano.</span>
+        <span class="ps-word en-only">Unexpected.</span>
+        <span class="ps-origin hr-only">Nikada nije bio u planu</span>
+        <span class="ps-origin en-only">It was never part of the plan</span>
+        <p class="ps-sub hr-only">Zapečen, precizan, pretjeran na najljepši način. Neka suzdržanost je primijenjena u izradi. Nikakva se ne očekuje u konzumaciji.</p>
+        <p class="ps-sub en-only">Charred, precise, excessive in the best way. Some restraint was exercised in making it. None is expected in eating it.</p>
       </div>
     </div>
 
-    <!-- SLIDE 5: THE RESULT -->
+    <!-- SLIDE 5: FINALE -->
     <div class="process-slide" id="ps-5">
       <div class="ps-bg">
-        <video autoplay muted loop playsinline>
-          <source src="Assets/kling_20260617_VIDEO_Create_a_c_4499_0 (2).mp4" type="video/mp4">
-        </video>
+        <img src="Assets/DESERT.jpg" alt="" aria-hidden="true">
       </div>
       <div class="ps-content">
         <div class="ps-num">05</div>
-        <span class="ps-label hr-only">REZULTAT &nbsp;·&nbsp; NAPOLETANA E ROMANA</span>
-        <span class="ps-label en-only">THE RESULT &nbsp;·&nbsp; NAPOLETANA E ROMANA</span>
-        <span class="ps-word hr-only">Savršena.</span>
+        <span class="ps-label hr-only">FINALE &nbsp;·&nbsp; NE IDITE JOŠ</span>
+        <span class="ps-label en-only">FINALE &nbsp;·&nbsp; DON'T LEAVE YET</span>
+        <span class="ps-word hr-only">Savršeno.</span>
         <span class="ps-word en-only">Perfect.</span>
-        <span class="ps-origin hr-only">Rezultat opsesije</span>
-        <span class="ps-origin en-only">The result of obsession</span>
-        <p class="ps-sub hr-only">Ovo je razlog zašto dolazite. I zašto se vraćate.</p>
-        <p class="ps-sub en-only">This is the reason you come. And the reason you return.</p>
+        <span class="ps-origin hr-only">Desert nije naknadna misao</span>
+        <span class="ps-origin en-only">The dessert is not an afterthought</span>
+        <p class="ps-sub hr-only">To je odluka — ona koja govori uzima li kuhinja cijeli doživljaj ozbiljno. Uzima.</p>
+        <p class="ps-sub en-only">It's a decision — the one that tells you whether this kitchen takes the full experience seriously. It does.</p>
       </div>
     </div>
 
@@ -1158,12 +1173,12 @@ function runPreloader() {
   setTimeout(() => {
     preLogo.classList.add('reveal');
     letters.forEach((l, i) => {
-      l.style.transitionDelay = (i * 55) + 'ms';
+      l.style.transitionDelay = (i * 22) + 'ms';
     });
-  }, 200);
+  }, 50);
 
   // Start the loading bar
-  setTimeout(() => preFill.classList.add('run'), 250);
+  setTimeout(() => preFill.classList.add('run'), 60);
 
   // Exit preloader
   setTimeout(() => {
@@ -1175,7 +1190,7 @@ function runPreloader() {
       revealPage();
     }
     // If no saved language, modal shows and revealPage() runs on modal dismiss
-  }, 2700);
+  }, 500);
 }
 
 // If language already saved, skip modal entirely
