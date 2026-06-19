@@ -466,6 +466,36 @@ body::after{
 .rec-badge:hover img{filter:brightness(1.12) saturate(1) contrast(1.08) drop-shadow(0 6px 18px rgba(196,123,58,.22));transform:scale(1.06)}
 .rec-badge-name{font-size:7px;letter-spacing:.22em;text-transform:uppercase;color:rgba(237,232,222,.38)}
 
+/* ══ PULL QUOTE ══ */
+#pull-quote{
+  background:var(--void);padding:160px 56px;
+  position:relative;text-align:center;overflow:hidden
+}
+#pull-quote::before,#pull-quote::after{
+  content:'';position:absolute;left:56px;right:56px;height:1px;
+  background:linear-gradient(to right,transparent,rgba(196,123,58,.1),transparent)
+}
+#pull-quote::before{top:0}
+#pull-quote::after{bottom:0}
+.pq-inner{max-width:1000px;margin:0 auto}
+.pq-text{
+  font-family:var(--ff-d);font-size:clamp(26px,4.8vw,66px);
+  font-weight:300;font-style:italic;color:rgba(237,232,222,.72);
+  line-height:1.48;letter-spacing:.01em;
+  opacity:0;transform:translateY(22px);
+  transition:opacity 1.2s var(--ease),transform 1.2s var(--ease)
+}
+.pq-text.vis{opacity:1;transform:none}
+.pq-em{color:var(--cream);font-style:italic}
+.pq-attr{
+  margin-top:56px;display:flex;align-items:center;
+  justify-content:center;gap:18px;
+  opacity:0;transition:opacity .8s var(--ease) .55s
+}
+.pq-attr.vis{opacity:1}
+.pq-attr-line{height:1px;width:36px;background:rgba(196,123,58,.22);flex-shrink:0}
+.pq-attr-text{font-size:7.5px;letter-spacing:.28em;text-transform:uppercase;color:rgba(237,232,222,.22)}
+
 /* ══ VOICES ══ */
 #voices{background:var(--cream);padding:140px 56px;position:relative}
 #voices::before{
@@ -688,6 +718,7 @@ footer{
   .process-counter{right:24px;font-size:35vw}
   .process-dots{right:24px;bottom:36px}
   .process-step-label{left:24px;bottom:36px}
+  #pull-quote{padding:120px 24px}
   #recognition{padding:100px 24px}
   #voices{padding:100px 24px}
   .mg-text{padding:80px 24px}
@@ -995,6 +1026,25 @@ footer{
       <span class="en-only">Process</span>
     </div>
 
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════ -->
+<!-- PULL QUOTE                          -->
+<!-- ═══════════════════════════════════ -->
+<section id="pull-quote">
+  <div class="pq-inner">
+    <p class="pq-text hr-only">
+      Ovo nije samo dobra pizza —<br>ovo je <span class="pq-em">pizza koju pamtiš.</span>
+    </p>
+    <p class="pq-text en-only">
+      This isn't just good pizza —<br>it's <span class="pq-em">pizza you'll remember.</span>
+    </p>
+    <div class="pq-attr">
+      <span class="pq-attr-line"></span>
+      <span class="pq-attr-text"><span class="hr-only">Verificirani gost</span><span class="en-only">Verified Guest</span> &nbsp;·&nbsp; Tripadvisor</span>
+      <span class="pq-attr-line"></span>
+    </div>
   </div>
 </section>
 
@@ -1448,6 +1498,7 @@ const io = new IntersectionObserver(entries => {
 [
   '.stmt-pre', '.stmt-big', '.stmt-block', '.stmt-facts',
   '.rec-pre', '.rec-lines', '.rec-badges',
+  '.pq-text', '.pq-attr',
   '.voices-rating', '.voices-quote', '.voices-attr',
   '.mg-kicker', '.mg-h2', '.mg-body', '.mg-link',
   '.table-top', '.table-calls', '.table-info'
