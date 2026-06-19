@@ -1331,11 +1331,19 @@ burger.addEventListener('click', () => {
   burger.classList.toggle('open', open);
   document.body.style.overflow = open ? 'hidden' : '';
 });
-mnav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
-  mnav.classList.remove('open');
-  burger.classList.remove('open');
-  document.body.style.overflow = '';
-}));
+mnav.querySelectorAll('a').forEach(a => {
+  a.addEventListener('click', e => {
+    const href = a.getAttribute('href');
+    mnav.classList.remove('open');
+    burger.classList.remove('open');
+    document.body.style.overflow = '';
+    if (href && href.startsWith('#')) {
+      e.preventDefault();
+      const target = document.querySelector(href);
+      if (target) setTimeout(() => target.scrollIntoView({ behavior: 'smooth' }), 420);
+    }
+  });
+});
 
 /* ── PROCESS SCROLL ── */
 const processSection = document.getElementById('process');
