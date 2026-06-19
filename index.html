@@ -326,13 +326,13 @@ body::after{
   font-weight:300;font-style:italic;color:#2A221A;line-height:1.75
 }
 .stmt-facts{
-  display:flex;gap:64px;margin-top:56px;
+  display:flex;gap:64px;margin-top:56px;align-items:flex-start;
   padding-top:48px;border-top:1px solid rgba(28,22,16,.07);
   opacity:0;transform:translateY(14px);
   transition:opacity .7s var(--ease) .2s,transform .7s var(--ease) .2s
 }
 .stmt-facts.vis{opacity:1;transform:none}
-.stmt-fact-n{font-family:var(--ff-d);font-size:48px;font-weight:300;color:var(--flame);display:block;line-height:1}
+.stmt-fact-n{font-family:var(--ff-d);font-size:48px;font-weight:300;color:var(--flame);display:block;line-height:1;font-feature-settings:"lnum" 1}
 .stmt-fact-l{font-size:7px;letter-spacing:.24em;text-transform:uppercase;color:#8A7B6C;display:block;margin-top:7px}
 
 /* ══ PROCESS (SIGNATURE MOMENT 3: scroll-driven ingredient cinema) ══ */
@@ -694,7 +694,6 @@ footer{
 <nav id="nav">
   <a href="/" class="nav-brand">
     <span class="nav-brand-name">FRANKO'S</span>
-    <span class="nav-brand-rule">pizza &amp; bar &nbsp;·&nbsp; zagreb</span>
   </a>
   <ul class="nav-links">
     <li><a href="menu.html"><span class="hr-only">Jelovnik</span><span class="en-only">Menu</span></a></li>
