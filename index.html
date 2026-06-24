@@ -1677,6 +1677,12 @@ function preload() {
 // ── Wire up ScrollTrigger ──────────────────────────────────────────────────
 function initST() {
   gsap.registerPlugin(ScrollTrigger);
+  // Required on iOS: body{overflow-x:hidden} makes Safari treat body as the
+  // scroll container instead of window, breaking GSAP's scroll tracking.
+  // normalizeScroll forces GSAP to intercept touch events directly.
+  ScrollTrigger.normalizeScroll(true);
+  // Prevents mobile address-bar resize from re-calculating pinned section height.
+  ScrollTrigger.config({ ignoreMobileResize: true });
 
   st = ScrollTrigger.create({
     trigger : '#hero',
