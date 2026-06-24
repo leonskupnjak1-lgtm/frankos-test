@@ -741,6 +741,12 @@ footer{
 #ha-canvas{
   display:block;position:relative;z-index:0
 }
+/* On touch devices the canvas covers the full hero (same stacking as backdrop)
+   so flex-layout issues can never hide it */
+@media(hover:none){
+  .ha-canvas-wrap{position:absolute;inset:0;z-index:1;box-shadow:none}
+  .ha-canvas-wrap::after{display:none}
+}
 .hero-canvas-overlay{
   position:absolute;inset:0;z-index:2;pointer-events:none;
   background:
@@ -1564,8 +1570,9 @@ const pct     = document.getElementById('ha-loader-pct');
 
 if (!section || !canvas) return;
 
-const ctx = canvas.getContext('2d');
-const dpr = Math.min(window.devicePixelRatio || 1, 2);
+const ctx    = canvas.getContext('2d');
+const dpr    = Math.min(window.devicePixelRatio || 1, 2);
+const IS_TOUCH = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
 
 const backdropCanvas = document.getElementById('ha-backdrop');
 const backdropCtx    = backdropCanvas ? backdropCanvas.getContext('2d') : null;
@@ -1577,40 +1584,58 @@ let pendingProg   = 0;
 let st            = null;
 let resizeTimer   = null;
 
-// ── Canvas sizing — contained portrait box, never overflows viewport ──────
+// ── Canvas sizing ─────────────────────────────────────────────────────────
 function sizeCanvas() {
   const vw = window.innerWidth;
   const vh = window.innerHeight;
 
-  // fit within 88 % of viewport height; cap width at 96 % of viewport
-  let h = Math.round(vh * 0.88);
-  let w = Math.round(h * RATIO);
-  if (w > vw * 0.96) { w = Math.round(vw * 0.96); h = Math.round(w / RATIO); }
-
-  canvas.style.width  = w + 'px';
-  canvas.style.height = h + 'px';
-  canvas.width  = Math.round(w * dpr);
-  canvas.height = Math.round(h * dpr);
+  if (IS_TOUCH) {
+    // Mobile: canvas covers full viewport — same absolute positioning as backdrop,
+    // no flex-layout dependency, guaranteed to be visible.
+    canvas.style.width  = vw + 'px';
+    canvas.style.height = vh + 'px';
+    canvas.width  = Math.round(vw * dpr);
+    canvas.height = Math.round(vh * dpr);
+  } else {
+    // Desktop: contained portrait box
+    let h = Math.round(vh * 0.88);
+    let w = Math.round(h * RATIO);
+    if (w > vw * 0.96) { w = Math.round(vw * 0.96); h = Math.round(w / RATIO); }
+    canvas.style.width  = w + 'px';
+    canvas.style.height = h + 'px';
+    canvas.width  = Math.round(w * dpr);
+    canvas.height = Math.round(h * dpr);
+  }
 
   // Backdrop: fills full viewport, quarter-res buffer (CSS blur hides pixelation)
   if (backdropCanvas) {
-    const vwFull = window.innerWidth;
-    const vhFull = window.innerHeight;
-    backdropCanvas.style.width  = vwFull + 'px';
-    backdropCanvas.style.height = vhFull + 'px';
-    backdropCanvas.width  = Math.round(vwFull * 0.25);
-    backdropCanvas.height = Math.round(vhFull * 0.25);
+    backdropCanvas.style.width  = vw + 'px';
+    backdropCanvas.style.height = vh + 'px';
+    backdropCanvas.width  = Math.round(vw * 0.25);
+    backdropCanvas.height = Math.round(vh * 0.25);
   }
 }
 
-// ── Draw one frame — sharp canvas direct fill + backdrop cover-fit ─────────
+// ── Draw one frame ────────────────────────────────────────────────────────
 function drawAt(idx) {
   const img = frames[idx];
   if (!img || !img.complete || !img.naturalWidth) return;
 
-  // Sharp foreground — direct fill (canvas is already 3:4 to match frame ratio)
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+  const cw = canvas.width, ch = canvas.height;
+  const iw = img.naturalWidth, ih = img.naturalHeight;
+  ctx.clearRect(0, 0, cw, ch);
+
+  if (IS_TOUCH) {
+    // Cover-fit: portrait pizza image into whatever canvas shape the viewport has
+    const cr = cw / ch, ir = iw / ih;
+    var sx, sy, sw, sh;
+    if (cr > ir) { sw = iw; sh = iw / cr; sx = 0; sy = (ih - sh) / 2; }
+    else         { sh = ih; sw = ih * cr; sy = 0; sx = (iw - sw) / 2; }
+    ctx.drawImage(img, sx, sy, sw, sh, 0, 0, cw, ch);
+  } else {
+    // Direct fill — canvas buffer matches image ratio on desktop
+    ctx.drawImage(img, 0, 0, cw, ch);
+  }
 
   // Blurred backdrop — cover-fit into full viewport at low res
   if (backdropCtx) {
@@ -1714,23 +1739,17 @@ sizeCanvas();
 preload().then(function (imgs) {
   frames = imgs;
   sizeCanvas();
-  drawAt(0);
-
+  try { drawAt(0); } catch (e) {}
   loader.classList.add('done');
 
-  // Touch detection: ontouchstart is more reliable than matchMedia —
-  // covers iOS, Android, iPads, and stylus devices that fail (pointer:coarse).
-  var isTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
-  if (isTouch) {
-    // Loop the sequence continuously so it's always animated regardless of
-    // when the user looks (previously it played once for 3.5s then stopped).
-    var AUTO_MS = 3500;
+  if (IS_TOUCH) {
+    var AUTO_MS   = 3500;
     var autoStart = null;
-    var autoStep = function (ts) {
+    var autoStep  = function (ts) {
       if (!autoStart) autoStart = ts;
-      var prog = ((ts - autoStart) % AUTO_MS) / AUTO_MS; // modulo = loop
+      var prog = ((ts - autoStart) % AUTO_MS) / AUTO_MS;
       var idx  = Math.min(Math.round(prog * (TOTAL - 1)), TOTAL - 1);
-      if (idx !== currentIdx) { currentIdx = idx; drawAt(currentIdx); }
+      if (idx !== currentIdx) { currentIdx = idx; try { drawAt(currentIdx); } catch(e) {} }
       requestAnimationFrame(autoStep);
     };
     requestAnimationFrame(autoStep);
