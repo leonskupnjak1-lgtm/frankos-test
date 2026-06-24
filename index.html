@@ -741,9 +741,10 @@ footer{
 #ha-canvas{
   display:block;position:relative;z-index:0
 }
-/* On touch devices the canvas covers the full hero (same stacking as backdrop)
-   so flex-layout issues can never hide it */
+/* Touch devices: sticky hero inside a 400vh scroll track mirrors GSAP pin */
 @media(hover:none){
+  #hero-track{height:400vh}
+  #hero{position:sticky;top:0;min-height:unset}
   .ha-canvas-wrap{position:absolute;inset:0;z-index:1;box-shadow:none}
   .ha-canvas-wrap::after{display:none}
 }
@@ -1577,12 +1578,14 @@ const IS_TOUCH = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
 const backdropCanvas = document.getElementById('ha-backdrop');
 const backdropCtx    = backdropCanvas ? backdropCanvas.getContext('2d') : null;
 
-let frames        = [];
-let currentIdx    = 0;
-let pendingDraw   = false;
-let pendingProg   = 0;
-let st            = null;
-let resizeTimer   = null;
+let frames         = [];
+let currentIdx     = 0;
+let pendingDraw    = false;
+let pendingProg    = 0;
+let st             = null;
+let resizeTimer    = null;
+let mobileTrack    = null;  // scroll-track wrapper injected on touch devices
+let mobileScrollPx = 0;     // scrollable distance in px (track height - viewport)
 
 // ── Canvas sizing ─────────────────────────────────────────────────────────
 function sizeCanvas() {
@@ -1729,6 +1732,9 @@ window.addEventListener('resize', function () {
   resizeTimer = setTimeout(function () {
     sizeCanvas();
     drawAt(currentIdx);
+    if (mobileTrack) {
+      mobileScrollPx = Math.max(mobileTrack.offsetHeight - window.innerHeight, 1);
+    }
     if (st) ScrollTrigger.refresh();
   }, 150);
 }, { passive: true });
@@ -1743,16 +1749,19 @@ preload().then(function (imgs) {
   loader.classList.add('done');
 
   if (IS_TOUCH) {
-    var AUTO_MS   = 3500;
-    var autoStart = null;
-    var autoStep  = function (ts) {
-      if (!autoStart) autoStart = ts;
-      var prog = ((ts - autoStart) % AUTO_MS) / AUTO_MS;
-      var idx  = Math.min(Math.round(prog * (TOTAL - 1)), TOTAL - 1);
-      if (idx !== currentIdx) { currentIdx = idx; try { drawAt(currentIdx); } catch(e) {} }
-      requestAnimationFrame(autoStep);
-    };
-    requestAnimationFrame(autoStep);
+    // Wrap hero in a 400vh scroll track so CSS sticky pins it while the user
+    // scrolls — same effect as GSAP pin but using only native browser APIs.
+    mobileTrack = document.createElement('div');
+    mobileTrack.id = 'hero-track';
+    section.parentNode.insertBefore(mobileTrack, section);
+    mobileTrack.appendChild(section);
+    mobileScrollPx = Math.max(mobileTrack.offsetHeight - window.innerHeight, 1);
+
+    window.addEventListener('scroll', function () {
+      var top  = mobileTrack.getBoundingClientRect().top;
+      var prog = Math.max(0, Math.min(1, -top / mobileScrollPx));
+      scheduleDraw(prog);
+    }, { passive: true });
   } else {
     initST();
   }
