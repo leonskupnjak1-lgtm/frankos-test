@@ -1553,7 +1553,7 @@ document.querySelectorAll('.table-call').forEach(el => {
 'use strict';
 
 const TOTAL  = 121;
-const PATH   = 'assets/pizza-sequence/';
+const PATH   = 'Assets/pizza-sequence/';
 const RATIO  = 3 / 4; // width ÷ height
 
 const section = document.getElementById('hero');
@@ -1717,7 +1717,26 @@ preload().then(function (imgs) {
   drawAt(0);
 
   loader.classList.add('done');
-  initST();
+
+  // Touch devices: auto-play the sequence instead of GSAP pin+scrub.
+  // GSAP pinning is unreliable on iOS Safari when body has overflow-x:hidden,
+  // and the path case bug (Assets/ vs assets/) caused all frames to 404 on
+  // Linux servers. Auto-play is simpler and works on every mobile browser.
+  var isTouch = window.matchMedia('(hover:none) and (pointer:coarse)').matches;
+  if (isTouch) {
+    var autoStart = null;
+    var AUTO_MS   = 3500;
+    function autoStep(ts) {
+      if (!autoStart) autoStart = ts;
+      var prog = Math.min((ts - autoStart) / AUTO_MS, 1);
+      var idx  = Math.min(Math.round(prog * (TOTAL - 1)), TOTAL - 1);
+      if (idx !== currentIdx) { currentIdx = idx; drawAt(currentIdx); }
+      if (prog < 1) requestAnimationFrame(autoStep);
+    }
+    requestAnimationFrame(autoStep);
+  } else {
+    initST();
+  }
 });
 
 }());
