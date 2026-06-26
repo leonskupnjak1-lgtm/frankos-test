@@ -160,14 +160,16 @@ body::after{
 .nav-links{display:flex;gap:48px;list-style:none}
 .nav-links a{
   font-family:var(--ff-ui);font-size:9px;letter-spacing:.26em;
-  text-transform:uppercase;color:rgba(237,232,222,.36);
-  text-decoration:none;position:relative;padding-bottom:4px;transition:color .2s
+  text-transform:uppercase;color:rgba(237,232,222,.44);
+  text-decoration:none;position:relative;padding-bottom:5px;
+  transition:color .28s var(--ease)
 }
 .nav-links a::after{
   content:'';position:absolute;bottom:0;left:0;width:0;height:1px;
-  background:var(--flame);transition:width .3s var(--ease)
+  background:rgba(196,123,58,.7);
+  transition:width .32s var(--ease),opacity .32s ease
 }
-.nav-links a:hover{color:rgba(237,232,222,.82)}
+.nav-links a:hover{color:rgba(237,232,222,.90)}
 .nav-links a:hover::after{width:100%}
 .nav-right{display:flex;align-items:center;gap:18px}
 .nav-lang{display:flex;align-items:center;gap:1px;border:1px solid rgba(196,123,58,.1);padding:4px}
@@ -178,15 +180,6 @@ body::after{
 }
 .nlang.active{color:var(--flame)}
 .nlang-sep{font-size:7px;color:rgba(196,123,58,.15);pointer-events:none}
-.nav-cta{
-  font-family:var(--ff-ui);font-size:8.5px;letter-spacing:.22em;text-transform:uppercase;
-  color:var(--flame);border:1px solid rgba(196,123,58,.3);
-  padding:10px 24px;text-decoration:none;
-  transition:background .2s,border-color .2s,transform .15s;
-  opacity:0;pointer-events:none
-}
-#nav.scrolled .nav-cta{opacity:1;pointer-events:all}
-.nav-cta:hover{background:var(--flame-dim);border-color:var(--flame);transform:translateY(-1px)}
 .nav-burger{
   display:none;background:none;border:none;cursor:pointer;
   flex-direction:column;gap:6px;padding:6px;align-items:flex-end
@@ -260,45 +253,125 @@ body::after{
 }
 /* SIGNATURE MOMENT 1: name springs from nothing to full size */
 .hero-name{
-  position:absolute;top:50%;left:50%;
+  position:absolute;top:calc(50% - clamp(100px,11.5vw,175px));left:50%;
   transform:translate(-50%,-50%) scale(.042);
-  font-family:var(--ff-hero);font-size:clamp(64px,11vw,160px);
-  font-weight:400;letter-spacing:.15em;text-transform:uppercase;
-  color:rgba(237,232,222,.88);white-space:nowrap;z-index:2;
+  font-family:var(--ff-hero);font-size:clamp(80px,15vw,240px);
+  font-weight:400;letter-spacing:.18em;text-transform:uppercase;
+  color:#F5EFE8;white-space:nowrap;z-index:4;
   pointer-events:none;will-change:transform,opacity;opacity:0;
-  text-shadow:0 2px 52px rgba(10,9,8,.5);
-  font-kerning:normal
+  text-shadow:
+    0 0 120px rgba(10,9,8,.98),
+    0 0  52px rgba(10,9,8,.82),
+    0 0  18px rgba(10,9,8,.55),
+    0 2px  6px rgba(10,9,8,.4);
+  font-kerning:normal;font-feature-settings:"kern" 1,"liga" 1
 }
-.page-ready .hero-name{animation:nameSpring 1.55s var(--ease) .08s forwards}
+.page-ready .hero-name{animation:nameSpring 1.6s var(--ease) .08s forwards}
 @keyframes nameSpring{
   0%{transform:translate(-50%,-50%) scale(.042);opacity:0}
-  45%{opacity:1}
-  70%{transform:translate(-50%,-50%) scale(1.016)}
-  86%{transform:translate(-50%,-50%) scale(.994)}
+  40%{opacity:1}
+  68%{transform:translate(-50%,-50%) scale(1.018)}
+  84%{transform:translate(-50%,-50%) scale(.996)}
   100%{transform:translate(-50%,-50%) scale(1);opacity:1}
 }
 .hero-sub{
-  position:absolute;top:calc(50% + clamp(48px,8vw,108px));left:50%;
-  transform:translateX(-50%);z-index:2;
-  font-family:var(--ff-ui);font-size:9px;letter-spacing:.48em;text-transform:uppercase;
-  color:rgba(237,232,222,.35);white-space:nowrap;opacity:0
+  position:absolute;top:calc(50% - clamp(172px,22vw,300px));
+  left:0;right:0;margin:0 auto;width:max-content;
+  z-index:4;
+  font-family:var(--ff-ui);font-size:9px;letter-spacing:.56em;text-transform:uppercase;
+  color:rgba(196,123,58,.72);white-space:nowrap;
+  opacity:0;transform:translateY(12px)
 }
-.page-ready .hero-sub{animation:fadeUp .7s var(--ease) 1.05s forwards}
-.hero-scroll{
-  position:absolute;bottom:40px;right:56px;z-index:3;
-  display:flex;flex-direction:column;align-items:center;gap:14px;opacity:0
+.page-ready .hero-sub{animation:fadeUp .75s var(--ease) 1.0s forwards}
+
+/* ── HERO CREDENTIALS ── */
+.hero-credentials{display:none;
+  position:absolute;left:0;right:0;
+  top:calc(50% + clamp(108px,14.5vw,206px));
+  width:max-content;margin:0 auto;z-index:4;
+  font-family:var(--ff-ui);font-size:7.5px;letter-spacing:.54em;text-transform:uppercase;
+  color:rgba(237,232,222,.32);white-space:nowrap;
+  opacity:0;transform:translateY(12px)
 }
-.page-ready .hero-scroll{animation:fadeUp .7s var(--ease) 1.35s forwards}
-.hs-text{
-  font-size:7px;letter-spacing:.4em;text-transform:uppercase;color:rgba(237,232,222,.16);
-  writing-mode:vertical-rl;text-orientation:mixed;transform:rotate(180deg)
+.page-ready .hero-credentials{animation:fadeUp .75s var(--ease) 1.5s forwards}
+
+/* ── HERO CTA ── */
+.hero-cta{
+  position:absolute;left:0;right:0;
+  bottom:clamp(56px,8.5vh,96px);
+  width:max-content;margin:0 auto;
+  z-index:5;
+  display:flex;align-items:center;gap:52px;
+  opacity:0;transform:translateY(16px)
 }
-.hs-line{width:1px;height:48px;background:rgba(196,123,58,.18);position:relative;overflow:hidden}
-.hs-line::after{
-  content:'';position:absolute;top:-100%;left:0;width:100%;height:100%;
-  background:var(--flame);animation:scrollPulse 2s ease-in-out 2.4s infinite
+.page-ready .hero-cta{animation:fadeUp .95s var(--ease) 1.45s forwards}
+.hero-cta-primary{
+  display:inline-flex;align-items:center;gap:24px;
+  padding:21px 58px;
+  border:1px solid rgba(196,123,58,.38);
+  border-top-color:rgba(196,123,58,.62);
+  background:transparent;
+  color:rgba(237,232,222,.90);
+  font-family:var(--ff-ui);font-size:8px;letter-spacing:.46em;text-transform:uppercase;
+  text-decoration:none;white-space:nowrap;
+  transition:border-color .3s ease,border-top-color .3s ease,
+             background .3s ease,color .3s ease,
+             transform .35s var(--ease),box-shadow .3s ease
 }
-@keyframes scrollPulse{0%{top:-100%}100%{top:100%}}
+.hero-cta-primary:hover{
+  border-color:rgba(196,123,58,.75);
+  border-top-color:rgba(196,123,58,.96);
+  background:rgba(196,110,40,.09);
+  color:#F5EFE8;
+  transform:translateY(-2px);
+  box-shadow:
+    0 0  0  1px rgba(196,123,58,.14),
+    0 0 22px 0   rgba(196,110,40,.16),
+    0 14px 44px  rgba(196,110,40,.14)
+}
+.hero-cta-secondary{
+  display:inline-flex;align-items:center;gap:14px;
+  color:rgba(237,232,222,.48);
+  font-family:var(--ff-ui);font-size:7.5px;letter-spacing:.40em;text-transform:uppercase;
+  text-decoration:none;white-space:nowrap;
+  transition:color .3s ease,transform .35s var(--ease)
+}
+.hero-cta-secondary:hover{
+  color:rgba(245,239,232,.82);
+  transform:translateY(-2px)
+}
+.hero-cta-arrow{
+  letter-spacing:0;font-size:11px;display:inline-block;opacity:.6;
+  transition:transform .38s var(--ease),opacity .3s ease
+}
+.hero-cta-primary:hover  .hero-cta-arrow{transform:translateX(4px);opacity:1}
+.hero-cta-secondary:hover .hero-cta-arrow{transform:translateX(4px);opacity:1}
+
+/* ── HERO SCROLL CUE ── */
+.hero-scroll-cue{
+  position:absolute;bottom:clamp(18px,3vh,28px);left:50%;
+  transform:translateX(-50%);z-index:5;
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+  opacity:0
+}
+.page-ready .hero-scroll-cue{animation:fadeUp .8s var(--ease) 2.0s forwards}
+.hero-scroll-line{
+  width:1px;height:28px;
+  background:linear-gradient(to bottom,rgba(196,123,58,.5),transparent);
+  animation:scrollPulse 2.2s ease-in-out 2.0s infinite
+}
+@keyframes scrollPulse{
+  0%,100%{opacity:.4;transform:scaleY(1)}
+  50%{opacity:1;transform:scaleY(1.12)}
+}
+/* Ambient ember drift */
+@keyframes emberFloat{
+  0%  {opacity:0;transform:translateY(0) translateX(0)}
+  12% {opacity:.055}
+  50% {opacity:.038;transform:translateY(-52px) translateX(8px)}
+  80% {opacity:.022}
+  100%{opacity:0;transform:translateY(-110px) translateX(-6px) scale(.3)}
+}
 
 /* ══ STATEMENT ══ */
 #statement{
@@ -673,11 +746,16 @@ footer{
 }
 @media(max-width:768px){
   #nav{padding:0 24px}
-  .nav-links,.nav-cta{display:none!important}
+  .nav-links{display:none!important}
   .nav-burger{display:flex}
   .nav-right{gap:12px}
-  .hero-name{font-size:clamp(52px,16vw,100px);letter-spacing:.10em}
-  .hero-scroll{right:24px;bottom:32px}
+  .hero-name{font-size:clamp(52px,17vw,108px);letter-spacing:.12em;
+             top:calc(50% - clamp(52px,8vw,80px))}
+  .hero-sub{top:calc(50% - clamp(110px,17vw,156px));font-size:8px;letter-spacing:.48em}
+  .hero-credentials{display:none}
+  .hero-cta{bottom:clamp(44px,7vh,72px);flex-direction:column;align-items:center;gap:20px}
+  .hero-cta-primary{padding:19px 46px;gap:18px}
+  .hero-scroll-cue{display:none}
   #statement{padding:100px 24px 80px}
   #process{height:500vh}
   .process-slide{padding:0 24px 88px;align-items:flex-end}
@@ -722,12 +800,12 @@ footer{
 /* ══ HERO ANIMATION (frame sequence) ══ */
 #ha-backdrop{
   position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;
-  filter:blur(130px) saturate(1.5);
-  opacity:.20;
+  filter:blur(130px) saturate(1.7);
+  opacity:.26;
   transform:scale(1.45) translateZ(0);
   will-change:transform;
-  mask-image:radial-gradient(ellipse 70% 95% at 50% 50%,black 0%,black 20%,transparent 100%);
-  -webkit-mask-image:radial-gradient(ellipse 70% 95% at 50% 50%,black 0%,black 20%,transparent 100%)
+  mask-image:radial-gradient(ellipse 68% 90% at 50% 50%,black 0%,black 18%,transparent 100%);
+  -webkit-mask-image:radial-gradient(ellipse 68% 90% at 50% 50%,black 0%,black 18%,transparent 100%)
 }
 .ha-canvas-wrap{
   position:relative;z-index:1;flex-shrink:0;
@@ -738,24 +816,34 @@ footer{
 }
 .ha-canvas-wrap::after{
   content:'';position:absolute;inset:0;pointer-events:none;z-index:1;
-  box-shadow:inset 0 0 44px 10px rgba(10,9,8,.74)
+  box-shadow:inset 0 0 44px 10px rgba(10,9,8,.42)
 }
 #ha-canvas{
-  display:block;position:relative;z-index:0
+  display:block;position:relative;z-index:0;
+  transform-origin:50% 52%;
+  will-change:transform,filter;
+  animation:pizzaBreathe 8s cubic-bezier(.45,0,.55,1) infinite
 }
-/* Touch devices: sticky hero inside a 400vh scroll track mirrors GSAP pin */
+@keyframes pizzaBreathe{
+  0%,100%{transform:scale(1)}
+  50%    {transform:scale(1.012)}
+}
+/* Side editorial labels — absolute so they hug the viewport edges */
 .hero-side{
-  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:20px;z-index:3;pointer-events:none;padding:0 28px;
-  opacity:0;transition:opacity 1.2s ease 1.4s
+  position:absolute;top:50%;transform:translateY(-50%);
+  display:flex;flex-direction:column;align-items:center;
+  gap:20px;z-index:4;pointer-events:none;
+  opacity:0;transition:opacity 1.4s ease 1.6s
 }
+.hero-side--l{left:clamp(18px,2.2vw,38px)}
+.hero-side--r{right:clamp(18px,2.2vw,38px)}
 .page-ready .hero-side{opacity:1}
 .hs-text{
-  font-family:var(--ff-ui);font-size:8px;letter-spacing:.48em;text-transform:uppercase;
-  color:rgba(237,232,222,.22);writing-mode:vertical-rl
+  font-family:var(--ff-ui);font-size:7.5px;letter-spacing:.50em;text-transform:uppercase;
+  color:rgba(237,232,222,.30);writing-mode:vertical-rl
 }
 .hero-side--l .hs-text{transform:rotate(180deg)}
-.hs-rule{width:1px;height:56px;background:rgba(196,123,58,.16)}
+.hs-rule{width:1px;height:52px;background:rgba(196,123,58,.22)}
 @media(hover:none){
   #hero-track{height:400vh}
   #hero{position:sticky;top:0;min-height:unset}
@@ -766,29 +854,105 @@ footer{
 .hero-canvas-overlay{
   position:absolute;inset:0;z-index:2;pointer-events:none;
   background:
-    radial-gradient(ellipse at 50% 52%,transparent 24%,rgba(10,9,8,.78) 100%),
-    linear-gradient(180deg,rgba(10,9,8,.32) 0%,rgba(10,9,8,.02) 36%,rgba(10,9,8,.96) 100%),
-    linear-gradient(90deg,rgba(10,9,8,.46) 0%,transparent 14%,transparent 86%,rgba(10,9,8,.46) 100%),
-    radial-gradient(ellipse 90% 90% at 50% 50%,transparent 48%,rgba(10,9,8,.44) 100%)
+    linear-gradient(180deg,
+      rgba(10,9,8,.72) 0%,
+      rgba(10,9,8,.26) 12%,
+      rgba(10,9,8,.04) 26%,
+      transparent        40%,
+      transparent        56%,
+      rgba(10,9,8,.76) 76%,
+      rgba(10,9,8,.98) 100%),
+    linear-gradient(90deg,
+      rgba(10,9,8,.80) 0%,
+      rgba(10,9,8,.28) 10%,
+      transparent        24%,
+      transparent        76%,
+      rgba(10,9,8,.28) 90%,
+      rgba(10,9,8,.80) 100%),
+    radial-gradient(ellipse 85% 85% at 50% 50%,
+      transparent 0%,
+      transparent 40%,
+      rgba(10,9,8,.46) 68%,
+      rgba(10,9,8,.88) 100%)
 }
-/* Volumetric steam light — breathes slowly above pizza surface */
+/* Warm amber spotlight — breathes behind the pizza */
 #hero::before{
   content:'';position:absolute;inset:0;pointer-events:none;z-index:3;
-  background:radial-gradient(ellipse 44% 28% at 50% 22%,rgba(196,110,40,.06) 0%,transparent 100%);
+  background:
+    radial-gradient(ellipse 58% 44% at 50% 50%,
+      rgba(196,110,40,.15) 0%,
+      rgba(180,95,28,.06)  40%,
+      transparent          100%);
   animation:steamAura 5.5s ease-in-out infinite
 }
-@keyframes steamAura{0%,100%{opacity:.38}52%{opacity:1}}
-/* Mobile: open the overlay further — pizza fills full viewport */
+/* Subtle warm shadow pooling beneath pizza */
+#hero::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;
+  height:44%;z-index:3;pointer-events:none;
+  background:linear-gradient(to top,
+    rgba(10,9,8,.92) 0%,
+    rgba(10,9,8,.30) 55%,
+    transparent       100%)
+}
+@keyframes steamAura{
+  0%   {opacity:.28;transform:translate(0,0)    scale(1)    }
+  16%  {opacity:.66;transform:translate(.7%,-1.1%) scale(1.022)}
+  34%  {opacity:.92;transform:translate(-1%,.5%) scale(1.038)}
+  52%  {opacity:1;  transform:translate(.4%,-1.8%) scale(1.025)}
+  70%  {opacity:.58;transform:translate(-1.2%,.8%) scale(1.042)}
+  86%  {opacity:.80;transform:translate(.6%,-.5%) scale(1.016)}
+  100% {opacity:.28;transform:translate(0,0)    scale(1)    }
+}
+/* Elliptical contact shadow — anchors pizza to the scene */
+.hero-ground-shadow{
+  position:absolute;left:50%;top:64%;
+  transform:translateX(-50%);
+  width:48%;height:7%;
+  pointer-events:none;z-index:2;
+  background:radial-gradient(ellipse at center,rgba(0,0,0,.52) 0%,transparent 72%);
+  filter:blur(22px);
+  animation:shadowBreathe 8s cubic-bezier(.45,0,.55,1) infinite
+}
+@keyframes shadowBreathe{
+  0%,100%{transform:translateX(-50%) scaleX(1)  ;opacity:.8}
+  50%    {transform:translateX(-50%) scaleX(1.024);opacity:1}
+}
+/* Volumetric smoke drift — two offset layers create turbulence depth */
+.hero-smoke-a,.hero-smoke-b{
+  position:absolute;inset:0;pointer-events:none;z-index:3
+}
+.hero-smoke-a{
+  background:radial-gradient(ellipse 34% 52% at 50% 20%,
+    rgba(248,244,238,.028) 0%,transparent 100%);
+  animation:smokeDrift 13s ease-in-out infinite
+}
+.hero-smoke-b{
+  background:radial-gradient(ellipse 22% 40% at 52% 14%,
+    rgba(240,235,225,.018) 0%,transparent 100%);
+  animation:smokeDrift 18s ease-in-out 4s infinite reverse
+}
+@keyframes smokeDrift{
+  0%,100%{opacity:.5;transform:translate(0,0)}
+  28%    {opacity:.9;transform:translate(1.4%,-2.2%)}
+  55%    {opacity:1; transform:translate(-1.1%,-4%)}
+  78%    {opacity:.7;transform:translate(2%,-1.4%)}
+}
+/* Mobile: full-bleed pizza, softer vertical fade */
 @media(hover:none){
   .hero-canvas-overlay{
     background:
-      radial-gradient(ellipse at 50% 52%,transparent 32%,rgba(10,9,8,.72) 100%),
-      linear-gradient(180deg,rgba(10,9,8,.22) 0%,rgba(10,9,8,.02) 32%,rgba(10,9,8,.90) 100%),
-      radial-gradient(ellipse 90% 90% at 50% 50%,transparent 54%,rgba(10,9,8,.36) 100%)
+      linear-gradient(180deg,
+        rgba(10,9,8,.40) 0%,
+        rgba(10,9,8,.10) 18%,
+        transparent       32%,
+        transparent       60%,
+        rgba(10,9,8,.88) 100%),
+      radial-gradient(ellipse 90% 90% at 50% 50%,transparent 54%,rgba(10,9,8,.34) 100%)
   }
   #hero::before{
-    background:radial-gradient(ellipse 44% 32% at 50% 26%,rgba(196,110,40,.05) 0%,transparent 100%)
+    background:radial-gradient(ellipse 50% 36% at 50% 46%,rgba(196,110,40,.08) 0%,transparent 100%)
   }
+  #hero::after{height:30%}
 }
 .ha-loader{
   position:absolute;inset:0;z-index:20;
@@ -884,9 +1048,6 @@ footer{
       <span class="nlang-sep">·</span>
       <button class="nlang" data-lang="en">EN</button>
     </div>
-    <a href="tel:+38516530884" class="nav-cta">
-      <span class="hr-only">Rezervirajte</span><span class="en-only">Reserve</span>
-    </a>
     <button class="nav-burger" id="burger" aria-label="Menu">
       <span></span><span></span><span></span>
     </button>
@@ -912,6 +1073,9 @@ footer{
     <span class="hs-text">5 · Anni</span>
   </div>
   <div class="hero-canvas-overlay" aria-hidden="true"></div>
+  <div class="hero-ground-shadow" aria-hidden="true"></div>
+  <div class="hero-smoke-a"      aria-hidden="true"></div>
+  <div class="hero-smoke-b"      aria-hidden="true"></div>
   <div class="ha-loader" id="ha-loader">
     <div class="ha-loader-bar">
       <div class="ha-loader-fill" id="ha-loader-fill"></div>
@@ -923,9 +1087,20 @@ footer{
     <span class="hr-only">PIZZA &amp; BAR &nbsp;·&nbsp; ZAGREB</span>
     <span class="en-only">PIZZA &amp; BAR &nbsp;·&nbsp; ZAGREB</span>
   </p>
-  <div class="hero-scroll">
-    <span class="hs-text">scroll</span>
-    <div class="hs-line"></div>
+  <div class="hero-cta">
+    <a href="#the-table" class="hero-cta-primary">
+      <span class="hr-only">Rezervirajte stol</span>
+      <span class="en-only">Reserve a Table</span>
+      <span class="hero-cta-arrow" aria-hidden="true">→</span>
+    </a>
+    <a href="menu.html" class="hero-cta-secondary">
+      <span class="hr-only">Jelovnik</span>
+      <span class="en-only">View Menu</span>
+      <span class="hero-cta-arrow" aria-hidden="true">→</span>
+    </a>
+  </div>
+  <div class="hero-scroll-cue" aria-hidden="true">
+    <div class="hero-scroll-line"></div>
   </div>
 </section>
 
@@ -1350,6 +1525,7 @@ footer{
     <li><a href="menu.html"><span class="hr-only">Jelovnik</span><span class="en-only">Menu</span></a></li>
     <li><a href="#the-table"><span class="hr-only">Kontakt</span><span class="en-only">Contact</span></a></li>
   </ul>
+  <span class="foot-copy">© 2025 Franko's Pizza &amp; Bar · Zagreb · GREEN CORNER d.o.o.</span>
 </footer>
 
 <script>
@@ -1603,9 +1779,15 @@ document.querySelectorAll('.table-call').forEach(el => {
 (function () {
 'use strict';
 
-const TOTAL  = 121;
-const PATH   = 'Assets/pizza-sequence/';
-const RATIO  = 3 / 4; // width ÷ height
+const TOTAL    = 121;
+const IS_TOUCH = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+
+// Desktop (non-touch, ≥1024 px) uses a landscape 16:9 sequence extracted from
+// the cinematic video; mobile keeps the original portrait pizza sequence.
+const IS_DESKTOP = !IS_TOUCH && window.innerWidth >= 1024;
+const PATH       = IS_DESKTOP
+  ? 'Assets/pizza-sequence-desktop/'
+  : 'Assets/pizza-sequence/';
 
 const section = document.getElementById('hero');
 const canvas  = document.getElementById('ha-canvas');
@@ -1615,12 +1797,14 @@ const pct     = document.getElementById('ha-loader-pct');
 
 if (!section || !canvas) return;
 
-const ctx    = canvas.getContext('2d');
-const dpr    = Math.min(window.devicePixelRatio || 1, 2);
-const IS_TOUCH = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+const ctx        = canvas.getContext('2d');
+const dpr        = Math.min(window.devicePixelRatio || 1, 2);
+const canvasWrap = canvas.parentElement; // .ha-canvas-wrap
 
 const backdropCanvas = document.getElementById('ha-backdrop');
 const backdropCtx    = backdropCanvas ? backdropCanvas.getContext('2d') : null;
+
+const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 let frames         = [];
 let currentIdx     = 0;
@@ -1628,33 +1812,25 @@ let pendingDraw    = false;
 let pendingProg    = 0;
 let st             = null;
 let resizeTimer    = null;
-let mobileTrack    = null;  // scroll-track wrapper injected on touch devices
-let mobileScrollPx = 0;     // scrollable distance in px (track height - viewport)
+let mobileTrack    = null;
+let mobileScrollPx = 0;
 
-// ── Canvas sizing ─────────────────────────────────────────────────────────
+// ── Full-viewport canvas (mobile and desktop) ─────────────────────────────
+// Desktop uses full-bleed so 16:9 frames fill the screen; editorial side
+// panels stay visible as overlays (z-index:3 > canvas z-index:1).
+function applyFullLayout() {
+  if (!canvasWrap) return;
+  canvasWrap.style.position  = 'absolute';
+  canvasWrap.style.inset     = '0';
+  canvasWrap.style.boxShadow = 'none';
+}
+
 function sizeCanvas() {
-  const vw = window.innerWidth;
-  const vh = window.innerHeight;
-
-  if (IS_TOUCH) {
-    // Mobile: canvas covers full viewport — same absolute positioning as backdrop,
-    // no flex-layout dependency, guaranteed to be visible.
-    canvas.style.width  = vw + 'px';
-    canvas.style.height = vh + 'px';
-    canvas.width  = Math.round(vw * dpr);
-    canvas.height = Math.round(vh * dpr);
-  } else {
-    // Desktop: contained portrait box
-    let h = Math.round(vh * 0.88);
-    let w = Math.round(h * RATIO);
-    if (w > vw * 0.96) { w = Math.round(vw * 0.96); h = Math.round(w / RATIO); }
-    canvas.style.width  = w + 'px';
-    canvas.style.height = h + 'px';
-    canvas.width  = Math.round(w * dpr);
-    canvas.height = Math.round(h * dpr);
-  }
-
-  // Backdrop: fills full viewport, quarter-res buffer (CSS blur hides pixelation)
+  var vw = window.innerWidth, vh = window.innerHeight;
+  canvas.style.width  = vw + 'px';
+  canvas.style.height = vh + 'px';
+  canvas.width  = Math.round(vw * dpr);
+  canvas.height = Math.round(vh * dpr);
   if (backdropCanvas) {
     backdropCanvas.style.width  = vw + 'px';
     backdropCanvas.style.height = vh + 'px';
@@ -1663,127 +1839,99 @@ function sizeCanvas() {
   }
 }
 
-// ── Draw one frame ────────────────────────────────────────────────────────
+// ── Cover-fit draw — works for portrait (mobile) and landscape (desktop) ──
 function drawAt(idx) {
-  const img = frames[idx];
+  var img = frames[idx];
   if (!img || !img.complete || !img.naturalWidth) return;
-
-  const cw = canvas.width, ch = canvas.height;
-  const iw = img.naturalWidth, ih = img.naturalHeight;
+  var cw = canvas.width, ch = canvas.height;
+  var iw = img.naturalWidth, ih = img.naturalHeight;
   ctx.clearRect(0, 0, cw, ch);
-
-  if (IS_TOUCH) {
-    // Cover-fit: portrait pizza image into whatever canvas shape the viewport has
-    const cr = cw / ch, ir = iw / ih;
-    var sx, sy, sw, sh;
-    if (cr > ir) { sw = iw; sh = iw / cr; sx = 0; sy = (ih - sh) / 2; }
-    else         { sh = ih; sw = ih * cr; sy = 0; sx = (iw - sw) / 2; }
-    ctx.drawImage(img, sx, sy, sw, sh, 0, 0, cw, ch);
-  } else {
-    // Direct fill — canvas buffer matches image ratio on desktop
-    ctx.drawImage(img, 0, 0, cw, ch);
-  }
-
-  // Blurred backdrop — cover-fit into full viewport at low res
+  var cr = cw / ch, ir = iw / ih;
+  var sx, sy, sw, sh;
+  if (cr > ir) { sw = iw; sh = iw / cr; sx = 0; sy = (ih - sh) / 2; }
+  else         { sh = ih; sw = ih * cr; sy = 0; sx = (iw - sw) / 2; }
+  ctx.drawImage(img, sx, sy, sw, sh, 0, 0, cw, ch);
   if (backdropCtx) {
-    const bw = backdropCanvas.width, bh = backdropCanvas.height;
-    const iw = img.naturalWidth,     ih = img.naturalHeight;
-    const cr = bw / bh, ir = iw / ih;
+    var bw = backdropCanvas.width, bh = backdropCanvas.height;
+    var br = bw / bh;
     var bsx, bsy, bsw, bsh;
-    if (cr > ir) {
-      bsw = iw; bsh = iw / cr; bsx = 0;        bsy = (ih - bsh) / 2;
-    } else {
-      bsh = ih; bsw = ih * cr; bsy = 0;        bsx = (iw - bsw) / 2;
-    }
+    if (br > ir) { bsw = iw; bsh = iw / br; bsx = 0; bsy = (ih - bsh) / 2; }
+    else         { bsh = ih; bsw = ih * br; bsy = 0; bsx = (iw - bsw) / 2; }
     backdropCtx.clearRect(0, 0, bw, bh);
     backdropCtx.drawImage(img, bsx, bsy, bsw, bsh, 0, 0, bw, bh);
   }
 }
 
 // ── Throttle draw calls to one rAF per vsync ──────────────────────────────
+// Lighting arc: start slightly cool/dim → warm peak at mid-scroll → settle warm.
+// CSS filter is GPU-composited — no canvas redraw cost.
 function scheduleDraw(progress) {
   pendingProg = progress;
   if (pendingDraw) return;
   pendingDraw = true;
   requestAnimationFrame(function () {
     pendingDraw = false;
-    var idx = Math.min(
-      Math.round(pendingProg * (TOTAL - 1)),
-      TOTAL - 1
-    );
-    if (idx !== currentIdx) {
-      currentIdx = idx;
-      drawAt(currentIdx);
-    }
+    var prog = pendingProg;
+    var idx  = Math.min(Math.round(prog * (TOTAL - 1)), TOTAL - 1);
+    if (idx !== currentIdx) { currentIdx = idx; drawAt(currentIdx); }
+    // Warm lighting arc: 0→dim/cool, 0.45→bright/warm peak, 1→settled warmth
+    var arc = Math.sin(prog * Math.PI);
+    var br  = (1.00 + prog * 0.12 + arc * 0.10).toFixed(3); // 1.00 → peak 1.22 → settle 1.12
+    var sat = (0.90 + prog * 0.14 + arc * 0.10).toFixed(3); // 0.90 → peak 1.14 → settle 1.04
+    canvas.style.filter = 'brightness(' + br + ') saturate(' + sat + ') contrast(1.07)';
   });
 }
 
 // ── Preload all frames, report progress ───────────────────────────────────
 function preload() {
   return new Promise(function (resolve) {
-    var imgs   = new Array(TOTAL);
-    var loaded = 0;
-
+    var imgs = new Array(TOTAL), loaded = 0;
     for (var i = 0; i < TOTAL; i++) {
       (function (i) {
         var img = new Image();
-        var num = String(i + 1).padStart(3, '0');
-        img.src = PATH + 'frame_' + num + '.webp';
-
+        img.src = PATH + 'frame_' + String(i + 1).padStart(3, '0') + '.webp';
         function done() {
           loaded++;
           var p = loaded / TOTAL;
-          fill.style.width   = (p * 100).toFixed(1) + '%';
-          pct.textContent    = Math.round(p * 100) + '%';
+          fill.style.width = (p * 100).toFixed(1) + '%';
+          pct.textContent  = Math.round(p * 100) + '%';
           if (loaded === TOTAL) resolve(imgs);
         }
-
-        img.onload  = done;
-        img.onerror = done; // missing frame — don't block the rest
+        img.onload = done; img.onerror = done;
         imgs[i] = img;
       }(i));
     }
   });
 }
 
-// ── Wire up ScrollTrigger ──────────────────────────────────────────────────
+// ── GSAP ScrollTrigger (desktop) ──────────────────────────────────────────
 function initST() {
   gsap.registerPlugin(ScrollTrigger);
-  // Required on iOS: body{overflow-x:hidden} makes Safari treat body as the
-  // scroll container instead of window, breaking GSAP's scroll tracking.
-  // normalizeScroll forces GSAP to intercept touch events directly.
   ScrollTrigger.normalizeScroll(true);
-  // Prevents mobile address-bar resize from re-calculating pinned section height.
   ScrollTrigger.config({ ignoreMobileResize: true });
-
   st = ScrollTrigger.create({
-    trigger : '#hero',
-    pin     : true,
-    start   : 'top top',
-    end     : '+=300%',
-    scrub   : 1,
-    onUpdate: function (self) { scheduleDraw(self.progress); },
-    onRefresh: function () {
-      sizeCanvas();
-      drawAt(currentIdx);
-    }
+    trigger  : '#hero',
+    pin      : true,
+    start    : 'top top',
+    end      : '+=300%',
+    scrub    : 1,
+    onUpdate : function (self) { if (!reducedMotion) scheduleDraw(self.progress); },
+    onRefresh: function () { sizeCanvas(); drawAt(currentIdx); }
   });
 }
 
-// ── Resize: debounce → resize canvas → refresh ST ─────────────────────────
+// ── Resize ────────────────────────────────────────────────────────────────
 window.addEventListener('resize', function () {
   clearTimeout(resizeTimer);
   resizeTimer = setTimeout(function () {
-    sizeCanvas();
-    drawAt(currentIdx);
-    if (mobileTrack) {
-      mobileScrollPx = Math.max(mobileTrack.offsetHeight - window.innerHeight, 1);
-    }
+    sizeCanvas(); drawAt(currentIdx);
+    if (mobileTrack) mobileScrollPx = Math.max(mobileTrack.offsetHeight - window.innerHeight, 1);
     if (st) ScrollTrigger.refresh();
   }, 150);
 }, { passive: true });
 
 // ── Boot ───────────────────────────────────────────────────────────────────
+applyFullLayout();
 sizeCanvas();
 
 preload().then(function (imgs) {
@@ -1793,15 +1941,13 @@ preload().then(function (imgs) {
   loader.classList.add('done');
 
   if (IS_TOUCH) {
-    // Wrap hero in a 400vh scroll track so CSS sticky pins it while the user
-    // scrolls — same effect as GSAP pin but using only native browser APIs.
     mobileTrack = document.createElement('div');
     mobileTrack.id = 'hero-track';
     section.parentNode.insertBefore(mobileTrack, section);
     mobileTrack.appendChild(section);
     mobileScrollPx = Math.max(mobileTrack.offsetHeight - window.innerHeight, 1);
-
     window.addEventListener('scroll', function () {
+      if (reducedMotion) return;
       var top  = mobileTrack.getBoundingClientRect().top;
       var prog = Math.max(0, Math.min(1, -top / mobileScrollPx));
       scheduleDraw(prog);
@@ -1811,6 +1957,37 @@ preload().then(function (imgs) {
   }
 });
 
+}());
+
+/* ── Ambient ember particles ──────────────────────────────────────────────── */
+(function () {
+  var hero = document.getElementById('hero');
+  if (!hero) return;
+  // Each ember: left%, bottom%, delay-s, duration-s, size-px
+  var DATA = [
+    [37,30, 0.0,  9,1.2],[51,23, 1.4,11,0.9],[45,19, 2.8, 8,1.6],
+    [57,33, 0.6,10,0.8],[48,26, 3.5,13,1.1],[42,21, 1.8, 9,1.4],
+    [54,29, 4.2,11,0.8],[50,17, 2.2,14,1.8],[43,36, 0.9, 8,1.0],
+    [59,25, 3.1,12,0.9],[35,28, 1.6,10,1.3],[52,20, 4.8,10,0.7]
+  ];
+  DATA.forEach(function (p) {
+    var el = document.createElement('span');
+    el.style.cssText = [
+      'position:absolute',
+      'left:'+p[0]+'%',
+      'bottom:'+p[1]+'%',
+      'width:'+p[4]+'px',
+      'height:'+p[4]+'px',
+      'border-radius:50%',
+      'background:rgba(216,134,44,1)',
+      'pointer-events:none',
+      'z-index:3',
+      'opacity:0',
+      'will-change:transform,opacity',
+      'animation:emberFloat '+p[3]+'s ease-in-out '+p[2]+'s infinite'
+    ].join(';');
+    hero.appendChild(el);
+  });
 }());
 </script>
 </body>
