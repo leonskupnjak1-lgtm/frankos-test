@@ -264,7 +264,8 @@ body::after{
     0 0  52px rgba(10,9,8,.82),
     0 0  18px rgba(10,9,8,.55),
     0 2px  6px rgba(10,9,8,.4);
-  font-kerning:normal;font-feature-settings:"kern" 1,"liga" 1
+  font-kerning:normal;font-feature-settings:"kern" 1,"liga" 1,"calt" 1,"case" 1;
+  font-optical-sizing:auto;text-rendering:geometricPrecision
 }
 .page-ready .hero-name{animation:nameSpring 1.6s var(--ease) .08s forwards}
 @keyframes nameSpring{
@@ -810,13 +811,22 @@ footer{
 .ha-canvas-wrap{
   position:relative;z-index:1;flex-shrink:0;
   box-shadow:
-    0 0  64px 12px rgba(196,110,40,.16),
-    0 0 190px 68px rgba(196,110,40,.065),
-    0 0 340px 110px rgba(140,70,20,.038)
+    0 0  64px 12px rgba(196,110,40,.26),
+    0 0 190px 68px rgba(196,110,40,.11),
+    0 0 340px 110px rgba(140,70,20,.062)
+}
+/* warm rim light — hugs the crust perimeter */
+.ha-canvas-wrap::before{
+  content:'';position:absolute;inset:0;pointer-events:none;z-index:2;
+  background:radial-gradient(ellipse 92% 90% at 50% 50%,
+    transparent 56%,
+    rgba(210,118,42,.10) 74%,
+    rgba(196,100,28,.06) 87%,
+    transparent 100%)
 }
 .ha-canvas-wrap::after{
   content:'';position:absolute;inset:0;pointer-events:none;z-index:1;
-  box-shadow:inset 0 0 44px 10px rgba(10,9,8,.42)
+  box-shadow:inset 0 0 78px 24px rgba(10,9,8,.66),inset 0 0 26px 5px rgba(10,9,8,.30)
 }
 #ha-canvas{
   display:block;position:relative;z-index:0;
@@ -826,7 +836,7 @@ footer{
 }
 @keyframes pizzaBreathe{
   0%,100%{transform:scale(1)}
-  50%    {transform:scale(1.012)}
+  50%    {transform:scale(1.01)}
 }
 /* Side editorial labels — absolute so they hug the viewport edges */
 .hero-side{
@@ -907,10 +917,10 @@ footer{
 .hero-ground-shadow{
   position:absolute;left:50%;top:64%;
   transform:translateX(-50%);
-  width:48%;height:7%;
+  width:54%;height:10%;
   pointer-events:none;z-index:2;
-  background:radial-gradient(ellipse at center,rgba(0,0,0,.52) 0%,transparent 72%);
-  filter:blur(22px);
+  background:radial-gradient(ellipse at center,rgba(0,0,0,.38) 0%,transparent 65%);
+  filter:blur(38px);
   animation:shadowBreathe 8s cubic-bezier(.45,0,.55,1) infinite
 }
 @keyframes shadowBreathe{
