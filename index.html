@@ -8,8 +8,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400;1,700&family=Instrument+Serif:ital@0;1&family=Outfit:wght@300;400;500&family=Inter:wght@300;400&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/Draggable.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/InertiaPlugin.min.js"></script>
 <style>
 
 /* ══ RESET + TOKENS ══ */
@@ -717,50 +719,93 @@ body::after{
 .exp-pre::before{content:'';width:18px;height:1px;background:var(--flame);flex-shrink:0}
 .exp-h2{
   font-family:var(--ff-d);font-size:clamp(42px,6vw,76px);font-weight:300;color:#1A1410;
-  line-height:1.06;margin-bottom:150px;max-width:760px;
+  line-height:1.06;margin-bottom:84px;max-width:760px;
   opacity:0;transform:translateY(20px);transition:opacity .9s var(--ease) .08s,transform .9s var(--ease) .08s
 }
 .exp-h2.vis{opacity:1;transform:none}
 .exp-h2 em{font-style:italic;color:var(--flame)}
 
-.exp-rows{display:flex;flex-direction:column;gap:150px}
-.exp-row{
-  display:flex;align-items:center;gap:7vw;
+/* ── EXPERIENCE CAROUSEL ── */
+.exp-carousel{
+  position:relative;
   opacity:0;transform:translateY(30px);
   transition:opacity .9s var(--ease),transform .9s var(--ease)
 }
-.exp-row.vis{opacity:1;transform:none}
-.exp-row--rev{flex-direction:row-reverse}
-.exp-row-photo{
-  flex:1.15;position:relative;overflow:hidden;aspect-ratio:16/11;
-  clip-path:inset(0 100% 0 0);transition:clip-path 1.2s var(--ease)
+.exp-carousel.vis{opacity:1;transform:none}
+.exp-carousel:focus-visible{outline:none}
+.exp-carousel:focus-visible .exp-viewport{outline:1px solid rgba(196,123,58,.4);outline-offset:10px}
+
+/* Viewport is the fixed clip box (overflow hidden) — it never moves.
+   Track is the flex row that GSAP transforms/drags; keeping the two
+   separate means the clip boundary stays put while the content slides.
+   If GSAP/Draggable fails to load, JS adds .exp-viewport--native which
+   switches to a robust native scroll-snap fallback instead. */
+.exp-viewport{overflow:hidden}
+.exp-viewport--native{overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;touch-action:pan-x pan-y}
+.exp-viewport--native::-webkit-scrollbar{display:none}
+.exp-viewport--native .exp-card{scroll-snap-align:start}
+
+.exp-track{
+  display:flex;gap:32px;cursor:grab;touch-action:pan-y;
+  -webkit-tap-highlight-color:transparent
 }
-.exp-row:nth-child(2) .exp-row-photo{aspect-ratio:3/4}
-.exp-row:nth-child(3) .exp-row-photo{aspect-ratio:4/5}
-.exp-row.vis .exp-row-photo{clip-path:inset(0 0 0 0)}
-.exp-row-photo img{width:100%;height:100%;object-fit:cover;filter:saturate(1.04) brightness(.98);transition:transform 1.6s var(--ease);will-change:transform}
-.exp-row-photo::after{content:'';position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 0 1px rgba(196,123,58,.16)}
-.exp-row:hover .exp-row-photo img{transform:scale(1.045)}
-.exp-row-text{flex:1;position:relative;padding-left:34px}
-.exp-row--rev .exp-row-text{padding-left:0;padding-right:34px}
-.exp-row-text::before{content:'';position:absolute;top:2px;left:0;bottom:2px;width:1px;background:rgba(196,123,58,.24)}
-.exp-row--rev .exp-row-text::before{left:auto;right:0}
-.exp-row-num{
+.exp-viewport--native .exp-track{cursor:auto}
+.exp-track.exp-track--grabbing{cursor:grabbing}
+
+.exp-card{
+  flex:0 0 auto;width:64%;
+  will-change:transform,opacity;user-select:none;-webkit-user-select:none
+}
+.exp-card-photo{
+  position:relative;overflow:hidden;aspect-ratio:16/11;border-radius:2px
+}
+.exp-card-photo::after{content:'';position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 0 1px rgba(196,123,58,.16)}
+.exp-card-photo img{
+  width:100%;height:100%;object-fit:cover;object-fit:cover;
+  filter:saturate(1.04) brightness(.98);pointer-events:none;-webkit-user-drag:none
+}
+.exp-card-text{position:relative;padding-left:34px;margin-top:30px}
+.exp-card-text::before{content:'';position:absolute;top:2px;left:0;bottom:2px;width:1px;background:rgba(196,123,58,.24)}
+.exp-card-num{
   display:block;font-family:var(--ff-d);font-size:13px;font-weight:300;
   color:rgba(196,123,58,.55);letter-spacing:.04em
 }
-.exp-row-kicker{
+.exp-card-kicker{
   font-size:7.5px;letter-spacing:.36em;text-transform:uppercase;color:var(--flame);
   display:block;margin:26px 0 22px
 }
-.exp-row-h3{
-  font-family:var(--ff-d);font-size:clamp(28px,3vw,42px);font-weight:300;color:#1A1410;line-height:1.16
+.exp-card-h3{
+  font-family:var(--ff-d);font-size:clamp(26px,2.6vw,38px);font-weight:300;color:#1A1410;line-height:1.16
 }
-.exp-row-h3 em{font-style:italic;color:var(--flame)}
-.exp-row-body{
+.exp-card-h3 em{font-style:italic;color:var(--flame)}
+.exp-card-body{
   font-size:14.5px;font-weight:300;color:rgba(26,20,14,.58);line-height:1.85;
   margin-top:24px;max-width:380px
 }
+
+/* ── Controls (arrows + dots) ── */
+.exp-controls{display:flex;align-items:center;gap:28px;margin-top:56px}
+.exp-arrow{
+  width:46px;height:46px;border-radius:50%;flex-shrink:0;
+  border:1px solid rgba(196,123,58,.3);background:transparent;color:#1A1410;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;
+  transition:border-color .35s var(--ease),background .35s var(--ease),color .35s var(--ease),transform .35s var(--ease)
+}
+.exp-arrow svg{width:17px;height:17px}
+.exp-arrow:hover{border-color:var(--flame);background:var(--flame-dim);color:var(--flame)}
+.exp-arrow:active{transform:scale(.93)}
+.exp-arrow:disabled{opacity:.32;cursor:default;pointer-events:none}
+.exp-arrow:focus-visible{outline:1px solid var(--flame);outline-offset:2px}
+
+.exp-dots{display:flex;align-items:center;gap:10px}
+.exp-dot{
+  width:7px;height:7px;border-radius:50%;border:none;padding:0;
+  background:rgba(196,123,58,.28);cursor:pointer;
+  transition:transform .4s var(--ease),background .4s var(--ease),width .4s var(--ease)
+}
+.exp-dot:hover{background:rgba(196,123,58,.55)}
+.exp-dot.is-active{background:var(--flame);width:22px;border-radius:4px}
+.exp-dot:focus-visible{outline:1px solid var(--flame);outline-offset:3px}
 
 /* ══ MENU GLIMPSE (split composition, flipped video-left/text-right, warm-cream half) ══ */
 #menu-glimpse{display:grid;grid-template-columns:1fr 1fr;min-height:100vh;background:var(--ash)}
@@ -926,9 +971,8 @@ footer{
   .ti-col{border-right:none;border-bottom:1px solid rgba(196,123,58,.06)}
   .ti-col:last-child{border-bottom:none}
   .sp-line{font-size:clamp(28px,7vw,52px)}
-  .exp-row,.exp-row--rev{flex-direction:column;align-items:stretch;gap:36px}
-  .exp-row-text,.exp-row--rev .exp-row-text{padding-left:0;padding-right:0}
-  .exp-row-text::before,.exp-row--rev .exp-row-text::before{display:none}
+  .exp-card{width:78%}
+  .exp-track{gap:24px}
 }
 @media(max-width:768px){
   #nav{padding:0 24px}
@@ -973,9 +1017,15 @@ footer{
   .sp-stats{gap:32px 40px}
   .sp-quote::before{font-size:140px}
   #experience{padding:110px 24px 100px}
-  .exp-h2{margin-bottom:80px}
-  .exp-rows{gap:64px}
-  .exp-row-photo,.exp-row:nth-child(2) .exp-row-photo,.exp-row:nth-child(3) .exp-row-photo{aspect-ratio:4/3}
+  .exp-h2{margin-bottom:56px}
+  .exp-carousel{margin:0 -24px}
+  .exp-track{gap:16px;padding-left:24px}
+  .exp-card{width:88%}
+  .exp-card-photo{aspect-ratio:4/3}
+  .exp-card-text{padding-left:22px;margin-top:22px}
+  .exp-card-kicker{margin:18px 0 14px}
+  .exp-controls{margin-top:40px;gap:20px;padding-left:24px;padding-right:24px}
+  .exp-arrow{width:42px;height:42px}
   .mg-text{padding:80px 24px}
   #the-table{padding:100px 24px 80px}
   footer{flex-direction:column;gap:20px;text-align:center;padding:36px 24px}
@@ -994,6 +1044,11 @@ footer{
   .ing-item-num{width:48px;font-size:11px}
   .ing-item-line{padding-left:48px}
   .ing-list::before{left:24px}
+  .exp-card{width:90%}
+  .exp-card-text{padding-left:18px}
+  .exp-controls{gap:14px}
+  .exp-arrow{width:38px;height:38px}
+  .exp-arrow svg{width:15px;height:15px}
 }
 
 /* ══ HERO ANIMATION (frame sequence) ══ */
@@ -1640,53 +1695,71 @@ footer{
       <span class="en-only">Why guests <em>return.</em></span>
     </h2>
 
-    <div class="exp-rows">
+    <div class="exp-carousel" id="exp-carousel" tabindex="0" role="region" aria-roledescription="carousel" aria-label="Zašto se gosti vraćaju">
+      <div class="exp-viewport" id="exp-viewport">
+      <div class="exp-track" id="exp-track">
 
-      <div class="exp-row">
-        <div class="exp-row-photo">
-          <img src="Assets/photo frankos.jpg" alt="" loading="lazy" style="object-position:50% 38%">
+        <div class="exp-card">
+          <div class="exp-card-photo">
+            <img src="Assets/photo frankos.jpg" alt="" loading="lazy" style="object-position:50% 38%">
+          </div>
+          <div class="exp-card-text">
+            <span class="exp-card-num">01</span>
+            <span class="exp-card-kicker hr-only">Atmosfera</span>
+            <span class="exp-card-kicker en-only">Atmosphere</span>
+            <h3 class="exp-card-h3 hr-only">Večeri koje <em>se pamte.</em></h3>
+            <h3 class="exp-card-h3 en-only">Evenings worth <em>remembering.</em></h3>
+            <p class="exp-card-body hr-only">Toplo svjetlo, žamor razgovora, čaša u ruci. Franko's nije mjesto gdje samo jedete — mjesto je gdje vrijeme uspori.</p>
+            <p class="exp-card-body en-only">Warm light, the hum of conversation, a glass in hand. Franko's isn't just where you eat — it's where time slows down.</p>
+          </div>
         </div>
-        <div class="exp-row-text">
-          <span class="exp-row-num">01</span>
-          <span class="exp-row-kicker hr-only">Atmosfera</span>
-          <span class="exp-row-kicker en-only">Atmosphere</span>
-          <h3 class="exp-row-h3 hr-only">Večeri koje <em>se pamte.</em></h3>
-          <h3 class="exp-row-h3 en-only">Evenings worth <em>remembering.</em></h3>
-          <p class="exp-row-body hr-only">Toplo svjetlo, žamor razgovora, čaša u ruci. Franko's nije mjesto gdje samo jedete — mjesto je gdje vrijeme uspori.</p>
-          <p class="exp-row-body en-only">Warm light, the hum of conversation, a glass in hand. Franko's isn't just where you eat — it's where time slows down.</p>
+
+        <div class="exp-card">
+          <div class="exp-card-photo">
+            <img src="Assets/2 pizza.jpg" alt="" loading="lazy" style="object-position:50% 38%">
+          </div>
+          <div class="exp-card-text">
+            <span class="exp-card-num">02</span>
+            <span class="exp-card-kicker hr-only">Stalni gosti</span>
+            <span class="exp-card-kicker en-only">Regulars</span>
+            <h3 class="exp-card-h3 hr-only">Mnogi dođu jednom. <em>Većina se vrati.</em></h3>
+            <h3 class="exp-card-h3 en-only">Many come once. <em>Most come back.</em></h3>
+            <p class="exp-card-body hr-only">Isti stol, isto lice na vratima, isti osjećaj kao prvi put. Stalni gosti nisu slučajnost — oni su dokaz.</p>
+            <p class="exp-card-body en-only">The same table, the same face at the door, the same feeling as the first time. Regulars aren't a coincidence — they're proof.</p>
+          </div>
         </div>
+
+        <div class="exp-card">
+          <div class="exp-card-photo">
+            <img src="Assets/clean pizza cooking.jpg" alt="" loading="lazy" style="object-position:38% 18%">
+          </div>
+          <div class="exp-card-text">
+            <span class="exp-card-num">03</span>
+            <span class="exp-card-kicker hr-only">Vatra</span>
+            <span class="exp-card-kicker en-only">The Fire</span>
+            <h3 class="exp-card-h3 hr-only">Miris koji vas dočeka <em>prije pizze.</em></h3>
+            <h3 class="exp-card-h3 en-only">The smell that <em>greets you first.</em></h3>
+            <p class="exp-card-body hr-only">Drvo, dim, svježi bosiljak. Prepoznat ćete Franko's prije nego što vidite jelovnik.</p>
+            <p class="exp-card-body en-only">Wood, smoke, fresh basil. You'll recognise Franko's before you even see the menu.</p>
+          </div>
+        </div>
+
+      </div>
       </div>
 
-      <div class="exp-row exp-row--rev">
-        <div class="exp-row-photo">
-          <img src="Assets/2 pizza.jpg" alt="" loading="lazy" style="object-position:50% 38%">
+      <div class="exp-controls">
+        <button type="button" class="exp-arrow exp-arrow--prev" id="exp-prev" aria-label="Prethodna kartica">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5L8 12L15 19"/></svg>
+        </button>
+        <div class="exp-dots" id="exp-dots" role="tablist" aria-label="Odaberi karticu">
+          <button type="button" class="exp-dot" role="tab" aria-label="Prikaži karticu 1"></button>
+          <button type="button" class="exp-dot" role="tab" aria-label="Prikaži karticu 2"></button>
+          <button type="button" class="exp-dot" role="tab" aria-label="Prikaži karticu 3"></button>
         </div>
-        <div class="exp-row-text">
-          <span class="exp-row-num">02</span>
-          <span class="exp-row-kicker hr-only">Stalni gosti</span>
-          <span class="exp-row-kicker en-only">Regulars</span>
-          <h3 class="exp-row-h3 hr-only">Mnogi dođu jednom. <em>Većina se vrati.</em></h3>
-          <h3 class="exp-row-h3 en-only">Many come once. <em>Most come back.</em></h3>
-          <p class="exp-row-body hr-only">Isti stol, isto lice na vratima, isti osjećaj kao prvi put. Stalni gosti nisu slučajnost — oni su dokaz.</p>
-          <p class="exp-row-body en-only">The same table, the same face at the door, the same feeling as the first time. Regulars aren't a coincidence — they're proof.</p>
-        </div>
+        <button type="button" class="exp-arrow exp-arrow--next" id="exp-next" aria-label="Sljedeća kartica">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5L16 12L9 19"/></svg>
+        </button>
       </div>
-
-      <div class="exp-row">
-        <div class="exp-row-photo">
-          <img src="Assets/clean pizza cooking.jpg" alt="" loading="lazy" style="object-position:38% 18%">
-        </div>
-        <div class="exp-row-text">
-          <span class="exp-row-num">03</span>
-          <span class="exp-row-kicker hr-only">Vatra</span>
-          <span class="exp-row-kicker en-only">The Fire</span>
-          <h3 class="exp-row-h3 hr-only">Miris koji vas dočeka <em>prije pizze.</em></h3>
-          <h3 class="exp-row-h3 en-only">The smell that <em>greets you first.</em></h3>
-          <p class="exp-row-body hr-only">Drvo, dim, svježi bosiljak. Prepoznat ćete Franko's prije nego što vidite jelovnik.</p>
-          <p class="exp-row-body en-only">Wood, smoke, fresh basil. You'll recognise Franko's before you even see the menu.</p>
-        </div>
-      </div>
-
     </div>
   </div>
 </section>
@@ -2067,12 +2140,6 @@ const io = new IntersectionObserver(entries => {
       });
     }
 
-    // Staggered experience rows
-    if (el.classList.contains('exp-rows')) {
-      const rows = el.querySelectorAll('.exp-row');
-      rows.forEach((r, i) => setTimeout(() => r.classList.add('vis'), i * 120));
-    }
-
     // Staggered ingredient list
     if (el.classList.contains('ing-list')) {
       const items = el.querySelectorAll('.ing-item');
@@ -2092,12 +2159,140 @@ const io = new IntersectionObserver(entries => {
   '.stmt-pre', '.stmt-big', '.stmt-block', '.stmt-facts', '.stmt-photo',
   '.ing-pre', '.ing-list', '.ing-sub', '.ing-photo',
   '.sp-quote', '.sp-pre', '.sp-lines', '.sp-stats', '.sp-badges',
-  '.exp-pre', '.exp-h2', '.exp-rows',
+  '.exp-pre', '.exp-h2', '.exp-carousel',
   '.mg-kicker', '.mg-h2', '.mg-body', '.mg-link',
   '.table-top', '.table-calls', '.table-info'
 ].forEach(sel => {
   document.querySelectorAll(sel).forEach(el => io.observe(el));
 });
+
+/* ── EXPERIENCE CAROUSEL (GSAP Draggable + Inertia, scroll-snap fallback) ── */
+(function initExpCarousel() {
+  const carousel = document.getElementById('exp-carousel');
+  const viewport = document.getElementById('exp-viewport');
+  const track    = document.getElementById('exp-track');
+  if (!carousel || !viewport || !track) return;
+
+  const cards   = Array.from(track.children);
+  const prevBtn = document.getElementById('exp-prev');
+  const nextBtn = document.getElementById('exp-next');
+  const dots    = Array.from(document.querySelectorAll('#exp-dots .exp-dot'));
+  const count   = cards.length;
+
+  const hasDrag = !!(window.gsap && window.Draggable && window.InertiaPlugin);
+
+  // No GSAP/Draggable (e.g. CDN blocked)? Fall back to native horizontal
+  // scroll-snap — still smooth, swipeable, and never blocks vertical scroll.
+  if (!hasDrag) {
+    viewport.classList.add('exp-viewport--native');
+    prevBtn.addEventListener('click', () => {
+      viewport.scrollBy({ left: -cards[0].getBoundingClientRect().width - 16, behavior: 'smooth' });
+    });
+    nextBtn.addEventListener('click', () => {
+      viewport.scrollBy({ left: cards[0].getBoundingClientRect().width + 16, behavior: 'smooth' });
+    });
+    dots.forEach((dot, i) => dot.addEventListener('click', () => {
+      cards[i].scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
+    }));
+    if (dots[0]) dots[0].classList.add('is-active');
+    return;
+  }
+
+  gsap.registerPlugin(Draggable, InertiaPlugin);
+
+  let step        = 0;  // px distance between snap points (card width + gap)
+  let minX        = 0;  // left-most bound (negative px)
+  let activeIndex = 0;
+  let draggable   = null;
+
+  function measure() {
+    const gap = parseFloat(getComputedStyle(track).columnGap) || 0;
+    step = cards[0].getBoundingClientRect().width + gap;
+    minX = Math.min(0, viewport.clientWidth - track.scrollWidth);
+  }
+
+  function snapPoint(i) {
+    return Math.max(minX, Math.round(-i * step));
+  }
+
+  // Smoothly scales/dims cards based on distance from the active slide.
+  function updateCardStates(x) {
+    const progress = step ? -x / step : 0;
+    cards.forEach((card, i) => {
+      const dist = Math.min(Math.abs(i - progress), 1);
+      gsap.set(card, { scale: 1 - dist * 0.06, opacity: 1 - dist * 0.4 });
+    });
+  }
+
+  function setActive(i) {
+    activeIndex = gsap.utils.clamp(0, count - 1, i);
+    dots.forEach((d, di) => {
+      d.classList.toggle('is-active', di === activeIndex);
+      d.setAttribute('aria-selected', di === activeIndex ? 'true' : 'false');
+    });
+    prevBtn.disabled = activeIndex <= 0;
+    nextBtn.disabled = activeIndex >= count - 1;
+  }
+
+  function goTo(i) {
+    const idx = gsap.utils.clamp(0, count - 1, i);
+    setActive(idx);
+    gsap.to(track, {
+      x: snapPoint(idx),
+      duration: 0.9,
+      ease: 'expo.out',
+      onUpdate: () => {
+        if (draggable) draggable.update();
+        updateCardStates(gsap.getProperty(track, 'x'));
+      }
+    });
+  }
+
+  measure();
+  updateCardStates(0);
+  setActive(0);
+
+  draggable = Draggable.create(track, {
+    type: 'x',
+    inertia: true,
+    edgeResistance: 0.85,
+    dragClickables: false,
+    bounds: { minX: minX, maxX: 0 },
+    snap: {
+      x: value => snapPoint(gsap.utils.clamp(0, count - 1, Math.round(-value / step)))
+    },
+    onPress() { track.classList.add('exp-track--grabbing'); },
+    onRelease() { track.classList.remove('exp-track--grabbing'); },
+    onDrag() { updateCardStates(this.x); },
+    onThrowUpdate() { updateCardStates(this.x); },
+    onThrowComplete() {
+      setActive(gsap.utils.clamp(0, count - 1, Math.round(-this.x / step)));
+    }
+  })[0];
+
+  prevBtn.addEventListener('click', () => goTo(activeIndex - 1));
+  nextBtn.addEventListener('click', () => goTo(activeIndex + 1));
+  dots.forEach((dot, i) => dot.addEventListener('click', () => goTo(i)));
+
+  carousel.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight') { e.preventDefault(); goTo(activeIndex + 1); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); goTo(activeIndex - 1); }
+  });
+
+  // Recompute geometry + bounds on resize without disturbing the active card.
+  let expResizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(expResizeTimer);
+    expResizeTimer = setTimeout(() => {
+      measure();
+      const x = snapPoint(activeIndex);
+      gsap.set(track, { x });
+      draggable.applyBounds({ minX: minX, maxX: 0 });
+      draggable.update();
+      updateCardStates(x);
+    }, 150);
+  }, { passive: true });
+})();
 
 /* ── MAGNETIC RESERVATION CARDS ── */
 document.querySelectorAll('.table-call').forEach(el => {
