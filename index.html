@@ -609,9 +609,10 @@ body::after{
 .sp-badge-name{font-size:7px;letter-spacing:.2em;text-transform:uppercase;color:rgba(237,232,222,.36)}
 
 /* ══ INGREDIENTS (warm editorial — breaks the dark run after Process) ══ */
+/* ══ INGREDIENTS — reactive two-column showcase ══ */
 #ingredients{
   background:linear-gradient(165deg,var(--ivory) 0%,var(--aged-paper) 100%);
-  padding:190px 56px;position:relative;overflow:hidden
+  padding:160px 56px;position:relative;overflow:hidden
 }
 #ingredients::before{
   content:'';position:absolute;inset:0;pointer-events:none;z-index:0;
@@ -621,191 +622,326 @@ body::after{
 }
 .ing-inner{
   max-width:1300px;margin:0 auto;position:relative;z-index:2;
-  display:grid;grid-template-columns:1.05fr .95fr;gap:88px;align-items:center
+  display:grid;grid-template-columns:9fr 11fr;gap:80px;align-items:start
 }
-.ing-photo-wrap{position:relative}
-.ing-photo{
-  position:relative;aspect-ratio:4/5;overflow:hidden;
-  clip-path:inset(0 100% 0 0);transition:clip-path 1.3s var(--ease)
-}
-.ing-photo.vis{clip-path:inset(0 0 0 0)}
-.ing-photo img{width:100%;height:100%;object-fit:cover;object-position:60% 40%;filter:saturate(1.05) brightness(.97);will-change:transform}
-.ing-photo::after{content:'';position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 0 1px rgba(196,123,58,.18)}
-.ing-oil{
-  position:absolute;left:-10%;top:-12%;width:62%;height:58%;z-index:0;pointer-events:none;
-  background:
-    radial-gradient(ellipse 70% 55% at 40% 35%,rgba(255,206,128,.5) 0%,transparent 48%),
-    radial-gradient(ellipse 90% 80% at 50% 50%,rgba(196,123,58,.22) 0%,rgba(196,123,58,0) 70%);
-  filter:blur(20px);
-  animation:oilSheen 9s ease-in-out infinite
-}
-@keyframes oilSheen{
-  0%,100%{opacity:.6;transform:scale(1)}
-  50%{opacity:1;transform:scale(1.05)}
-}
-.ing-dust{position:absolute;inset:0;z-index:2;pointer-events:none}
+
+/* ── Ambient leaf / dust decorations (section-wide) ── */
 .ing-leaves{position:absolute;inset:0;z-index:1;pointer-events:none}
 .ing-leaf{position:absolute;opacity:0;will-change:transform,opacity;animation:leafDrift var(--dur,14s) ease-in-out var(--delay,0s) infinite}
 @keyframes leafDrift{
-  0%{opacity:0;transform:translate(0,0) rotate(var(--r0,0deg))}
-  10%{opacity:.75}
-  50%{transform:translate(var(--dx,14px),-46px) rotate(var(--r1,18deg))}
-  90%{opacity:.5}
+  0%  {opacity:0;transform:translate(0,0) rotate(var(--r0,0deg))}
+  10% {opacity:.75}
+  50% {transform:translate(var(--dx,14px),-46px) rotate(var(--r1,18deg))}
+  90% {opacity:.5}
   100%{opacity:0;transform:translate(calc(var(--dx,14px)*2),-120px) rotate(var(--r2,32deg))}
 }
+
+/* ── Left column: eyebrow ── */
 .ing-pre{
   font-size:8px;letter-spacing:.42em;text-transform:uppercase;color:var(--flame);
-  display:flex;align-items:center;gap:16px;margin-bottom:56px;
+  display:flex;align-items:center;gap:16px;margin-bottom:52px;
   opacity:0;transform:translateY(14px);transition:opacity .8s var(--ease),transform .8s var(--ease)
 }
 .ing-pre.vis{opacity:1;transform:none}
 .ing-pre::before{content:'';width:18px;height:1px;background:var(--flame);flex-shrink:0}
-.ing-list{position:relative;display:flex;flex-direction:column}
-.ing-list::before{
-  content:'';position:absolute;top:8px;bottom:8px;left:38px;width:1px;
-  background:linear-gradient(to bottom,transparent,rgba(196,123,58,.32) 8%,rgba(196,123,58,.32) 92%,transparent)
-}
+
+/* ── Ingredient list ── */
+.ing-list{display:flex;flex-direction:column}
+
 .ing-item{
-  position:relative;display:flex;align-items:baseline;gap:26px;
-  padding:20px 0;border-bottom:1px solid rgba(28,22,16,.08);
-  opacity:0;transform:translateY(20px);
-  transition:opacity .8s var(--ease),transform .8s var(--ease)
+  /* opacity/y managed by GSAP on scroll reveal — no CSS initial state needed */
+  position:relative;display:flex;align-items:baseline;flex-wrap:wrap;gap:0 26px;
+  padding:22px 0;border-bottom:1px solid rgba(28,22,16,.07);
+  cursor:pointer;outline:none
 }
 .ing-item:first-child{padding-top:0}
-.ing-item.vis{opacity:1;transform:none}
+.ing-item:last-child{border-bottom:none}
+
 .ing-item-num{
-  font-family:var(--ff-d);font-size:13px;font-weight:300;color:var(--flame);
-  width:76px;flex-shrink:0;position:relative;z-index:1;
-  background:linear-gradient(165deg,var(--ivory) 0%,var(--aged-paper) 100%)
+  font-family:var(--ff-d);font-size:13px;font-weight:300;
+  color:rgba(196,123,58,.42);
+  width:68px;flex-shrink:0;
+  transition:color .35s var(--ease)
 }
+.ing-item.is-active .ing-item-num{color:var(--flame)}
+
 .ing-item-name{
-  font-family:var(--ff-d);font-size:clamp(24px,2.6vw,34px);font-weight:300;font-style:italic;
-  color:rgba(26,20,14,.7);line-height:1.2;flex-shrink:0;min-width:200px;
-  transition:color .4s ease
+  font-family:var(--ff-d);font-size:clamp(22px,2.4vw,32px);font-weight:300;font-style:italic;
+  color:rgba(26,20,14,.58);line-height:1.2;
+  transition:color .35s var(--ease),transform .35s var(--ease)
 }
 .ing-item-name em{font-style:italic;color:var(--flame)}
-.ing-item:hover .ing-item-name{color:rgba(26,20,14,.95)}
+.ing-item.is-active .ing-item-name{color:rgba(26,20,14,.92);transform:translateX(8px)}
+
+/* Description — wraps below num + name, indented to align under name */
 .ing-item-line{
-  font-family:var(--ff-d);font-size:clamp(13px,1.1vw,15px);font-weight:300;font-style:italic;
-  color:rgba(26,20,14,.4);line-height:1.6
+  font-family:var(--ff-d);font-size:clamp(13px,1.0vw,14.5px);font-weight:300;font-style:italic;
+  color:rgba(26,20,14,.34);line-height:1.6;
+  width:100%;padding-left:94px  /* 68px num + 26px gap */
 }
+
+/* Terracotta accent underline: GSAP scaleX 0 → 1 on activate */
+.ing-item-accent{
+  position:absolute;bottom:0;left:0;right:0;height:1px;
+  background:var(--flame);
+  transform:scaleX(0);transform-origin:left center;
+  pointer-events:none
+}
+
+/* ── Closing note ── */
 .ing-sub{
-  font-family:var(--ff-d);font-size:clamp(16px,1.6vw,19px);font-weight:300;font-style:italic;
-  color:rgba(26,20,14,.42);margin-top:48px;max-width:440px;line-height:1.8;
+  font-family:var(--ff-d);font-size:clamp(15px,1.5vw,18px);font-weight:300;font-style:italic;
+  color:rgba(26,20,14,.36);margin-top:48px;max-width:440px;line-height:1.8;
   opacity:0;transform:translateY(16px);
   transition:opacity .8s var(--ease) .15s,transform .8s var(--ease) .15s
 }
 .ing-sub.vis{opacity:1;transform:none}
 
+/* ══ Right column: reactive image panel ══ */
+.ing-panel-wrap{position:relative;align-self:start}
 
-/* ══ EXPERIENCE (warm editorial — breaks the dark run before the menu) ══ */
-#experience{
-  background:linear-gradient(175deg,var(--champagne) 0%,var(--ivory) 52%,var(--aged-paper) 100%);
-  padding:180px 56px 170px;position:relative;overflow:hidden
+/* Ambient oil glow behind panel */
+.ing-oil{
+  position:absolute;right:-8%;top:-10%;width:58%;height:58%;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 70% 55% at 60% 35%,rgba(255,206,128,.42) 0%,transparent 50%),
+    radial-gradient(ellipse 90% 80% at 50% 50%,rgba(196,123,58,.18) 0%,rgba(196,123,58,0) 70%);
+  filter:blur(22px);
+  animation:oilSheen 9s ease-in-out infinite
 }
-#experience::before{
-  content:'';position:absolute;inset:0;pointer-events:none;z-index:0;
-  opacity:.04;
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.5' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23p)'/%3E%3C/svg%3E");
-  background-size:160px 160px
+@keyframes oilSheen{
+  0%,100%{opacity:.6;transform:scale(1)}
+  50%     {opacity:1;transform:scale(1.05)}
 }
-.exp-inner{max-width:1280px;margin:0 auto;position:relative;z-index:1}
-.exp-pre{
-  font-size:8px;letter-spacing:.42em;text-transform:uppercase;color:var(--flame);
-  display:flex;align-items:center;gap:16px;margin-bottom:28px;
-  opacity:0;transform:translateY(14px);transition:opacity .8s var(--ease),transform .8s var(--ease)
-}
-.exp-pre.vis{opacity:1;transform:none}
-.exp-pre::before{content:'';width:18px;height:1px;background:var(--flame);flex-shrink:0}
-.exp-h2{
-  font-family:var(--ff-d);font-size:clamp(42px,6vw,76px);font-weight:300;color:#1A1410;
-  line-height:1.06;margin-bottom:84px;max-width:760px;
-  opacity:0;transform:translateY(20px);transition:opacity .9s var(--ease) .08s,transform .9s var(--ease) .08s
-}
-.exp-h2.vis{opacity:1;transform:none}
-.exp-h2 em{font-style:italic;color:var(--flame)}
+.ing-dust{position:absolute;inset:0;z-index:2;pointer-events:none}
 
-/* ── EXPERIENCE CAROUSEL ── */
-.exp-carousel{
+/* Image panel shell — GSAP manages opacity (starts 0) */
+.ing-panel{
   position:relative;
-  opacity:0;transform:translateY(30px);
-  transition:opacity .9s var(--ease),transform .9s var(--ease)
+  height:clamp(460px,62vh,640px);
+  border-radius:20px;overflow:hidden;
+  box-shadow:0 48px 100px -32px rgba(10,9,8,.26),0 0 0 1px rgba(196,123,58,.13)
 }
-.exp-carousel.vis{opacity:1;transform:none}
-.exp-carousel:focus-visible{outline:none}
-.exp-carousel:focus-visible .exp-viewport{outline:1px solid rgba(196,123,58,.4);outline-offset:10px}
-
-/* Viewport is the fixed clip box (overflow hidden) — it never moves.
-   Track is the flex row that GSAP transforms/drags; keeping the two
-   separate means the clip boundary stays put while the content slides.
-   If GSAP/Draggable fails to load, JS adds .exp-viewport--native which
-   switches to a robust native scroll-snap fallback instead. */
-.exp-viewport{overflow:hidden}
-.exp-viewport--native{overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;touch-action:pan-x pan-y}
-.exp-viewport--native::-webkit-scrollbar{display:none}
-.exp-viewport--native .exp-card{scroll-snap-align:start}
-
-.exp-track{
-  display:flex;gap:32px;cursor:grab;touch-action:pan-y;
-  -webkit-tap-highlight-color:transparent
-}
-.exp-viewport--native .exp-track{cursor:auto}
-.exp-track.exp-track--grabbing{cursor:grabbing}
-
-.exp-card{
-  flex:0 0 auto;width:64%;
-  will-change:transform,opacity;user-select:none;-webkit-user-select:none
-}
-.exp-card-photo{
-  position:relative;overflow:hidden;aspect-ratio:16/11;border-radius:2px
-}
-.exp-card-photo::after{content:'';position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 0 1px rgba(196,123,58,.16)}
-.exp-card-photo img{
-  width:100%;height:100%;object-fit:cover;object-fit:cover;
-  filter:saturate(1.04) brightness(.98);pointer-events:none;-webkit-user-drag:none
-}
-.exp-card-text{position:relative;padding-left:34px;margin-top:30px}
-.exp-card-text::before{content:'';position:absolute;top:2px;left:0;bottom:2px;width:1px;background:rgba(196,123,58,.24)}
-.exp-card-num{
-  display:block;font-family:var(--ff-d);font-size:13px;font-weight:300;
-  color:rgba(196,123,58,.55);letter-spacing:.04em
-}
-.exp-card-kicker{
-  font-size:7.5px;letter-spacing:.36em;text-transform:uppercase;color:var(--flame);
-  display:block;margin:26px 0 22px
-}
-.exp-card-h3{
-  font-family:var(--ff-d);font-size:clamp(26px,2.6vw,38px);font-weight:300;color:#1A1410;line-height:1.16
-}
-.exp-card-h3 em{font-style:italic;color:var(--flame)}
-.exp-card-body{
-  font-size:14.5px;font-weight:300;color:rgba(26,20,14,.58);line-height:1.85;
-  margin-top:24px;max-width:380px
+/* Subtle inner frame sits above all images */
+.ing-panel::after{
+  content:'';position:absolute;inset:0;border-radius:inherit;
+  box-shadow:inset 0 0 0 1px rgba(196,123,58,.15);
+  pointer-events:none;z-index:3
 }
 
-/* ── Controls (arrows + dots) ── */
-.exp-controls{display:flex;align-items:center;gap:28px;margin-top:56px}
-.exp-arrow{
-  width:46px;height:46px;border-radius:50%;flex-shrink:0;
-  border:1px solid rgba(196,123,58,.3);background:transparent;color:#1A1410;
-  display:flex;align-items:center;justify-content:center;cursor:pointer;
-  transition:border-color .35s var(--ease),background .35s var(--ease),color .35s var(--ease),transform .35s var(--ease)
+/* Individual image layers stacked; GSAP tweens opacity + scale */
+.ing-img{
+  position:absolute;inset:0;
+  will-change:transform,opacity
 }
-.exp-arrow svg{width:17px;height:17px}
-.exp-arrow:hover{border-color:var(--flame);background:var(--flame-dim);color:var(--flame)}
-.exp-arrow:active{transform:scale(.93)}
-.exp-arrow:disabled{opacity:.32;cursor:default;pointer-events:none}
-.exp-arrow:focus-visible{outline:1px solid var(--flame);outline-offset:2px}
+.ing-img img{
+  width:100%;height:100%;object-fit:cover;
+  filter:saturate(1.08) brightness(.92);
+  pointer-events:none;-webkit-user-drag:none
+}
 
-.exp-dots{display:flex;align-items:center;gap:10px}
-.exp-dot{
-  width:7px;height:7px;border-radius:50%;border:none;padding:0;
-  background:rgba(196,123,58,.28);cursor:pointer;
-  transition:transform .4s var(--ease),background .4s var(--ease),width .4s var(--ease)
+/* Ken Burns slow drift on the active image */
+@media(prefers-reduced-motion:no-preference){
+  .ing-img.is-active img{animation:ingKenBurns 14s ease-in-out infinite}
 }
-.exp-dot:hover{background:rgba(196,123,58,.55)}
-.exp-dot.is-active{background:var(--flame);width:22px;border-radius:4px}
-.exp-dot:focus-visible{outline:1px solid var(--flame);outline-offset:3px}
+@keyframes ingKenBurns{
+  0%  {transform:scale(1.0) translate(0,0)}
+  33% {transform:scale(1.055) translate(-1.1%,-0.8%)}
+  66% {transform:scale(1.03)  translate(0.8%,-1.4%)}
+  100%{transform:scale(1.0) translate(0,0)}
+}
+
+/* Editorial caption bottom-right */
+.ing-img-caption{
+  position:absolute;bottom:20px;right:22px;
+  font-family:var(--ff-d);font-size:13px;font-weight:300;font-style:italic;
+  color:rgba(237,232,222,.4);letter-spacing:.02em;
+  pointer-events:none;z-index:2;
+  text-shadow:0 1px 6px rgba(0,0,0,.52)
+}
+.ing-img-caption em{font-style:italic;color:rgba(196,123,58,.62)}
+
+
+/* ══ EXPERIENCE — premium editorial carousel ══ */
+#experience{position:relative;background:var(--void);isolation:isolate}
+
+.exp2-pin{position:relative;display:flex;flex-direction:column;padding-bottom:5vh}
+
+/* ── Ambient mood backgrounds ── */
+.exp2-bg{position:absolute;inset:0;z-index:0}
+.exp2-bg-layer{position:absolute;inset:0;opacity:0;transition:opacity 1.5s var(--ease)}
+.exp2-bg-layer.is-active{opacity:1}
+/* Atmosfera — warm gold from string lights, intimate nighttime glow */
+.exp2-bg-layer[data-mood="0"]{background:radial-gradient(130% 88% at 50% 0%,#1E1706 0%,#0D0B04 42%,#040403 100%)}
+/* Stalni gosti — cobalt-navy pulled from signature blue plates + cognac leather */
+.exp2-bg-layer[data-mood="1"]{background:radial-gradient(140% 95% at 50% 0%,#0D1524 0%,#080C16 42%,#030408 100%)}
+/* Vatra — intense burnt ember from wood-fired oven dome */
+.exp2-bg-layer[data-mood="2"]{background:radial-gradient(118% 82% at 50% 0%,#3E1A05 0%,#1C0B02 40%,#090401 100%)}
+
+/* ── Header ── */
+.exp2-head{position:relative;z-index:2;flex:0 0 auto;padding:7vh 56px 0}
+.exp2-pre{
+  font-family:var(--ff-ui);font-size:8px;letter-spacing:.42em;text-transform:uppercase;color:var(--flame);
+  display:flex;align-items:center;gap:16px;margin-bottom:2vh
+}
+.exp2-pre::before{content:'';width:18px;height:1px;background:var(--flame);flex-shrink:0}
+.exp2-h2{
+  font-family:var(--ff-d);font-size:clamp(30px,4.2vw,60px);font-weight:300;color:var(--cream);
+  line-height:1.1;max-width:760px
+}
+.exp2-h2 em{font-style:italic;color:var(--flame)}
+
+/* Editorial index counter "01 — 03", pinned to top-right of header */
+.exp2-counter{
+  position:absolute;top:7vh;right:56px;
+  font-family:var(--ff-ui);font-size:10px;letter-spacing:.2em;text-transform:uppercase;
+  color:rgba(237,232,222,.26);pointer-events:none;user-select:none
+}
+.exp2-counter-cur{color:rgba(196,123,58,.62)}
+
+/* ── Viewport: clips track; right-edge dissolves into void ── */
+.exp2-viewport{
+  position:relative;z-index:2;overflow:hidden;cursor:grab;
+  -webkit-mask-image:linear-gradient(to right,black 0%,black 88%,transparent 100%);
+  mask-image:linear-gradient(to right,black 0%,black 88%,transparent 100%)
+}
+.exp2-viewport.is-dragging{cursor:grabbing}
+.exp2-viewport--native{
+  overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;
+  -webkit-overflow-scrolling:touch;scrollbar-width:none;cursor:auto;
+  mask-image:none;-webkit-mask-image:none
+}
+.exp2-viewport--native::-webkit-scrollbar{display:none}
+
+/* ── Track ── */
+/* 28px gap; 56px left padding aligns first card to content gutter */
+.exp2-track{
+  display:flex;align-items:stretch;gap:28px;padding:0 56px;
+  will-change:transform;user-select:none;-webkit-user-select:none
+}
+.exp2-viewport--native .exp2-track{will-change:auto;padding:0 24px;gap:16px}
+
+/* ── Cards: opacity/scale/y managed entirely by GSAP ── */
+.exp2-card{flex:0 0 auto;width:clamp(280px,76vw,1060px);will-change:transform,opacity}
+.exp2-viewport--native .exp2-card{
+  scroll-snap-align:start;opacity:0;transform:translate3d(0,16px,0);
+  transition:opacity .7s var(--ease),transform .7s var(--ease)
+}
+.exp2-viewport--native .exp2-card.is-vis{opacity:1;transform:none}
+
+/* Photo container */
+.exp2-card-photo{
+  position:relative;overflow:hidden;border-radius:20px;
+  height:clamp(220px,48vh,560px);
+  box-shadow:0 44px 96px -30px rgba(0,0,0,.68)
+}
+/* Warm amber grade overlay — sits above image */
+.exp2-card-photo::before{
+  content:'';position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(135deg,rgba(196,123,58,.09) 0%,transparent 52%)
+}
+/* Hairline accent ring — scaleX 0 on inactive, brightens to 0.42 on active */
+.exp2-card-photo::after{
+  content:'';position:absolute;inset:0;border-radius:inherit;
+  box-shadow:inset 0 0 0 1px rgba(196,123,58,0);
+  transition:box-shadow .45s var(--ease);pointer-events:none;z-index:2
+}
+.exp2-card.is-active .exp2-card-photo::after{
+  box-shadow:inset 0 0 0 1px rgba(196,123,58,.42)
+}
+
+/* Unified image grade — inactive: desaturated+dim; active: full, warm */
+.exp2-card-photo img{
+  width:100%;height:100%;object-fit:cover;pointer-events:none;-webkit-user-drag:none;
+  filter:brightness(1.02) contrast(1.05) saturate(0.68);
+  transition:filter .55s var(--ease)
+}
+.exp2-card.is-active .exp2-card-photo img{
+  filter:brightness(1.02) contrast(1.05) saturate(1.06)
+}
+/* Slow Ken Burns drift — only on the active card */
+@media(prefers-reduced-motion:no-preference){
+  .exp2-card.is-active .exp2-card-photo img{animation:expKenBurns 22s ease-in-out infinite}
+}
+@keyframes expKenBurns{
+  0%  {transform:scale(1.0)  translate(0,0)}
+  40% {transform:scale(1.05) translate(-0.9%,-0.6%)}
+  75% {transform:scale(1.03) translate(0.7%,-1.2%)}
+  100%{transform:scale(1.0)  translate(0,0)}
+}
+
+/* ── Card text ── */
+.exp2-card-text{padding:32px 4px 0;min-height:200px}
+
+/* Eyebrow: accent rule + zero-padded number + kicker on one baseline */
+.exp2-card-eyebrow{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.exp2-card-rule{width:24px;height:1px;background:var(--flame);flex-shrink:0}
+.exp2-card-num{
+  font-family:var(--ff-ui);font-size:10px;letter-spacing:.18em;text-transform:uppercase;
+  color:rgba(196,123,58,.62)
+}
+.exp2-card-kicker{
+  font-family:var(--ff-ui);font-size:10px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--flame)
+}
+.exp2-card-h3{
+  font-family:var(--ff-d);font-size:clamp(24px,2.7vw,40px);font-weight:300;
+  color:var(--cream);line-height:1.18
+}
+.exp2-card-h3 em{font-style:italic;color:var(--flame)}
+.exp2-card-body{
+  font-family:var(--ff-ui);font-size:14px;font-weight:300;
+  color:rgba(237,232,222,.62);line-height:1.75;margin-top:14px;max-width:440px
+}
+
+/* ── Navigation ── */
+.exp2-progress{
+  position:relative;z-index:2;flex:0 0 auto;
+  display:flex;justify-content:center;align-items:center;gap:14px;padding:3vh 0 4vh
+}
+/* Refined dots: 5px → 16px active pill */
+.exp2-progress-dot{
+  width:5px;height:5px;border-radius:50%;background:rgba(196,123,58,.22);
+  cursor:pointer;flex-shrink:0;
+  transition:background .35s var(--ease),width .35s cubic-bezier(.16,1,.3,1)
+}
+.exp2-progress-dot.is-active{background:var(--flame);width:16px;border-radius:3px}
+
+/* Refined arrows: 44px tap target, 1px muted ring, chevron nudges on hover */
+.exp2-arrow{
+  width:44px;height:44px;border-radius:50%;
+  border:1px solid rgba(237,232,222,.13);
+  background:transparent;color:rgba(237,232,222,.52);cursor:pointer;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  transition:border-color .25s,color .25s,opacity .25s
+}
+.exp2-arrow:hover:not([disabled]){border-color:var(--flame);color:var(--flame)}
+.exp2-arrow[disabled]{opacity:.14;cursor:default;pointer-events:none}
+.exp2-arrow svg{
+  width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.5;
+  stroke-linecap:round;stroke-linejoin:round;pointer-events:none;
+  transition:transform .25s var(--ease)
+}
+#exp2-prev:hover:not([disabled]) svg{transform:translateX(-3px)}
+#exp2-next:hover:not([disabled]) svg{transform:translateX(3px)}
+
+/* Drag hint — fades to gone after first drag */
+.exp2-drag-hint{
+  font-family:var(--ff-ui);font-size:8px;letter-spacing:.28em;text-transform:uppercase;
+  color:rgba(237,232,222,.26);margin-left:10px;flex-shrink:0;
+  transition:opacity .6s ease;pointer-events:none;user-select:none
+}
+.exp2-drag-hint.is-gone{opacity:0}
+
+/* ── No-GSAP fallback ── */
+.exp2-pin--flow{display:block;padding-bottom:6vh}
+.exp2-pin--flow .exp2-head{padding:110px 24px 0}
+.exp2-pin--flow .exp2-counter{display:none}
+.exp2-pin--flow .exp2-viewport{overflow-x:auto;overflow-y:hidden;cursor:auto;padding-top:40px;mask-image:none;-webkit-mask-image:none}
+.exp2-pin--flow .exp2-track{padding:0 24px;gap:16px}
+.exp2-pin--flow .exp2-card{width:86vw}
+.exp2-pin--flow .exp2-card-photo{height:62vw;max-height:420px;border-radius:16px}
+.exp2-pin--flow .exp2-progress{padding-top:32px}
 
 /* ══ MENU GLIMPSE (split composition, flipped video-left/text-right, warm-cream half) ══ */
 #menu-glimpse{display:grid;grid-template-columns:1fr 1fr;min-height:100vh;background:var(--ash)}
@@ -834,22 +970,18 @@ body::after{
 }
 .mg-body.vis{opacity:1;transform:none}
 .mg-link{
-  display:inline-flex;align-items:center;gap:20px;margin-top:52px;
-  font-family:var(--ff-ui);font-size:9px;letter-spacing:.3em;text-transform:uppercase;
-  color:var(--flame);text-decoration:none;
+  display:inline-flex;align-items:center;gap:0;margin-top:52px;
+  font-family:var(--ff-ui);font-size:10px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--cream);text-decoration:none;
+  background:var(--ember);
+  padding:18px 44px;
   opacity:0;transform:translateY(14px);
-  transition:opacity .7s var(--ease) .32s,transform .7s var(--ease) .32s,gap .3s var(--ease)
+  transition:opacity .7s var(--ease) .32s,transform .7s var(--ease) .32s,background .28s
 }
 .mg-link.vis{opacity:1;transform:none}
-.mg-link:hover{gap:30px}
-.mg-link-bar{width:36px;height:1px;background:var(--flame);position:relative;transition:width .3s var(--ease)}
-.mg-link:hover .mg-link-bar{width:52px}
-.mg-link-bar::after{
-  content:'';position:absolute;right:-1px;top:-3.5px;
-  width:7px;height:7px;
-  border-right:1px solid var(--flame);border-top:1px solid var(--flame);
-  transform:rotate(45deg)
-}
+.mg-link:hover{background:var(--flame);color:var(--espresso)}
+.mg-link-bar{display:none}
+.mg-link-bar::after{display:none}
 .mg-visual{order:1;position:relative;overflow:hidden}
 .mg-film{
   position:absolute;inset:0;overflow:hidden
@@ -971,8 +1103,13 @@ footer{
   .ti-col{border-right:none;border-bottom:1px solid rgba(196,123,58,.06)}
   .ti-col:last-child{border-bottom:none}
   .sp-line{font-size:clamp(28px,7vw,52px)}
-  .exp-card{width:78%}
-  .exp-track{gap:24px}
+  .exp2-pin--flow .exp2-card{width:84vw}
+  .exp2-counter{right:24px}
+  /* Dissolve mask shortened on tablet — more card still visible */
+  .exp2-viewport{
+    -webkit-mask-image:linear-gradient(to right,black 0%,black 82%,transparent 100%);
+    mask-image:linear-gradient(to right,black 0%,black 82%,transparent 100%)
+  }
 }
 @media(max-width:768px){
   #nav{padding:0 24px}
@@ -1007,25 +1144,22 @@ footer{
   .process-dots{right:24px;bottom:36px}
   .process-step-label{left:24px;bottom:36px}
   #ingredients{padding:110px 24px}
-  .ing-inner{grid-template-columns:1fr;gap:48px}
-  .ing-photo-wrap{order:-1}
-  .ing-photo{aspect-ratio:16/10}
-  .ing-oil{width:80%;height:70%;left:-6%;top:-8%}
-  .ing-item{flex-wrap:wrap;gap:6px 26px}
-  .ing-item-line{width:100%;padding-left:76px}
+  .ing-inner{grid-template-columns:1fr;gap:40px}
+  .ing-panel-wrap{order:-1}
+  .ing-panel{height:clamp(240px,55vw,380px);border-radius:14px}
+  .ing-oil{width:70%;height:60%;right:-4%;top:-6%}
+  .ing-item{gap:0 20px}
+  .ing-item-line{padding-left:88px /* 68px num + 20px gap */}
   #social-proof{padding:110px 24px 110px}
   .sp-stats{gap:32px 40px}
   .sp-quote::before{font-size:140px}
-  #experience{padding:110px 24px 100px}
-  .exp-h2{margin-bottom:56px}
-  .exp-carousel{margin:0 -24px}
-  .exp-track{gap:16px;padding-left:24px}
-  .exp-card{width:88%}
-  .exp-card-photo{aspect-ratio:4/3}
-  .exp-card-text{padding-left:22px;margin-top:22px}
-  .exp-card-kicker{margin:18px 0 14px}
-  .exp-controls{margin-top:40px;gap:20px;padding-left:24px;padding-right:24px}
-  .exp-arrow{width:42px;height:42px}
+  .exp2-head{padding:7vh 24px 0}
+  .exp2-counter{top:7vh;right:24px}
+  .exp2-drag-hint{display:none}
+  .exp2-viewport{mask-image:none;-webkit-mask-image:none}
+  .exp2-pin--flow .exp2-head{padding:90px 24px 0}
+  .exp2-pin--flow .exp2-card{width:88vw}
+  .exp2-pin--flow .exp2-card-photo{height:68vw}
   .mg-text{padding:80px 24px}
   #the-table{padding:100px 24px 80px}
   footer{flex-direction:column;gap:20px;text-align:center;padding:36px 24px}
@@ -1040,15 +1174,11 @@ footer{
   .sp-badges{justify-content:center}
   .sp-badge{min-width:calc(50% - 1px)}
   .table-invitation{font-size:clamp(38px,10vw,70px)}
-  .ing-item-name{font-size:clamp(22px,7vw,30px);min-width:0}
+  .ing-item-name{font-size:clamp(20px,7vw,28px);min-width:0}
   .ing-item-num{width:48px;font-size:11px}
-  .ing-item-line{padding-left:48px}
-  .ing-list::before{left:24px}
-  .exp-card{width:90%}
-  .exp-card-text{padding-left:18px}
-  .exp-controls{gap:14px}
-  .exp-arrow{width:38px;height:38px}
-  .exp-arrow svg{width:15px;height:15px}
+  .ing-item-line{padding-left:68px /* 48px num + 20px gap */}
+  .exp2-pin--flow .exp2-card{width:90vw}
+  .exp2-pin--flow .exp2-card-photo{height:72vw}
 }
 
 /* ══ HERO ANIMATION (frame sequence) ══ */
@@ -1558,55 +1688,98 @@ footer{
 <section id="ingredients">
   <div class="ing-leaves" id="ing-leaves" aria-hidden="true"></div>
   <div class="ing-inner">
+
+    <!-- ── Left: numbered ingredient list ── -->
     <div class="ing-text">
       <p class="ing-pre">
         <span class="hr-only">Sastojci</span>
         <span class="en-only">Ingredients</span>
       </p>
-      <div class="ing-list">
-        <div class="ing-item">
+      <div class="ing-list" role="list">
+
+        <div class="ing-item" role="listitem" tabindex="0" data-index="0" aria-label="San Marzano DOP">
           <span class="ing-item-num">01</span>
           <span class="ing-item-name">San Marzano <em>DOP</em></span>
           <span class="ing-item-line hr-only">Zaštićeno podrijetlo. Bez iznimke.</span>
           <span class="ing-item-line en-only">Protected origin. No exception.</span>
+          <span class="ing-item-accent" aria-hidden="true"></span>
         </div>
-        <div class="ing-item">
+
+        <div class="ing-item" role="listitem" tabindex="0" data-index="1" aria-label="Caputo 00">
           <span class="ing-item-num">02</span>
           <span class="ing-item-name">Caputo <em>00</em></span>
           <span class="ing-item-line hr-only">Brašno iz Napulja. Temelj svega.</span>
           <span class="ing-item-line en-only">Flour from Naples. The foundation of everything.</span>
+          <span class="ing-item-accent" aria-hidden="true"></span>
         </div>
-        <div class="ing-item">
+
+        <div class="ing-item" role="listitem" tabindex="0" data-index="2" aria-label="Fior di Latte">
           <span class="ing-item-num">03</span>
           <span class="ing-item-name">Fior di <em>Latte</em></span>
           <span class="ing-item-line hr-only">Mliječna, blaga, savršeno jednostavna.</span>
           <span class="ing-item-line en-only">Milky, mild, perfectly simple.</span>
+          <span class="ing-item-accent" aria-hidden="true"></span>
         </div>
-        <div class="ing-item">
+
+        <div class="ing-item" role="listitem" tabindex="0" data-index="3">
           <span class="ing-item-num">04</span>
           <span class="ing-item-name hr-only">Svježi <em>bosiljak</em></span>
           <span class="ing-item-name en-only">Fresh <em>basil</em></span>
           <span class="ing-item-line hr-only">Svjež, zelen, neopisivo mirisan.</span>
           <span class="ing-item-line en-only">Fresh, green, indescribably fragrant.</span>
+          <span class="ing-item-accent" aria-hidden="true"></span>
         </div>
-        <div class="ing-item">
+
+        <div class="ing-item" role="listitem" tabindex="0" data-index="4">
           <span class="ing-item-num">05</span>
           <span class="ing-item-name hr-only">Maslinovo <em>ulje</em></span>
           <span class="ing-item-name en-only">Olive <em>oil</em></span>
           <span class="ing-item-line hr-only">Tekuće zlato koje sve povezuje.</span>
           <span class="ing-item-line en-only">The liquid gold that ties everything together.</span>
+          <span class="ing-item-accent" aria-hidden="true"></span>
         </div>
+
       </div>
       <p class="ing-sub hr-only">Pet sastojaka. Nula kompromisa. Sve ostalo je samo tehnika.</p>
       <p class="ing-sub en-only">Five ingredients. Zero compromise. Everything else is just technique.</p>
     </div>
-    <div class="ing-photo-wrap" data-parallax="0.07">
+
+    <!-- ── Right: reactive image panel ── -->
+    <div class="ing-panel-wrap">
       <div class="ing-oil" aria-hidden="true"></div>
-      <div class="ing-photo" aria-hidden="true">
-        <img src="Assets/frankos photo 3.jpg" alt="" loading="lazy">
+      <div class="ing-panel" id="ing-panel" aria-label="Fotografija aktivnog sastojka" aria-live="polite">
+
+        <div class="ing-img" data-img="0">
+          <img src="Assets/ingredients/san-marzano.jpg" alt="San Marzano DOP rajčice" loading="lazy">
+          <p class="ing-img-caption" aria-hidden="true">San Marzano <em>DOP</em></p>
+        </div>
+
+        <div class="ing-img" data-img="1">
+          <img src="Assets/ingredients/flour.jpg" alt="Caputo 00 brašno" loading="lazy">
+          <p class="ing-img-caption" aria-hidden="true">Caputo <em>00</em></p>
+        </div>
+
+        <div class="ing-img" data-img="2">
+          <img src="Assets/ingredients/fior-di-latte.jpeg" alt="Fior di Latte mozzarella" loading="lazy">
+          <p class="ing-img-caption" aria-hidden="true">Fior di <em>Latte</em></p>
+        </div>
+
+        <div class="ing-img" data-img="3">
+          <img src="Assets/ingredients/basil.webp" alt="Svježi bosiljak" loading="lazy">
+          <p class="ing-img-caption hr-only" aria-hidden="true">Svježi <em>bosiljak</em></p>
+          <p class="ing-img-caption en-only" aria-hidden="true">Fresh <em>basil</em></p>
+        </div>
+
+        <div class="ing-img" data-img="4">
+          <img src="Assets/ingredients/olive-oil.jpg" alt="Maslinovo ulje" loading="lazy">
+          <p class="ing-img-caption hr-only" aria-hidden="true">Maslinovo <em>ulje</em></p>
+          <p class="ing-img-caption en-only" aria-hidden="true">Olive <em>oil</em></p>
+        </div>
+
       </div>
       <div class="ing-dust" id="ing-dust" aria-hidden="true"></div>
     </div>
+
   </div>
 </section>
 
@@ -1685,82 +1858,105 @@ footer{
 <!-- EXPERIENCE                          -->
 <!-- ═══════════════════════════════════ -->
 <section id="experience">
-  <div class="exp-inner">
-    <p class="exp-pre">
-      <span class="hr-only">Doživljaj</span>
-      <span class="en-only">The Experience</span>
-    </p>
-    <h2 class="exp-h2">
-      <span class="hr-only">Zašto se gosti <em>vraćaju.</em></span>
-      <span class="en-only">Why guests <em>return.</em></span>
-    </h2>
+  <div class="exp2-pin" id="exp2-pin">
 
-    <div class="exp-carousel" id="exp-carousel" tabindex="0" role="region" aria-roledescription="carousel" aria-label="Zašto se gosti vraćaju">
-      <div class="exp-viewport" id="exp-viewport">
-      <div class="exp-track" id="exp-track">
+    <div class="exp2-bg" aria-hidden="true">
+      <div class="exp2-bg-layer is-active" data-mood="0"></div>
+      <div class="exp2-bg-layer" data-mood="1"></div>
+      <div class="exp2-bg-layer" data-mood="2"></div>
+    </div>
 
-        <div class="exp-card">
-          <div class="exp-card-photo">
+    <div class="exp2-head">
+      <p class="exp2-pre">
+        <span class="hr-only">Doživljaj</span>
+        <span class="en-only">The Experience</span>
+      </p>
+      <h2 class="exp2-h2">
+        <span class="hr-only">Zašto se gosti <em>vraćaju.</em></span>
+        <span class="en-only">Why guests <em>return.</em></span>
+      </h2>
+      <p class="exp2-counter" id="exp2-counter" aria-hidden="true">
+        <span class="exp2-counter-cur" id="exp2-counter-cur">01</span>
+        <span> — </span>
+        <span id="exp2-counter-total">03</span>
+      </p>
+    </div>
+
+    <div class="exp2-viewport" id="exp2-viewport" role="region" aria-label="Zašto se gosti vraćaju">
+      <div class="exp2-track" id="exp2-track">
+
+        <article class="exp2-card">
+          <div class="exp2-card-photo">
             <img src="Assets/photo frankos.jpg" alt="" loading="lazy" style="object-position:50% 38%">
           </div>
-          <div class="exp-card-text">
-            <span class="exp-card-num">01</span>
-            <span class="exp-card-kicker hr-only">Atmosfera</span>
-            <span class="exp-card-kicker en-only">Atmosphere</span>
-            <h3 class="exp-card-h3 hr-only">Večeri koje <em>se pamte.</em></h3>
-            <h3 class="exp-card-h3 en-only">Evenings worth <em>remembering.</em></h3>
-            <p class="exp-card-body hr-only">Toplo svjetlo, žamor razgovora, čaša u ruci. Franko's nije mjesto gdje samo jedete — mjesto je gdje vrijeme uspori.</p>
-            <p class="exp-card-body en-only">Warm light, the hum of conversation, a glass in hand. Franko's isn't just where you eat — it's where time slows down.</p>
+          <div class="exp2-card-text">
+            <div class="exp2-card-eyebrow">
+              <span class="exp2-card-rule"></span>
+              <span class="exp2-card-num">01</span>
+              <span class="exp2-card-kicker hr-only">Atmosfera</span>
+              <span class="exp2-card-kicker en-only">Atmosphere</span>
+            </div>
+            <h3 class="exp2-card-h3 hr-only">Večeri koje <em>se pamte.</em></h3>
+            <h3 class="exp2-card-h3 en-only">Evenings worth <em>remembering.</em></h3>
+            <p class="exp2-card-body hr-only">Toplo svjetlo, žamor razgovora, čaša u ruci. Franko's nije mjesto gdje samo jedete — mjesto je gdje vrijeme uspori.</p>
+            <p class="exp2-card-body en-only">Warm light, the hum of conversation, a glass in hand. Franko's isn't just where you eat — it's where time slows down.</p>
           </div>
-        </div>
+        </article>
 
-        <div class="exp-card">
-          <div class="exp-card-photo">
-            <img src="Assets/2 pizza.jpg" alt="" loading="lazy" style="object-position:50% 38%">
+        <article class="exp2-card">
+          <div class="exp2-card-photo">
+            <img src="Assets/girls photo.jpg" alt="" loading="lazy" style="object-position:50% 38%">
           </div>
-          <div class="exp-card-text">
-            <span class="exp-card-num">02</span>
-            <span class="exp-card-kicker hr-only">Stalni gosti</span>
-            <span class="exp-card-kicker en-only">Regulars</span>
-            <h3 class="exp-card-h3 hr-only">Mnogi dođu jednom. <em>Većina se vrati.</em></h3>
-            <h3 class="exp-card-h3 en-only">Many come once. <em>Most come back.</em></h3>
-            <p class="exp-card-body hr-only">Isti stol, isto lice na vratima, isti osjećaj kao prvi put. Stalni gosti nisu slučajnost — oni su dokaz.</p>
-            <p class="exp-card-body en-only">The same table, the same face at the door, the same feeling as the first time. Regulars aren't a coincidence — they're proof.</p>
+          <div class="exp2-card-text">
+            <div class="exp2-card-eyebrow">
+              <span class="exp2-card-rule"></span>
+              <span class="exp2-card-num">02</span>
+              <span class="exp2-card-kicker hr-only">Stalni gosti</span>
+              <span class="exp2-card-kicker en-only">Regulars</span>
+            </div>
+            <h3 class="exp2-card-h3 hr-only">Mnogi dođu jednom. <em>Većina se vrati.</em></h3>
+            <h3 class="exp2-card-h3 en-only">Many come once. <em>Most come back.</em></h3>
+            <p class="exp2-card-body hr-only">Isti stol, isto lice na vratima, isti osjećaj kao prvi put. Stalni gosti nisu slučajnost — oni su dokaz.</p>
+            <p class="exp2-card-body en-only">The same table, the same face at the door, the same feeling as the first time. Regulars aren't a coincidence — they're proof.</p>
           </div>
-        </div>
+        </article>
 
-        <div class="exp-card">
-          <div class="exp-card-photo">
+        <article class="exp2-card">
+          <div class="exp2-card-photo">
             <img src="Assets/clean pizza cooking.jpg" alt="" loading="lazy" style="object-position:38% 18%">
           </div>
-          <div class="exp-card-text">
-            <span class="exp-card-num">03</span>
-            <span class="exp-card-kicker hr-only">Vatra</span>
-            <span class="exp-card-kicker en-only">The Fire</span>
-            <h3 class="exp-card-h3 hr-only">Miris koji vas dočeka <em>prije pizze.</em></h3>
-            <h3 class="exp-card-h3 en-only">The smell that <em>greets you first.</em></h3>
-            <p class="exp-card-body hr-only">Drvo, dim, svježi bosiljak. Prepoznat ćete Franko's prije nego što vidite jelovnik.</p>
-            <p class="exp-card-body en-only">Wood, smoke, fresh basil. You'll recognise Franko's before you even see the menu.</p>
+          <div class="exp2-card-text">
+            <div class="exp2-card-eyebrow">
+              <span class="exp2-card-rule"></span>
+              <span class="exp2-card-num">03</span>
+              <span class="exp2-card-kicker hr-only">Vatra</span>
+              <span class="exp2-card-kicker en-only">The Fire</span>
+            </div>
+            <h3 class="exp2-card-h3 hr-only">Miris koji vas dočeka <em>prije pizze.</em></h3>
+            <h3 class="exp2-card-h3 en-only">The smell that <em>greets you first.</em></h3>
+            <p class="exp2-card-body hr-only">Drvo, dim, svježi bosiljak. Prepoznat ćete Franko's prije nego što vidite jelovnik.</p>
+            <p class="exp2-card-body en-only">Wood, smoke, fresh basil. You'll recognise Franko's before you even see the menu.</p>
           </div>
-        </div>
+        </article>
 
-      </div>
-      </div>
-
-      <div class="exp-controls">
-        <button type="button" class="exp-arrow exp-arrow--prev" id="exp-prev" aria-label="Prethodna kartica">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5L8 12L15 19"/></svg>
-        </button>
-        <div class="exp-dots" id="exp-dots" role="tablist" aria-label="Odaberi karticu">
-          <button type="button" class="exp-dot" role="tab" aria-label="Prikaži karticu 1"></button>
-          <button type="button" class="exp-dot" role="tab" aria-label="Prikaži karticu 2"></button>
-          <button type="button" class="exp-dot" role="tab" aria-label="Prikaži karticu 3"></button>
-        </div>
-        <button type="button" class="exp-arrow exp-arrow--next" id="exp-next" aria-label="Sljedeća kartica">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5L16 12L9 19"/></svg>
-        </button>
       </div>
     </div>
+
+    <div class="exp2-progress" id="exp2-progress" role="group" aria-label="Navigacija karuselom">
+      <button class="exp2-arrow" id="exp2-prev" aria-label="Prethodni" disabled>
+        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <span class="exp2-progress-dot is-active" role="button" tabindex="0" aria-label="Kartica 1"></span>
+      <span class="exp2-progress-dot" role="button" tabindex="0" aria-label="Kartica 2"></span>
+      <span class="exp2-progress-dot" role="button" tabindex="0" aria-label="Kartica 3"></span>
+      <button class="exp2-arrow" id="exp2-next" aria-label="Sljedeći">
+        <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+      <span class="exp2-drag-hint" id="exp2-drag-hint" aria-hidden="true">
+        <span class="hr-only">Povuci</span><span class="en-only">Drag</span>&thinsp;→
+      </span>
+    </div>
+
   </div>
 </section>
 
@@ -2140,12 +2336,6 @@ const io = new IntersectionObserver(entries => {
       });
     }
 
-    // Staggered ingredient list
-    if (el.classList.contains('ing-list')) {
-      const items = el.querySelectorAll('.ing-item');
-      items.forEach((it, i) => setTimeout(() => it.classList.add('vis'), i * 110));
-    }
-
     // Animated counters
     if (el.classList.contains('stmt-facts') || el.classList.contains('sp-stats')) {
       el.querySelectorAll('[data-countup]').forEach(n => runCountUp(n));
@@ -2157,141 +2347,292 @@ const io = new IntersectionObserver(entries => {
 
 [
   '.stmt-pre', '.stmt-big', '.stmt-block', '.stmt-facts', '.stmt-photo',
-  '.ing-pre', '.ing-list', '.ing-sub', '.ing-photo',
+  '.ing-pre', '.ing-sub',
   '.sp-quote', '.sp-pre', '.sp-lines', '.sp-stats', '.sp-badges',
-  '.exp-pre', '.exp-h2', '.exp-carousel',
   '.mg-kicker', '.mg-h2', '.mg-body', '.mg-link',
   '.table-top', '.table-calls', '.table-info'
 ].forEach(sel => {
   document.querySelectorAll(sel).forEach(el => io.observe(el));
 });
 
-/* ── EXPERIENCE CAROUSEL (GSAP Draggable + Inertia, scroll-snap fallback) ── */
-(function initExpCarousel() {
-  const carousel = document.getElementById('exp-carousel');
-  const viewport = document.getElementById('exp-viewport');
-  const track    = document.getElementById('exp-track');
-  if (!carousel || !viewport || !track) return;
+/* ── EXPERIENCE — premium editorial carousel ──
+   No ScrollTrigger pin. No scroll hijacking.
+   Drag/swipe, arrows, dots. GSAP x-tween on track. */
+(function initExperience() {
+  const pin        = document.getElementById('exp2-pin');
+  const viewport   = document.getElementById('exp2-viewport');
+  const track      = document.getElementById('exp2-track');
+  if (!pin || !viewport || !track) return;
 
-  const cards   = Array.from(track.children);
-  const prevBtn = document.getElementById('exp-prev');
-  const nextBtn = document.getElementById('exp-next');
-  const dots    = Array.from(document.querySelectorAll('#exp-dots .exp-dot'));
-  const count   = cards.length;
+  const cards      = Array.from(track.children);
+  const bgLayers   = Array.from(pin.querySelectorAll('.exp2-bg-layer'));
+  const dots       = Array.from(document.querySelectorAll('#exp2-progress .exp2-progress-dot'));
+  const btnPrev    = document.getElementById('exp2-prev');
+  const btnNext    = document.getElementById('exp2-next');
+  const counterCur = document.getElementById('exp2-counter-cur');
+  const hintEl     = document.getElementById('exp2-drag-hint');
+  const total      = cards.length;
+  const reduceM    = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let current      = 0;
+  let hintDismissed = false;
 
-  const hasDrag = !!(window.gsap && window.Draggable && window.InertiaPlugin);
-
-  // No GSAP/Draggable (e.g. CDN blocked)? Fall back to native horizontal
-  // scroll-snap — still smooth, swipeable, and never blocks vertical scroll.
-  if (!hasDrag) {
-    viewport.classList.add('exp-viewport--native');
-    prevBtn.addEventListener('click', () => {
-      viewport.scrollBy({ left: -cards[0].getBoundingClientRect().width - 16, behavior: 'smooth' });
-    });
-    nextBtn.addEventListener('click', () => {
-      viewport.scrollBy({ left: cards[0].getBoundingClientRect().width + 16, behavior: 'smooth' });
-    });
-    dots.forEach((dot, i) => dot.addEventListener('click', () => {
-      cards[i].scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
-    }));
-    if (dots[0]) dots[0].classList.add('is-active');
+  // No-GSAP fallback: native scroll-snap
+  if (!window.gsap) {
+    pin.classList.add('exp2-pin--flow');
+    viewport.classList.add('exp2-viewport--native');
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) e.target.classList.add('is-vis');
+        if (e.intersectionRatio > 0.55) {
+          const i = cards.indexOf(e.target);
+          bgLayers.forEach((l, li) => l.classList.toggle('is-active', li === i));
+          dots.forEach((d, di) => d.classList.toggle('is-active', di === i));
+        }
+      });
+    }, { threshold: [0.35, 0.55] });
+    cards.forEach(c => io.observe(c));
     return;
   }
 
-  gsap.registerPlugin(Draggable, InertiaPlugin);
-
-  let step        = 0;  // px distance between snap points (card width + gap)
-  let minX        = 0;  // left-most bound (negative px)
-  let activeIndex = 0;
-  let draggable   = null;
-
-  function measure() {
-    const gap = parseFloat(getComputedStyle(track).columnGap) || 0;
-    step = cards[0].getBoundingClientRect().width + gap;
-    minX = Math.min(0, viewport.clientWidth - track.scrollWidth);
+  function targetX(i) {
+    return -(cards[i].offsetLeft - cards[0].offsetLeft);
   }
 
-  function snapPoint(i) {
-    return Math.max(minX, Math.round(-i * step));
+  function pad(n) { return String(n + 1).padStart(2, '0'); }
+
+  function updateControls(i) {
+    bgLayers.forEach((l, li) => l.classList.toggle('is-active', li === i));
+    dots.forEach((d, di) => d.classList.toggle('is-active', di === i));
+    if (btnPrev) btnPrev.disabled = (i === 0);
+    if (btnNext) btnNext.disabled = (i === total - 1);
+    if (counterCur) counterCur.textContent = pad(i);
+    current = i;
   }
 
-  // Smoothly scales/dims cards based on distance from the active slide.
-  function updateCardStates(x) {
-    const progress = step ? -x / step : 0;
-    cards.forEach((card, i) => {
-      const dist = Math.min(Math.abs(i - progress), 1);
-      gsap.set(card, { scale: 1 - dist * 0.06, opacity: 1 - dist * 0.4 });
+  function goTo(i, fromInit) {
+    i = Math.max(0, Math.min(total - 1, i));
+    const dur = reduceM ? 0 : 0.7;
+
+    gsap.to(track, { x: targetX(i), duration: dur, ease: 'power3.inOut', overwrite: true });
+
+    cards.forEach((card, ci) => {
+      const isActive = ci === i;
+      card.classList.toggle('is-active', isActive);
+      gsap.to(card, {
+        opacity: isActive ? 1 : 0.48,
+        y:       isActive ? 0 : 0,
+        scale:   isActive ? 1 : 0.94,
+        duration: reduceM ? 0 : 0.6,
+        ease: 'power3.inOut',
+        overwrite: 'auto'
+      });
+
+      // Heading reveal on the incoming active card (skip on initial render)
+      if (isActive && !fromInit && !reduceM) {
+        const headings = card.querySelectorAll('.exp2-card-h3');
+        headings.forEach(h => {
+          gsap.fromTo(h,
+            { y: 12, opacity: 0 },
+            { y: 0, opacity: 1, duration: 0.42, ease: 'power2.out', delay: 0.14, overwrite: 'auto' }
+          );
+        });
+      }
     });
+
+    updateControls(i);
   }
 
-  function setActive(i) {
-    activeIndex = gsap.utils.clamp(0, count - 1, i);
-    dots.forEach((d, di) => {
-      d.classList.toggle('is-active', di === activeIndex);
-      d.setAttribute('aria-selected', di === activeIndex ? 'true' : 'false');
+  // Dismiss drag hint on first real interaction
+  function dismissHint() {
+    if (hintDismissed || !hintEl) return;
+    hintDismissed = true;
+    hintEl.classList.add('is-gone');
+  }
+
+  // Dot clicks
+  dots.forEach((dot, i) => {
+    dot.addEventListener('click', () => { dismissHint(); goTo(i); });
+    dot.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); dismissHint(); goTo(i); }
     });
-    prevBtn.disabled = activeIndex <= 0;
-    nextBtn.disabled = activeIndex >= count - 1;
+  });
+
+  // Arrow clicks
+  if (btnPrev) btnPrev.addEventListener('click', () => { dismissHint(); goTo(current - 1); });
+  if (btnNext) btnNext.addEventListener('click', () => { dismissHint(); goTo(current + 1); });
+
+  // Keyboard on viewport
+  viewport.setAttribute('tabindex', '0');
+  viewport.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight') { e.preventDefault(); dismissHint(); goTo(current + 1); }
+    if (e.key === 'ArrowLeft')  { e.preventDefault(); dismissHint(); goTo(current - 1); }
+  });
+
+  // Drag / swipe with edge resistance
+  const drag = { active: false, startX: 0, originX: 0 };
+
+  function dragStart(clientX) {
+    drag.active  = true;
+    drag.startX  = clientX;
+    drag.originX = gsap.getProperty(track, 'x');
+    gsap.killTweensOf(track);
+    viewport.classList.add('is-dragging');
+  }
+  function dragMove(clientX) {
+    if (!drag.active) return;
+    const delta = clientX - drag.startX;
+    const raw   = drag.originX + delta;
+    const minX  = targetX(total - 1);
+    const maxX  = 0;
+    let x = raw;
+    if (x > maxX) x = maxX + (x - maxX) * 0.28;
+    if (x < minX) x = minX + (x - minX) * 0.28;
+    gsap.set(track, { x });
+  }
+  function dragEnd(clientX) {
+    if (!drag.active) return;
+    drag.active = false;
+    viewport.classList.remove('is-dragging');
+    dismissHint();
+    const sw  = total > 1 ? (cards[1].offsetLeft - cards[0].offsetLeft) : viewport.clientWidth;
+    const cur = gsap.getProperty(track, 'x');
+    const i   = Math.max(0, Math.min(total - 1, Math.round(-cur / sw)));
+    goTo(i);
   }
 
-  function goTo(i) {
-    const idx = gsap.utils.clamp(0, count - 1, i);
-    setActive(idx);
-    gsap.to(track, {
-      x: snapPoint(idx),
-      duration: 0.9,
-      ease: 'expo.out',
-      onUpdate: () => {
-        if (draggable) draggable.update();
-        updateCardStates(gsap.getProperty(track, 'x'));
+  track.addEventListener('mousedown',  e => { e.preventDefault(); dragStart(e.clientX); });
+  window.addEventListener('mousemove', e => dragMove(e.clientX));
+  window.addEventListener('mouseup',   e => dragEnd(e.clientX));
+  track.addEventListener('touchstart', e => dragStart(e.touches[0].clientX), { passive: true });
+  track.addEventListener('touchmove',  e => dragMove(e.touches[0].clientX),  { passive: true });
+  track.addEventListener('touchend',   e => dragEnd(e.changedTouches[0].clientX));
+
+  // Recalculate on resize
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      gsap.set(track, { x: targetX(current) });
+      if (window.ScrollTrigger) window.ScrollTrigger.refresh();
+    }, 150);
+  });
+
+  // Init
+  gsap.set(track, { x: 0 });
+  cards[0].classList.add('is-active');
+  gsap.set(cards[0], { opacity: 1, y: 0, scale: 1 });
+  cards.forEach((card, i) => {
+    if (i > 0) gsap.set(card, { opacity: 0.48, y: 0, scale: 0.94 });
+  });
+  updateControls(0);
+})();
+
+/* ── INGREDIENTS — reactive image panel + row interaction ──
+   One-shot ScrollTrigger entrance (stagger rise + panel fade, no pin).
+   Hover / tap / keyboard on each row crossfades the right-hand image.
+   Ken Burns drift is a CSS keyframe on .ing-img.is-active img so it
+   respects prefers-reduced-motion without any extra JS branching. */
+(function initIngredients() {
+  if (!window.gsap || !window.ScrollTrigger) return;
+  gsap.registerPlugin(ScrollTrigger);
+
+  const section = document.getElementById('ingredients');
+  const panel   = document.getElementById('ing-panel');
+  if (!section || !panel) return;
+
+  const items   = Array.from(section.querySelectorAll('.ing-item'));
+  const imgs    = Array.from(panel.querySelectorAll('.ing-img'));
+  const reduceM = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const fadeDur = reduceM ? 0.15 : 0.6;
+  const fadeScl = reduceM ? 1    : 1.04;
+
+  let activeIdx = 0;
+
+  /* GSAP owns all opacity/transform on items and images from here on */
+  gsap.set(items, { opacity: 0, y: 30 });
+  gsap.set(panel, { opacity: 0 });
+  gsap.set(imgs,  { opacity: 0, scale: fadeScl });
+
+  /* ── Swap image + update row states ── */
+  function activateItem(i) {
+    if (i === activeIdx || i < 0 || i >= items.length) return;
+    const prev = activeIdx;
+    activeIdx  = i;
+
+    /* Outgoing image */
+    imgs[prev].classList.remove('is-active');
+    gsap.to(imgs[prev], { opacity: 0, scale: fadeScl, duration: fadeDur, ease: 'power2.inOut', overwrite: true });
+
+    /* Incoming image */
+    imgs[i].classList.add('is-active');
+    gsap.fromTo(imgs[i],
+      { opacity: 0, scale: fadeScl },
+      { opacity: 1, scale: 1, duration: fadeDur, ease: 'power2.inOut', overwrite: true }
+    );
+
+    /* Only touch the two changing rows — avoids blanket overwriting all tweens */
+    [prev, i].forEach(idx => {
+      const item   = items[idx];
+      const active = idx === i;
+      const accent = item.querySelector('.ing-item-accent');
+
+      item.classList.toggle('is-active', active);
+
+      gsap.to(item, {
+        opacity: active ? 1 : 0.52,
+        duration: 0.35, ease: 'power2.out', overwrite: 'auto'
+      });
+
+      if (accent) {
+        gsap.to(accent, active
+          ? { scaleX: 1, duration: reduceM ? 0.15 : 0.44, ease: 'power2.out', overwrite: true }
+          : { scaleX: 0, duration: reduceM ? 0.1  : 0.18, ease: 'power2.in',  overwrite: true }
+        );
       }
     });
   }
 
-  measure();
-  updateCardStates(0);
-  setActive(0);
-
-  draggable = Draggable.create(track, {
-    type: 'x',
-    inertia: true,
-    edgeResistance: 0.85,
-    dragClickables: false,
-    bounds: { minX: minX, maxX: 0 },
-    snap: {
-      x: value => snapPoint(gsap.utils.clamp(0, count - 1, Math.round(-value / step)))
-    },
-    onPress() { track.classList.add('exp-track--grabbing'); },
-    onRelease() { track.classList.remove('exp-track--grabbing'); },
-    onDrag() { updateCardStates(this.x); },
-    onThrowUpdate() { updateCardStates(this.x); },
-    onThrowComplete() {
-      setActive(gsap.utils.clamp(0, count - 1, Math.round(-this.x / step)));
+  /* ── Scroll entrance: panel + staggered items, then activate row 0 ── */
+  const tl = gsap.timeline({
+    scrollTrigger: {
+      trigger: section,
+      start: 'top 72%',
+      once: true
     }
-  })[0];
-
-  prevBtn.addEventListener('click', () => goTo(activeIndex - 1));
-  nextBtn.addEventListener('click', () => goTo(activeIndex + 1));
-  dots.forEach((dot, i) => dot.addEventListener('click', () => goTo(i)));
-
-  carousel.addEventListener('keydown', e => {
-    if (e.key === 'ArrowRight') { e.preventDefault(); goTo(activeIndex + 1); }
-    else if (e.key === 'ArrowLeft') { e.preventDefault(); goTo(activeIndex - 1); }
   });
 
-  // Recompute geometry + bounds on resize without disturbing the active card.
-  let expResizeTimer;
-  window.addEventListener('resize', () => {
-    clearTimeout(expResizeTimer);
-    expResizeTimer = setTimeout(() => {
-      measure();
-      const x = snapPoint(activeIndex);
-      gsap.set(track, { x });
-      draggable.applyBounds({ minX: minX, maxX: 0 });
-      draggable.update();
-      updateCardStates(x);
-    }, 150);
-  }, { passive: true });
+  tl
+    .to(panel, {
+      opacity: 1,
+      duration: reduceM ? 0.3 : 0.85, ease: 'power2.out'
+    }, 0)
+    .to(items, {
+      opacity: 0.52, y: 0,
+      duration: reduceM ? 0.25 : 0.65, ease: 'power3.out',
+      stagger: reduceM ? 0 : 0.1
+    }, 0.12)
+    /* Activate first row + image after initial items begin revealing */
+    .add(function () {
+      gsap.set(imgs[0],  { opacity: 1, scale: 1 });
+      imgs[0].classList.add('is-active');
+
+      items[0].classList.add('is-active');
+      gsap.to(items[0], { opacity: 1, duration: 0.35, ease: 'power2.out', overwrite: 'auto' });
+
+      const accent0 = items[0].querySelector('.ing-item-accent');
+      if (accent0) gsap.to(accent0, { scaleX: 1, duration: reduceM ? 0.15 : 0.44, ease: 'power2.out' });
+
+      ScrollTrigger.refresh();
+    }, 0.3);
+
+  /* ── Row interaction: hover (desktop) + click/tap (mobile) + keyboard ── */
+  items.forEach((item, i) => {
+    item.addEventListener('mouseenter', () => activateItem(i));
+    item.addEventListener('click',      () => activateItem(i));
+    item.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activateItem(i); }
+    });
+  });
 })();
 
 /* ── MAGNETIC RESERVATION CARDS ── */
