@@ -1147,11 +1147,29 @@ footer{
   .process-counter{right:24px;font-size:35vw}
   .process-dots{right:24px;bottom:36px}
   .process-step-label{left:24px;bottom:36px}
-  #ingredients{padding:110px 24px}
-  .ing-inner{grid-template-columns:1fr;gap:40px}
-  .ing-panel-wrap{order:-1}
-  .ing-panel{height:clamp(240px,55vw,380px);border-radius:14px}
-  .ing-oil{width:70%;height:60%;right:-4%;top:-6%}
+  #ingredients{
+    padding:110px 24px;
+    /* clip (not hidden) so decorative overflow is clipped without creating
+       a scroll container — overflow:hidden would break position:sticky below */
+    overflow:clip
+  }
+  /* Decorative elements that bleed outside their bounds — hide on mobile */
+  .ing-leaves{display:none}
+  .ing-oil{display:none}
+  .ing-inner{grid-template-columns:1fr;gap:0;align-items:start}
+  /* Sticky image panel: pins just below the 68px fixed nav while the
+     ingredient list scrolls beneath it. order:-1 (set below) keeps it
+     visually first; sticky releases naturally when the section ends. */
+  .ing-panel-wrap{
+    order:-1;
+    position:sticky;
+    top:68px;
+    z-index:5;
+    /* Match section background so list rows don't bleed through as they scroll up */
+    background:linear-gradient(165deg,var(--ivory) 0%,var(--aged-paper) 100%);
+    padding-bottom:20px
+  }
+  .ing-panel{height:clamp(200px,36vh,260px);border-radius:14px}
   .ing-item{gap:0 20px}
   .ing-item-line{padding-left:88px /* 68px num + 20px gap */}
   #social-proof{padding:110px 24px 110px}
