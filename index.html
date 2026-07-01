@@ -1248,6 +1248,13 @@ footer{
   .exp2-counter{top:7vh;right:24px}
   .exp2-drag-hint{display:none}
   .exp2-viewport{mask-image:none;-webkit-mask-image:none}
+  .exp2-card-photo{height:clamp(200px,38vh,300px)}
+  .exp2-card-photo::before{
+    background:
+      linear-gradient(to top,rgba(6,4,2,.88) 0%,rgba(6,4,2,.28) 32%,transparent 60%),
+      linear-gradient(135deg,rgba(196,123,58,.09) 0%,transparent 52%)
+  }
+  .exp2-card-body{color:rgba(237,232,222,.84)}
   .exp2-pin--flow .exp2-head{padding:90px 24px 0}
   .exp2-pin--flow .exp2-card{width:88vw}
   .exp2-pin--flow .exp2-card-photo{height:68vw}
