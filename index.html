@@ -1137,6 +1137,10 @@ footer{
   #ps-3 .ps-bg img{object-position:center 35%}
   #ps-4 .ps-bg img{object-position:center 40%}
   #ps-5 .ps-bg img{object-position:center 50%}
+  /* On mobile images are separated from text — lift brightness so they're actually visible */
+  .ps-bg img,.ps-bg video{filter:brightness(.52) saturate(.72)}
+  #ps-1 .ps-bg video{filter:brightness(.52) saturate(.72)}
+  #ps-5 .ps-bg img{filter:brightness(.58) saturate(.8)}
   .ps-word{font-size:clamp(54px,13vw,80px)}
   .ps-sub{font-size:16px;max-width:100%}
 .stmt-fact-n{font-size:52px}
