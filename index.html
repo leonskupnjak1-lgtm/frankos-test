@@ -530,297 +530,184 @@ body::after{
   font-size:7px;letter-spacing:.42em;text-transform:uppercase;color:rgba(237,232,222,.12)
 }
 
-/* ══ SOCIAL PROOF ══ */
+/* ══ SOCIAL PROOF — editorial: testimonial → awards → recognition ══ */
 #social-proof{
   position:relative;overflow:hidden;
-  padding:var(--section-v) var(--gutter);
-  /* Four-zone tonal gradient:
-     zone 1 (quote)  — richest espresso, amber top-right warmth
-     zone 2 (awards) — deepest, coolest, most monumental
-     zone 3 (stats)  — amber warmth returns, inviting
-     zone 4 (badges) — near-void authority */
-  background:
-    radial-gradient(ellipse 65% 35% at 88% 4%, rgba(196,123,58,.22) 0%,transparent 52%),
-    radial-gradient(ellipse 48% 28% at 4%  50%, rgba(150,68,18,.16)  0%,transparent 55%),
-    radial-gradient(ellipse 80% 18% at 50% 68%, rgba(196,123,58,.10) 0%,transparent 50%),
-    radial-gradient(ellipse 70% 22% at 50% 100%,rgba(6,4,2,.70)      0%,transparent 50%),
-    linear-gradient(180deg,
-      #241808 0%,
-      #1C1306 20%,
-      #100E04 36%,
-      #0C0A03 52%,
-      #161108 66%,
-      #0D0A04 82%,
-      #070503 100%
-    )
+  padding:clamp(120px,14vw,220px) var(--gutter);
+  background:#0A0704;
+}
+/* One soft, near-invisible warm spotlight behind the center — the section's only light source */
+#social-proof::before{
+  content:'';position:absolute;inset:0;pointer-events:none;z-index:0;
+  background:radial-gradient(ellipse 60% 46% at 50% 30%,rgba(196,123,58,.09) 0%,transparent 62%)
 }
 
-/* Decorative texture overlay */
+/* Decorative grain texture overlay */
 .sp-texture{
   position:absolute;inset:0;pointer-events:none;z-index:0;
-  background:
-    radial-gradient(circle at 14% 92%,rgba(196,123,58,.07) 0%,transparent 48%),
-    radial-gradient(circle at 88% 55%,rgba(196,123,58,.04) 0%,transparent 38%)
+  background:radial-gradient(circle at 50% 92%,rgba(196,123,58,.05) 0%,transparent 50%)
 }
 
-.sp-inner{max-width:1200px;margin:0 auto;position:relative;z-index:1}
+.sp-inner{max-width:1080px;margin:0 auto;position:relative;z-index:1}
 
-/* ── Zone 1: Testimonial quote ── */
-.sp-quote{max-width:880px;margin:0 auto 164px;text-align:center;position:relative}
+/* ── Layer 1: Featured testimonial — the one focal point ── */
+.sp-quote{max-width:760px;margin:0 auto;text-align:center;position:relative}
 .sp-quote::before{
-  content:'\201C';position:absolute;top:-.56em;left:50%;transform:translateX(-50%);
-  font-family:var(--ff-d);font-weight:300;font-size:clamp(180px,22vw,320px);
-  color:rgba(196,123,58,.08);line-height:1;pointer-events:none;user-select:none;
-  animation:pqMarkBreathe 8s ease-in-out infinite
+  content:'\201C';position:absolute;top:-.62em;left:50%;transform:translateX(-50%);
+  font-family:var(--ff-d);font-weight:300;font-size:clamp(140px,16vw,240px);
+  color:rgba(196,123,58,.09);line-height:1;pointer-events:none;user-select:none
 }
-@keyframes pqMarkBreathe{0%,100%{opacity:.4;transform:translateX(-50%) scale(1)}50%{opacity:1;transform:translateX(-50%) scale(1.025)}}
-.sp-quote-stars{
-  display:block;color:var(--flame);font-size:13px;letter-spacing:6px;margin-bottom:44px;
-  position:relative;opacity:0;transform:translateY(10px);
-  transition:opacity .7s var(--ease),transform .7s var(--ease)
-}
-.sp-quote.vis .sp-quote-stars{opacity:1;transform:none}
 .sp-quote-text{
-  font-family:var(--ff-d);font-size:clamp(26px,3.6vw,46px);
-  font-weight:300;font-style:italic;color:rgba(237,232,222,.78);
-  line-height:1.58;letter-spacing:.01em;position:relative;
-  opacity:0;transform:translateY(20px);clip-path:inset(0 0 100% 0);
-  transition:opacity 1.1s var(--ease) .1s,transform 1.1s var(--ease) .1s,clip-path 1.3s var(--ease) .1s
+  font-family:var(--ff-d);font-size:clamp(24px,3vw,38px);
+  font-weight:300;font-style:italic;color:rgba(237,232,222,.86);
+  line-height:1.5;letter-spacing:.01em;position:relative;
+  opacity:0;transform:translateY(20px);
+  transition:opacity 1.3s var(--ease) .1s,transform 1.3s var(--ease) .1s
 }
-.sp-quote.vis .sp-quote-text{opacity:1;transform:none;clip-path:inset(0 0 0% 0)}
-.sp-quote-text em{font-style:italic;color:var(--cream)}
+.sp-quote.vis .sp-quote-text{opacity:1;transform:none}
+.sp-quote-text em{font-style:italic;color:var(--flame)}
+.sp-quote-byline{
+  display:flex;align-items:center;justify-content:center;gap:14px;
+  margin-top:36px;opacity:0;transform:translateY(10px);
+  transition:opacity 1s var(--ease) .5s,transform 1s var(--ease) .5s
+}
+.sp-quote.vis .sp-quote-byline{opacity:1;transform:none}
+.sp-quote-name{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:rgba(237,232,222,.42)}
+.sp-quote-stars{color:var(--flame);font-size:10px;letter-spacing:2px;opacity:.75}
 
-/* ── Zone 2: Award lines ── */
+/* ── Layer 2: Awards showcase ── */
+.sp-awards{margin-top:clamp(140px,16vw,220px);text-align:center}
 .sp-pre{
   font-size:8px;letter-spacing:.42em;text-transform:uppercase;
-  color:var(--flame);display:flex;align-items:center;gap:16px;
-  margin-bottom:80px;opacity:0;transform:translateY(14px);
+  color:var(--flame);display:flex;align-items:center;justify-content:center;gap:16px;
+  margin-bottom:28px;opacity:0;transform:translateY(14px);
   transition:opacity .8s var(--ease),transform .8s var(--ease)
 }
 .sp-pre.vis{opacity:1;transform:none}
-.sp-pre::before{content:'';width:18px;height:1px;background:rgba(196,123,58,.5);flex-shrink:0}
-.sp-lines{max-width:920px;padding-bottom:8px}
-.sp-line{
-  font-family:var(--ff-d);font-size:clamp(30px,5.2vw,72px);
-  font-weight:300;color:rgba(237,232,222,.9);
-  line-height:1.14;margin-bottom:10px;
-  clip-path:inset(0 100% 0 0);opacity:.07;
-  transition:clip-path 1.2s var(--ease),opacity .4s
-}
-.sp-line.vis{clip-path:inset(0 0% 0 0);opacity:1}
-.sp-line em{font-style:italic;color:var(--flame)}
+.sp-pre::before,.sp-pre::after{content:'';width:18px;height:1px;background:rgba(196,123,58,.5);flex-shrink:0}
+.sp-pre--quiet{color:rgba(237,232,222,.62)}
+.sp-pre--quiet::before,.sp-pre--quiet::after{background:rgba(196,123,58,.35)}
 
-/* ── Zone 3: Stats panel ── */
-.sp-stats{
-  display:flex;flex-wrap:wrap;gap:56px 80px;
-  margin-top:120px;padding-top:0;
-  opacity:0;transform:translateY(16px);
-  transition:opacity .8s var(--ease),transform .8s var(--ease)
+.sp-award-intro{
+  font-family:var(--ff-d);font-size:clamp(18px,1.8vw,24px);font-weight:300;
+  color:rgba(237,232,222,.7);max-width:560px;margin:0 auto clamp(72px,8vw,110px);
+  line-height:1.5;opacity:0;transform:translateY(12px);
+  transition:opacity .9s var(--ease) .1s,transform .9s var(--ease) .1s
 }
-.sp-stats.vis{opacity:1;transform:none}
-/* Hairline + amber glow rule separating award lines from stats */
-.sp-stats::before{
-  content:'';display:block;width:100%;height:1px;
-  background:linear-gradient(to right,rgba(196,123,58,.3),rgba(196,123,58,.08) 60%,transparent);
-  margin-bottom:64px
+.sp-award-intro.vis{opacity:1;transform:none}
+.sp-award-intro em{font-style:italic;color:var(--flame)}
+
+.sp-award-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
+  max-width:920px;margin:0 auto
 }
-.sp-stat-n{
-  font-family:var(--ff-d);font-size:clamp(40px,5vw,62px);font-weight:300;
+.award-card{
+  padding:44px 24px;border:1px solid rgba(196,123,58,.14);border-radius:2px;
+  opacity:0;transform:translateY(24px);
+  transition:opacity .8s var(--ease),transform .8s var(--ease),
+             border-color .4s,box-shadow .4s,background .4s
+}
+.award-card:not(:last-child){border-right:none}
+.award-card.vis{opacity:1;transform:none}
+.award-card:hover{
+  border-color:rgba(196,123,58,.4);background:rgba(196,123,58,.03);
+  box-shadow:0 0 40px rgba(196,123,58,.08)
+}
+.award-card-label{font-size:7.5px;letter-spacing:.24em;text-transform:uppercase;color:rgba(237,232,222,.34);display:block}
+.award-card-value{
+  font-family:var(--ff-d);font-size:clamp(36px,3.6vw,50px);font-weight:300;
   color:var(--flame);display:block;line-height:1;letter-spacing:-.01em;
-  font-feature-settings:"lnum" 1
+  margin:18px 0 14px;font-feature-settings:"lnum" 1
 }
-.sp-stat-l{font-size:7.5px;letter-spacing:.26em;text-transform:uppercase;color:rgba(237,232,222,.34);display:block;margin-top:18px}
+.award-card-desc{font-size:11px;color:rgba(237,232,222,.42);display:block;line-height:1.4}
 
-/* ── Zone 4: Award badges — dark-panel treatment ── */
+/* ── Layer 3: Official recognition — logos, quiet ── */
+.sp-recognition{margin-top:clamp(140px,16vw,220px);text-align:center}
 .sp-badges{
-  display:flex;flex-wrap:wrap;
-  margin-top:96px;padding-top:0;
-  border:none;
-  opacity:0;transform:translateY(14px);
-  transition:opacity .8s var(--ease) .15s,transform .8s var(--ease) .15s
-}
-.sp-badges.vis{opacity:1;transform:none}
-/* Panel: subtle dark card that lifts badges off the section background */
-.sp-badges::before{
-  content:'';display:block;width:100%;height:1px;
-  background:linear-gradient(to right,transparent,rgba(196,123,58,.12) 30%,rgba(196,123,58,.12) 70%,transparent);
-  margin-bottom:56px
+  display:flex;flex-wrap:wrap;justify-content:center;
+  gap:64px clamp(40px,6vw,96px)
 }
 .sp-badge{
-  flex:1;min-width:130px;padding:40px 28px;text-align:center;
-  background:rgba(0,0,0,.18);
-  border-right:1px solid rgba(196,123,58,.07);
-  transition:background .35s,transform .35s var(--ease)
+  text-align:center;opacity:0;transform:translateY(16px);
+  transition:opacity .7s var(--ease),transform .7s var(--ease)
 }
-.sp-badge:last-child{border-right:none}
-.sp-badge:first-child{border-radius:4px 0 0 4px}
-.sp-badge:last-child{border-radius:0 4px 4px 0}
-.sp-badge:hover{background:rgba(196,123,58,.07);transform:translateY(-5px)}
+.sp-badge.vis{opacity:1;transform:none}
 .sp-badge img{
-  height:100px;width:auto;object-fit:contain;
-  filter:brightness(.65) saturate(.2) contrast(1.12);
+  height:64px;width:auto;object-fit:contain;
+  filter:brightness(.9) saturate(.25) contrast(1.05);
   transition:filter .55s var(--ease),transform .55s var(--ease);
-  display:block;margin:0 auto 20px
+  display:block;margin:0 auto 16px
 }
 .sp-badge:hover img{
-  filter:brightness(1.1) saturate(1.05) contrast(1.06) drop-shadow(0 10px 32px rgba(196,123,58,.34));
-  transform:scale(1.08)
+  filter:brightness(1.05) saturate(.5) contrast(1.05);
+  transform:scale(1.05)
 }
-.sp-badge-name{font-size:7px;letter-spacing:.22em;text-transform:uppercase;color:rgba(237,232,222,.32)}
-
-/* ══ INGREDIENTS (warm editorial — breaks the dark run after Process) ══ */
-/* ══ INGREDIENTS — reactive two-column showcase ══ */
-#ingredients{
-  background:linear-gradient(165deg,var(--ivory) 0%,var(--aged-paper) 100%);
-  padding:var(--section-v) var(--gutter);position:relative;overflow:hidden
+.sp-badge-name{
+  font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:rgba(237,232,222,.58);
+  opacity:1;transition:opacity .4s var(--ease),color .4s var(--ease)
 }
-#ingredients::before{
-  content:'';position:absolute;inset:0;pointer-events:none;z-index:0;
-  opacity:.04;
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.5' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23p)'/%3E%3C/svg%3E");
-  background-size:160px 160px
+.sp-badge:hover .sp-badge-name{opacity:1;color:rgba(237,232,222,.85)}
+
+/* ══ SASTOJCI REEL — scroll-driven cinematic frame-sequence video (replaces the old Ingredients section) ══ */
+#sastojci-reel{
+  position:relative;height:100vh;min-height:560px;overflow:hidden;
+  background:#0A0908;isolation:isolate
 }
-.ing-inner{
-  max-width:1300px;margin:0 auto;position:relative;z-index:2;
-  display:grid;grid-template-columns:9fr 11fr;gap:80px;align-items:start
+/* Instant first paint — plain <img>, no JS dependency, sits under the canvas */
+.sv-poster{
+  position:absolute;inset:0;z-index:0;
+  width:100%;height:100%;object-fit:cover;display:block
 }
+.sv-canvas-wrap{position:absolute;inset:0;z-index:1;will-change:transform,filter}
+#sv-canvas{display:block;width:100%;height:100%}
 
-/* ── Ambient leaf / dust decorations (section-wide) ── */
-.ing-leaves{position:absolute;inset:0;z-index:1;pointer-events:none}
-.ing-leaf{position:absolute;opacity:0;will-change:transform,opacity;animation:leafDrift var(--dur,14s) ease-in-out var(--delay,0s) infinite}
-@keyframes leafDrift{
-  0%  {opacity:0;transform:translate(0,0) rotate(var(--r0,0deg))}
-  10% {opacity:.75}
-  50% {transform:translate(var(--dx,14px),-46px) rotate(var(--r1,18deg))}
-  90% {opacity:.5}
-  100%{opacity:0;transform:translate(calc(var(--dx,14px)*2),-120px) rotate(var(--r2,32deg))}
-}
-
-/* ── Left column: eyebrow ── */
-.ing-pre{
-  font-size:8px;letter-spacing:.42em;text-transform:uppercase;color:var(--flame);
-  display:flex;align-items:center;gap:16px;margin-bottom:64px;
-  opacity:0;transform:translateY(14px);transition:opacity .8s var(--ease),transform .8s var(--ease)
-}
-.ing-pre.vis{opacity:1;transform:none}
-.ing-pre::before{content:'';width:18px;height:1px;background:var(--flame);flex-shrink:0}
-
-/* ── Ingredient list ── */
-.ing-list{display:flex;flex-direction:column}
-
-.ing-item{
-  /* opacity/y managed by GSAP on scroll reveal — no CSS initial state needed */
-  position:relative;display:flex;align-items:baseline;flex-wrap:wrap;gap:0 26px;
-  padding:28px 0;border-bottom:1px solid rgba(28,22,16,.07);
-  cursor:pointer;outline:none
-}
-.ing-item:first-child{padding-top:0}
-.ing-item:last-child{border-bottom:none}
-
-.ing-item-num{
-  font-family:var(--ff-d);font-size:13px;font-weight:300;
-  color:rgba(196,123,58,.42);
-  width:68px;flex-shrink:0;
-  transition:color .35s var(--ease)
-}
-.ing-item.is-active .ing-item-num{color:var(--flame)}
-
-.ing-item-name{
-  font-family:var(--ff-d);font-size:clamp(22px,2.4vw,32px);font-weight:300;font-style:italic;
-  color:rgba(26,20,14,.58);line-height:1.2;
-  transition:color .35s var(--ease),transform .35s var(--ease)
-}
-.ing-item-name em{font-style:italic;color:var(--flame)}
-.ing-item.is-active .ing-item-name{color:rgba(26,20,14,.92);transform:translateX(8px)}
-
-/* Description — wraps below num + name, indented to align under name */
-.ing-item-line{
-  font-family:var(--ff-d);font-size:clamp(13px,1.0vw,14.5px);font-weight:300;font-style:italic;
-  color:rgba(26,20,14,.34);line-height:1.6;margin-top:6px;
-  width:100%;padding-left:94px  /* 68px num + 26px gap */
-}
-
-/* Terracotta accent underline: GSAP scaleX 0 → 1 on activate */
-.ing-item-accent{
-  position:absolute;bottom:0;left:0;right:0;height:1px;
-  background:var(--flame);
-  transform:scaleX(0);transform-origin:left center;
-  pointer-events:none
-}
-
-/* ── Closing note ── */
-.ing-sub{
-  font-family:var(--ff-d);font-size:clamp(15px,1.5vw,18px);font-weight:300;font-style:italic;
-  color:rgba(26,20,14,.36);margin-top:64px;max-width:440px;line-height:1.8;
-  opacity:0;transform:translateY(16px);
-  transition:opacity .8s var(--ease) .15s,transform .8s var(--ease) .15s
-}
-.ing-sub.vis{opacity:1;transform:none}
-
-/* ══ Right column: reactive image panel ══ */
-.ing-panel-wrap{position:relative;align-self:start}
-
-/* Ambient oil glow behind panel */
-.ing-oil{
-  position:absolute;right:-8%;top:-10%;width:58%;height:58%;z-index:0;pointer-events:none;
+/* Permanent readability vignette — independent of whichever frame is drawn */
+.sv-vignette{
+  position:absolute;inset:0;z-index:2;pointer-events:none;
   background:
-    radial-gradient(ellipse 70% 55% at 60% 35%,rgba(255,206,128,.42) 0%,transparent 50%),
-    radial-gradient(ellipse 90% 80% at 50% 50%,rgba(196,123,58,.18) 0%,rgba(196,123,58,0) 70%);
-  filter:blur(22px);
-  animation:oilSheen 9s ease-in-out infinite
-}
-@keyframes oilSheen{
-  0%,100%{opacity:.6;transform:scale(1)}
-  50%     {opacity:1;transform:scale(1.05)}
-}
-.ing-dust{position:absolute;inset:0;z-index:2;pointer-events:none}
-
-/* Image panel shell — GSAP manages opacity (starts 0) */
-.ing-panel{
-  position:relative;
-  height:clamp(460px,62vh,640px);
-  border-radius:20px;overflow:hidden;
-  box-shadow:0 48px 100px -32px rgba(10,9,8,.26),0 0 0 1px rgba(196,123,58,.13)
-}
-/* Subtle inner frame sits above all images */
-.ing-panel::after{
-  content:'';position:absolute;inset:0;border-radius:inherit;
-  box-shadow:inset 0 0 0 1px rgba(196,123,58,.15);
-  pointer-events:none;z-index:3
+    radial-gradient(ellipse 82% 72% at 50% 48%,transparent 40%,rgba(10,9,8,.52) 100%),
+    linear-gradient(180deg,rgba(10,9,8,.4) 0%,transparent 22%,transparent 72%,rgba(10,9,8,.55) 100%)
 }
 
-/* Individual image layers stacked; GSAP tweens opacity + scale */
-.ing-img{
-  position:absolute;inset:0;
-  will-change:transform,opacity
+/* Cross-fade curtains — dissolve the pin's entry/exit into the neighbouring
+   sections' own background colours so no hard cut is ever visible */
+.sv-curtain{position:absolute;inset:0;z-index:3;pointer-events:none;opacity:0}
+.sv-curtain--in{background:var(--void)}
+.sv-curtain--out{background:#0A0704}
+
+.sv-text{
+  position:absolute;inset:0;z-index:4;
+  display:flex;align-items:center;justify-content:center;
+  padding:0 clamp(24px,6vw,64px);text-align:center;pointer-events:none
 }
-.ing-img img{
-  width:100%;height:100%;object-fit:cover;
-  filter:saturate(1.08) brightness(.92);
-  pointer-events:none;-webkit-user-drag:none
+.sv-line{
+  position:absolute;top:50%;left:50%;max-width:760px;opacity:0;
+  font-family:var(--ff-d);font-weight:300;font-style:italic;
+  font-size:clamp(28px,4.4vw,58px);line-height:1.26;letter-spacing:.005em;
+  color:var(--cream);text-shadow:0 2px 28px rgba(0,0,0,.55);
+  will-change:transform,opacity,filter
+}
+.sv-line em{font-style:italic;color:var(--flame)}
+
+@media(hover:none){
+  #sastojci-track{height:300vh}
+  #sastojci-reel{position:sticky;top:0;min-height:unset}
 }
 
-/* Ken Burns slow drift on the active image */
-@media(prefers-reduced-motion:no-preference){
-  .ing-img.is-active img{animation:ingKenBurns 14s ease-in-out infinite}
-}
-@keyframes ingKenBurns{
-  0%  {transform:scale(1.0) translate(0,0)}
-  33% {transform:scale(1.055) translate(-1.1%,-0.8%)}
-  66% {transform:scale(1.03)  translate(0.8%,-1.4%)}
-  100%{transform:scale(1.0) translate(0,0)}
+@media(max-width:768px){
+  .sv-line{font-size:clamp(23px,6.4vw,32px)}
 }
 
-/* Editorial caption bottom-right */
-.ing-img-caption{
-  position:absolute;bottom:20px;right:22px;
-  font-family:var(--ff-d);font-size:13px;font-weight:300;font-style:italic;
-  color:rgba(237,232,222,.4);letter-spacing:.02em;
-  pointer-events:none;z-index:2;
-  text-shadow:0 1px 6px rgba(0,0,0,.52)
+/* Accessibility fallback: single static frame, both lines visible, no pin */
+@media(prefers-reduced-motion:reduce){
+  #sastojci-reel{height:auto;min-height:min(70vh,600px);isolation:auto}
+  .sv-text{
+    position:static;flex-direction:column;gap:18px;padding:72px 24px;
+    background:linear-gradient(180deg,rgba(10,9,8,.18),rgba(10,9,8,.6))
+  }
+  .sv-line{position:static;top:auto;left:auto;opacity:1;transform:none;margin:0 auto}
+  .sv-curtain{display:none}
 }
-.ing-img-caption em{font-style:italic;color:rgba(196,123,58,.62)}
-
 
 /* ══ EXPERIENCE — premium editorial carousel ══ */
 #experience{position:relative;background:var(--void);isolation:isolate}
@@ -1208,42 +1095,16 @@ footer{
   .process-counter{right:24px;font-size:35vw}
   .process-dots{right:24px;bottom:36px}
   .process-step-label{left:24px;bottom:36px}
-  #ingredients{
-    padding:88px 24px 96px;
-    /* clip (not hidden) so decorative overflow is clipped without creating
-       a scroll container — overflow:hidden would break position:sticky below */
-    overflow:clip
-  }
-  /* Decorative elements that bleed outside their bounds — hide on mobile */
-  .ing-leaves{display:none}
-  .ing-oil{display:none}
-  .ing-inner{grid-template-columns:1fr;gap:0;align-items:start}
-  /* Sticky image panel: pins just below the 68px fixed nav while the
-     ingredient list scrolls beneath it. order:-1 (set below) keeps it
-     visually first; sticky releases naturally when the section ends. */
-  .ing-panel-wrap{
-    order:-1;
-    position:sticky;
-    top:68px;
-    z-index:5;
-    /* Match section background so list rows don't bleed through as they scroll up */
-    background:linear-gradient(165deg,var(--ivory) 0%,var(--aged-paper) 100%);
-    padding-bottom:20px
-  }
-  .ing-panel{height:clamp(200px,36vh,260px);border-radius:14px}
-  .ing-pre{margin-bottom:48px}
-  .ing-item{gap:0 20px;padding:24px 0}
-  .ing-sub{margin-top:48px}
-  .ing-item-line{padding-left:88px /* 68px num + 20px gap */}
   #social-proof{padding:88px 24px}
-  .sp-stats{gap:32px 40px;margin-top:88px}
-  .sp-stats::before{margin-bottom:48px}
-  .sp-quote{margin-bottom:88px}
-  .sp-quote::before{font-size:140px}
-  .sp-pre{margin-bottom:56px}
-  .sp-badges{margin-top:72px}
-  .sp-badges::before{margin-bottom:40px}
-  .sp-badge{padding:32px 16px;border-radius:0}
+  .sp-quote::before{font-size:100px}
+  .sp-awards{margin-top:96px}
+  .sp-award-intro{margin-bottom:56px}
+  .sp-award-grid{grid-template-columns:repeat(2,1fr);gap:1px}
+  .award-card{padding:32px 16px}
+  .award-card:nth-child(2n){border-right:none}
+  .award-card:nth-child(-n+2){border-bottom:none}
+  .sp-recognition{margin-top:96px}
+  .sp-badges{gap:40px 32px}
   .exp2-head{padding:7vh 24px 0}
   .exp2-counter{top:7vh;right:24px}
   .exp2-drag-hint{display:none}
@@ -1275,12 +1136,9 @@ footer{
   .lm-btns{flex-direction:column}
   .lm-inner{padding:52px 24px}
   .stmt-facts{gap:28px}
-  .sp-badges{justify-content:center}
-  .sp-badge{min-width:calc(50% - 1px)}
+  .sp-award-grid{grid-template-columns:1fr 1fr}
+  .sp-badges{gap:32px 28px}
   .table-invitation{font-size:clamp(38px,10vw,70px)}
-  .ing-item-name{font-size:clamp(20px,7vw,28px);min-width:0}
-  .ing-item-num{width:48px;font-size:11px}
-  .ing-item-line{padding-left:68px /* 48px num + 20px gap */}
   .exp2-pin--flow .exp2-card{width:90vw}
   .exp2-pin--flow .exp2-card-photo{height:72vw}
 }
@@ -1787,103 +1645,29 @@ footer{
 </section>
 
 <!-- ═══════════════════════════════════ -->
-<!-- INGREDIENTS                         -->
+<!-- SASTOJCI REEL — cinematic scroll video (replaces the old numbered-list Ingredients section) -->
 <!-- ═══════════════════════════════════ -->
-<section id="ingredients">
-  <div class="ing-leaves" id="ing-leaves" aria-hidden="true"></div>
-  <div class="ing-inner">
+<section id="sastojci-reel" aria-label="Sastojci u vatri">
+  <picture>
+    <source media="(max-width:899px)" srcset="Assets/sastojci-sequence-mobile/frame_001.webp">
+    <img class="sv-poster" src="Assets/sastojci-sequence-desktop/frame_001.webp" alt="" aria-hidden="true">
+  </picture>
+  <div class="sv-canvas-wrap">
+    <canvas id="sv-canvas"></canvas>
+  </div>
+  <div class="sv-vignette" aria-hidden="true"></div>
+  <div class="sv-curtain sv-curtain--in"  id="sv-curtain-in"  aria-hidden="true"></div>
+  <div class="sv-curtain sv-curtain--out" id="sv-curtain-out" aria-hidden="true"></div>
 
-    <!-- ── Left: numbered ingredient list ── -->
-    <div class="ing-text">
-      <p class="ing-pre">
-        <span class="hr-only">Sastojci</span>
-        <span class="en-only">Ingredients</span>
-      </p>
-      <div class="ing-list" role="list">
-
-        <div class="ing-item" role="listitem" tabindex="0" data-index="0" aria-label="San Marzano DOP">
-          <span class="ing-item-num">01</span>
-          <span class="ing-item-name">San Marzano <em>DOP</em></span>
-          <span class="ing-item-line hr-only">Zaštićeno podrijetlo. Bez iznimke.</span>
-          <span class="ing-item-line en-only">Protected origin. No exception.</span>
-          <span class="ing-item-accent" aria-hidden="true"></span>
-        </div>
-
-        <div class="ing-item" role="listitem" tabindex="0" data-index="1" aria-label="Caputo 00">
-          <span class="ing-item-num">02</span>
-          <span class="ing-item-name">Caputo <em>00</em></span>
-          <span class="ing-item-line hr-only">Brašno iz Napulja. Temelj svega.</span>
-          <span class="ing-item-line en-only">Flour from Naples. The foundation of everything.</span>
-          <span class="ing-item-accent" aria-hidden="true"></span>
-        </div>
-
-        <div class="ing-item" role="listitem" tabindex="0" data-index="2" aria-label="Fior di Latte">
-          <span class="ing-item-num">03</span>
-          <span class="ing-item-name">Fior di <em>Latte</em></span>
-          <span class="ing-item-line hr-only">Mliječna, blaga, savršeno jednostavna.</span>
-          <span class="ing-item-line en-only">Milky, mild, perfectly simple.</span>
-          <span class="ing-item-accent" aria-hidden="true"></span>
-        </div>
-
-        <div class="ing-item" role="listitem" tabindex="0" data-index="3">
-          <span class="ing-item-num">04</span>
-          <span class="ing-item-name hr-only">Svježi <em>bosiljak</em></span>
-          <span class="ing-item-name en-only">Fresh <em>basil</em></span>
-          <span class="ing-item-line hr-only">Svjež, zelen, neopisivo mirisan.</span>
-          <span class="ing-item-line en-only">Fresh, green, indescribably fragrant.</span>
-          <span class="ing-item-accent" aria-hidden="true"></span>
-        </div>
-
-        <div class="ing-item" role="listitem" tabindex="0" data-index="4">
-          <span class="ing-item-num">05</span>
-          <span class="ing-item-name hr-only">Maslinovo <em>ulje</em></span>
-          <span class="ing-item-name en-only">Olive <em>oil</em></span>
-          <span class="ing-item-line hr-only">Tekuće zlato koje sve povezuje.</span>
-          <span class="ing-item-line en-only">The liquid gold that ties everything together.</span>
-          <span class="ing-item-accent" aria-hidden="true"></span>
-        </div>
-
-      </div>
-      <p class="ing-sub hr-only">Pet sastojaka. Nula kompromisa. Sve ostalo je samo tehnika.</p>
-      <p class="ing-sub en-only">Five ingredients. Zero compromise. Everything else is just technique.</p>
-    </div>
-
-    <!-- ── Right: reactive image panel ── -->
-    <div class="ing-panel-wrap">
-      <div class="ing-oil" aria-hidden="true"></div>
-      <div class="ing-panel" id="ing-panel" aria-label="Fotografija aktivnog sastojka" aria-live="polite">
-
-        <div class="ing-img" data-img="0">
-          <img src="Assets/ingredients/san-marzano.jpg" alt="San Marzano DOP rajčice" loading="lazy">
-          <p class="ing-img-caption" aria-hidden="true">San Marzano <em>DOP</em></p>
-        </div>
-
-        <div class="ing-img" data-img="1">
-          <img src="Assets/ingredients/flour.jpg" alt="Caputo 00 brašno" loading="lazy">
-          <p class="ing-img-caption" aria-hidden="true">Caputo <em>00</em></p>
-        </div>
-
-        <div class="ing-img" data-img="2">
-          <img src="Assets/ingredients/fior-di-latte.jpeg" alt="Fior di Latte mozzarella" loading="lazy">
-          <p class="ing-img-caption" aria-hidden="true">Fior di <em>Latte</em></p>
-        </div>
-
-        <div class="ing-img" data-img="3">
-          <img src="Assets/ingredients/basil.webp" alt="Svježi bosiljak" loading="lazy">
-          <p class="ing-img-caption hr-only" aria-hidden="true">Svježi <em>bosiljak</em></p>
-          <p class="ing-img-caption en-only" aria-hidden="true">Fresh <em>basil</em></p>
-        </div>
-
-        <div class="ing-img" data-img="4">
-          <img src="Assets/ingredients/olive-oil.jpg" alt="Maslinovo ulje" loading="lazy">
-          <p class="ing-img-caption hr-only" aria-hidden="true">Maslinovo <em>ulje</em></p>
-          <p class="ing-img-caption en-only" aria-hidden="true">Olive <em>oil</em></p>
-        </div>
-
-      </div>
-      <div class="ing-dust" id="ing-dust" aria-hidden="true"></div>
-    </div>
-
+  <div class="sv-text" aria-hidden="true">
+    <p class="sv-line sv-line--1" id="sv-line-1">
+      <span class="hr-only">Pet sastojaka. Nula kompromisa.</span>
+      <span class="en-only">Five ingredients. Zero compromise.</span>
+    </p>
+    <p class="sv-line sv-line--2" id="sv-line-2">
+      <span class="hr-only">Sve ostalo je <em>samo tehnika</em>.</span>
+      <span class="en-only">Everything else is <em>just technique</em>.</span>
+    </p>
   </div>
 </section>
 
@@ -1894,64 +1678,82 @@ footer{
   <div class="sp-texture" aria-hidden="true"></div>
   <div class="sp-inner">
 
+    <!-- Layer 1 — Featured testimonial -->
     <div class="sp-quote">
-      <span class="sp-quote-stars" aria-hidden="true">★★★★★</span>
-      <p class="sp-quote-text hr-only">Jeo sam pizze svuda, po raznim državama, i ovo stvarno ne govorim olako. Franko's je bar razina iznad svega. Tijesto savršeno. Sastojci vrhunski. Ovo nije samo dobra pizza — <em>ovo je pizza koju pamtiš.</em></p>
-      <p class="sp-quote-text en-only">I've eaten pizza across many countries, and I don't say this lightly. Franko's is a full level above everything else. The dough is perfect. The ingredients are exceptional. This isn't just good pizza — <em>this is pizza you remember.</em></p>
-    </div>
-
-    <p class="sp-pre">
-      <span class="hr-only">Nagrade &amp; Priznanja</span>
-      <span class="en-only">Awards &amp; Recognition</span>
-    </p>
-
-    <div class="sp-lines">
-      <p class="sp-line hr-only">Jedini restoran u <em>Hrvatskoj</em></p>
-      <p class="sp-line en-only">The only restaurant in <em>Croatia</em></p>
-      <p class="sp-line hr-only">prepoznat od 50 Top <em>Pizza.</em></p>
-      <p class="sp-line en-only">recognised by 50 Top <em>Pizza.</em></p>
-      <p class="sp-line hr-only">Pet uzastopnih <em>godina.</em></p>
-      <p class="sp-line en-only">Five consecutive <em>years.</em></p>
-    </div>
-
-    <div class="sp-stats">
-      <div>
-        <span class="sp-stat-n" data-countup="4.9" data-decimals="1">0</span>
-        <span class="sp-stat-l hr-only">Ocjena &nbsp;·&nbsp; TripAdvisor</span>
-        <span class="sp-stat-l en-only">Rating &nbsp;·&nbsp; TripAdvisor</span>
-      </div>
-      <div>
-        <span class="sp-stat-n" data-countup="900" data-suffix="+">0</span>
-        <span class="sp-stat-l hr-only">Recenzija</span>
-        <span class="sp-stat-l en-only">Reviews</span>
-      </div>
-      <div>
-        <span class="sp-stat-n" data-countup="5" data-suffix="×">0</span>
-        <span class="sp-stat-l">50 Top Pizza</span>
-      </div>
-      <div>
-        <span class="sp-stat-n">DOP</span>
-        <span class="sp-stat-l">San Marzano</span>
+      <p class="sp-quote-text hr-only">Jeo sam pizze svuda, po raznim državama, i ovo stvarno ne govorim olako. Franko's je bar razina iznad svega — <em>ovo je pizza koju pamtiš.</em></p>
+      <p class="sp-quote-text en-only">I've eaten pizza across many countries, and I don't say this lightly. Franko's is a full level above everything else — <em>this is pizza you remember.</em></p>
+      <div class="sp-quote-byline">
+        <span class="sp-quote-name hr-only">— Gost</span>
+        <span class="sp-quote-name en-only">— Guest</span>
+        <span class="sp-quote-stars" aria-hidden="true">★★★★★</span>
       </div>
     </div>
 
-    <div class="sp-badges">
-      <div class="sp-badge">
-        <img src="https://static.wixstatic.com/media/523f90_82aa5b79f1294e6bac3eb40cfad65071~mv2.jpg" alt="50 Top Pizza 2024" loading="lazy">
-        <span class="sp-badge-name">50 Top Pizza 2024</span>
+    <!-- Layer 2 — Awards showcase -->
+    <div class="sp-awards">
+      <p class="sp-pre">
+        <span class="hr-only">Nagrade &amp; Priznanja</span>
+        <span class="en-only">Awards &amp; Recognition</span>
+      </p>
+
+      <p class="sp-award-intro hr-only">Jedini restoran u Hrvatskoj prepoznat od <em>50 Top Pizza</em>, pet uzastopnih godina.</p>
+      <p class="sp-award-intro en-only">The only restaurant in Croatia recognised by <em>50 Top Pizza</em>, five consecutive years.</p>
+
+      <div class="sp-award-grid">
+        <div class="award-card">
+          <span class="award-card-label hr-only">Tripadvisor</span>
+          <span class="award-card-label en-only">Tripadvisor</span>
+          <span class="award-card-value" data-countup="4.9" data-decimals="1">0</span>
+          <span class="award-card-desc hr-only">Prosječna ocjena gostiju</span>
+          <span class="award-card-desc en-only">Average guest rating</span>
+        </div>
+        <div class="award-card">
+          <span class="award-card-label hr-only">Recenzije</span>
+          <span class="award-card-label en-only">Reviews</span>
+          <span class="award-card-value" data-countup="900" data-suffix="+">0</span>
+          <span class="award-card-desc hr-only">Provjerenih recenzija</span>
+          <span class="award-card-desc en-only">Verified guest reviews</span>
+        </div>
+        <div class="award-card">
+          <span class="award-card-label hr-only">Pet godina zaredom</span>
+          <span class="award-card-label en-only">Five years running</span>
+          <span class="award-card-value" data-countup="5" data-suffix="×">0</span>
+          <span class="award-card-desc">50 Top Pizza</span>
+        </div>
+        <div class="award-card">
+          <span class="award-card-label hr-only">Pravi sastojci</span>
+          <span class="award-card-label en-only">Authentic ingredients</span>
+          <span class="award-card-value">DOP</span>
+          <span class="award-card-desc hr-only">San Marzano rajčice</span>
+          <span class="award-card-desc en-only">San Marzano tomatoes</span>
+        </div>
       </div>
-      <div class="sp-badge">
-        <img src="https://static.wixstatic.com/media/523f90_5549a8e0c9804e2286cefa0eee1ed0a9~mv2.jpg" alt="Top Europa 2023" loading="lazy">
-        <span class="sp-badge-name">Top Europa 2023</span>
-      </div>
-      <div class="sp-badge">
-        <img src="https://static.wixstatic.com/media/523f90_af4b2624a5fd45cd99f6a337c0f72316~mv2.png" alt="Caputo Trofeo" loading="lazy">
-        <span class="sp-badge-name">Caputo Trofeo</span>
-      </div>
-      <div class="sp-badge">
-        <img src="https://static.wixstatic.com/media/523f90_35518d16dae04cae9ac7b24577844724~mv2.jpg" alt="Pizza 2024" loading="lazy">
-        <span class="sp-badge-name hr-only">Pizza godine 2024</span>
-        <span class="sp-badge-name en-only">Pizza of the Year 2024</span>
+    </div>
+
+    <!-- Layer 3 — Official recognition -->
+    <div class="sp-recognition">
+      <p class="sp-pre sp-pre--quiet">
+        <span class="hr-only">Službeno priznanje</span>
+        <span class="en-only">Official Recognition</span>
+      </p>
+      <div class="sp-badges">
+        <div class="sp-badge">
+          <img src="https://static.wixstatic.com/media/523f90_82aa5b79f1294e6bac3eb40cfad65071~mv2.jpg" alt="50 Top Pizza 2024" loading="lazy">
+          <span class="sp-badge-name">50 Top Pizza 2024</span>
+        </div>
+        <div class="sp-badge">
+          <img src="https://static.wixstatic.com/media/523f90_5549a8e0c9804e2286cefa0eee1ed0a9~mv2.jpg" alt="Top Europa 2023" loading="lazy">
+          <span class="sp-badge-name">Top Europa 2023</span>
+        </div>
+        <div class="sp-badge">
+          <img src="https://static.wixstatic.com/media/523f90_af4b2624a5fd45cd99f6a337c0f72316~mv2.png" alt="Caputo Trofeo" loading="lazy">
+          <span class="sp-badge-name">Caputo Trofeo</span>
+        </div>
+        <div class="sp-badge">
+          <img src="https://static.wixstatic.com/media/523f90_35518d16dae04cae9ac7b24577844724~mv2.jpg" alt="Pizza 2024" loading="lazy">
+          <span class="sp-badge-name hr-only">Pizza godine 2024</span>
+          <span class="sp-badge-name en-only">Pizza of the Year 2024</span>
+        </div>
       </div>
     </div>
 
@@ -2428,20 +2230,31 @@ const io = new IntersectionObserver(entries => {
       });
     }
 
-    // Staggered headline lines (statement-style clip-path reveal)
-    if (el.classList.contains('sp-lines')) {
-      const lines = el.querySelectorAll('.sp-line');
+    // Award cards fade upward, staggered, with count-up once each card lands
+    if (el.classList.contains('sp-award-grid')) {
+      const cards = el.querySelectorAll('.award-card');
       let delay = 0;
-      lines.forEach(line => {
-        if (line.offsetParent !== null) { // only visible (lang filter)
-          setTimeout(() => line.classList.add('vis'), delay);
-          delay += 280;
-        }
+      cards.forEach(card => {
+        setTimeout(() => {
+          card.classList.add('vis');
+          card.querySelectorAll('[data-countup]').forEach(n => runCountUp(n));
+        }, delay);
+        delay += 140;
       });
     }
 
-    // Animated counters
-    if (el.classList.contains('stmt-facts') || el.classList.contains('sp-stats')) {
+    // Recognition logos appear one by one
+    if (el.classList.contains('sp-badges')) {
+      const badges = el.querySelectorAll('.sp-badge');
+      let delay = 0;
+      badges.forEach(badge => {
+        setTimeout(() => badge.classList.add('vis'), delay);
+        delay += 160;
+      });
+    }
+
+    // Animated counters (statement section stats)
+    if (el.classList.contains('stmt-facts')) {
       el.querySelectorAll('[data-countup]').forEach(n => runCountUp(n));
     }
 
@@ -2451,8 +2264,7 @@ const io = new IntersectionObserver(entries => {
 
 [
   '.stmt-pre', '.stmt-big', '.stmt-block', '.stmt-facts', '.stmt-photo',
-  '.ing-pre', '.ing-sub',
-  '.sp-quote', '.sp-pre', '.sp-lines', '.sp-stats', '.sp-badges',
+  '.sp-quote', '.sp-pre', '.sp-award-intro', '.sp-award-grid', '.sp-badges',
   '.mg-kicker', '.mg-h2', '.mg-body', '.mg-link',
   '.table-top', '.table-calls', '.table-info'
 ].forEach(sel => {
@@ -2631,114 +2443,6 @@ const io = new IntersectionObserver(entries => {
   updateControls(0);
 })();
 
-/* ── INGREDIENTS — reactive image panel + row interaction ──
-   One-shot ScrollTrigger entrance (stagger rise + panel fade, no pin).
-   Hover / tap / keyboard on each row crossfades the right-hand image.
-   Ken Burns drift is a CSS keyframe on .ing-img.is-active img so it
-   respects prefers-reduced-motion without any extra JS branching. */
-(function initIngredients() {
-  if (!window.gsap || !window.ScrollTrigger) return;
-  gsap.registerPlugin(ScrollTrigger);
-
-  const section = document.getElementById('ingredients');
-  const panel   = document.getElementById('ing-panel');
-  if (!section || !panel) return;
-
-  const items   = Array.from(section.querySelectorAll('.ing-item'));
-  const imgs    = Array.from(panel.querySelectorAll('.ing-img'));
-  const reduceM = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const fadeDur = reduceM ? 0.15 : 0.6;
-  const fadeScl = reduceM ? 1    : 1.04;
-
-  let activeIdx = 0;
-
-  /* GSAP owns all opacity/transform on items and images from here on */
-  gsap.set(items, { opacity: 0, y: 30 });
-  gsap.set(panel, { opacity: 0 });
-  gsap.set(imgs,  { opacity: 0, scale: fadeScl });
-
-  /* ── Swap image + update row states ── */
-  function activateItem(i) {
-    if (i === activeIdx || i < 0 || i >= items.length) return;
-    const prev = activeIdx;
-    activeIdx  = i;
-
-    /* Outgoing image */
-    imgs[prev].classList.remove('is-active');
-    gsap.to(imgs[prev], { opacity: 0, scale: fadeScl, duration: fadeDur, ease: 'power2.inOut', overwrite: true });
-
-    /* Incoming image */
-    imgs[i].classList.add('is-active');
-    gsap.fromTo(imgs[i],
-      { opacity: 0, scale: fadeScl },
-      { opacity: 1, scale: 1, duration: fadeDur, ease: 'power2.inOut', overwrite: true }
-    );
-
-    /* Only touch the two changing rows — avoids blanket overwriting all tweens */
-    [prev, i].forEach(idx => {
-      const item   = items[idx];
-      const active = idx === i;
-      const accent = item.querySelector('.ing-item-accent');
-
-      item.classList.toggle('is-active', active);
-
-      gsap.to(item, {
-        opacity: active ? 1 : 0.52,
-        duration: 0.35, ease: 'power2.out', overwrite: 'auto'
-      });
-
-      if (accent) {
-        gsap.to(accent, active
-          ? { scaleX: 1, duration: reduceM ? 0.15 : 0.44, ease: 'power2.out', overwrite: true }
-          : { scaleX: 0, duration: reduceM ? 0.1  : 0.18, ease: 'power2.in',  overwrite: true }
-        );
-      }
-    });
-  }
-
-  /* ── Scroll entrance: panel + staggered items, then activate row 0 ── */
-  const tl = gsap.timeline({
-    scrollTrigger: {
-      trigger: section,
-      start: 'top 72%',
-      once: true
-    }
-  });
-
-  tl
-    .to(panel, {
-      opacity: 1,
-      duration: reduceM ? 0.3 : 0.85, ease: 'power2.out'
-    }, 0)
-    .to(items, {
-      opacity: 0.52, y: 0,
-      duration: reduceM ? 0.25 : 0.65, ease: 'power3.out',
-      stagger: reduceM ? 0 : 0.1
-    }, 0.12)
-    /* Activate first row + image after initial items begin revealing */
-    .add(function () {
-      gsap.set(imgs[0],  { opacity: 1, scale: 1 });
-      imgs[0].classList.add('is-active');
-
-      items[0].classList.add('is-active');
-      gsap.to(items[0], { opacity: 1, duration: 0.35, ease: 'power2.out', overwrite: 'auto' });
-
-      const accent0 = items[0].querySelector('.ing-item-accent');
-      if (accent0) gsap.to(accent0, { scaleX: 1, duration: reduceM ? 0.15 : 0.44, ease: 'power2.out' });
-
-      ScrollTrigger.refresh();
-    }, 0.3);
-
-  /* ── Row interaction: hover (desktop) + click/tap (mobile) + keyboard ── */
-  items.forEach((item, i) => {
-    item.addEventListener('mouseenter', () => activateItem(i));
-    item.addEventListener('click',      () => activateItem(i));
-    item.addEventListener('keydown', e => {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activateItem(i); }
-    });
-  });
-})();
-
 /* ── MAGNETIC RESERVATION CARDS ── */
 document.querySelectorAll('.table-call').forEach(el => {
   el.addEventListener('mousemove', e => {
@@ -2751,32 +2455,6 @@ document.querySelectorAll('.table-call').forEach(el => {
     el.style.transform = '';
   });
 });
-
-/* ── FLOATING BASIL LEAVES (Ingredients section) ── */
-(function initLeaves() {
-  const wrap = document.getElementById('ing-leaves');
-  if (!wrap) return;
-  const LEAF = '<svg viewBox="0 0 32 18" width="100%" height="100%" aria-hidden="true">'
-    + '<path d="M1 9C6 1 26 1 31 9C26 17 6 17 1 9Z" fill="rgba(74,98,46,0.5)"/>'
-    + '<path d="M3 9C12 9 20 9 29 9" stroke="rgba(46,64,28,0.45)" stroke-width="0.6" fill="none"/>'
-    + '</svg>';
-  const N = 9;
-  for (let i = 0; i < N; i++) {
-    const el = document.createElement('div');
-    const size  = 14 + Math.random() * 18;
-    const left  = Math.random() * 100;
-    const top   = 8 + Math.random() * 80;
-    const dur   = 11 + Math.random() * 9;
-    const delay = Math.random() * 10;
-    const dx    = (Math.random() * 40 - 20).toFixed(1) + 'px';
-    el.className = 'ing-leaf';
-    el.style.cssText = 'left:' + left + '%;top:' + top + '%;width:' + size + 'px;height:' + (size * 0.56) + 'px;'
-      + '--dur:' + dur + 's;--delay:' + delay + 's;--dx:' + dx + ';'
-      + '--r0:' + (Math.random() * 30 - 15) + 'deg;--r1:' + (Math.random() * 60 - 30) + 'deg;--r2:' + (Math.random() * 90 - 45) + 'deg';
-    el.innerHTML = LEAF;
-    wrap.appendChild(el);
-  }
-})();
 
 /* ── AMBIENT PARTICLE HELPER (reused for hero embers + process embers) ── */
 function spawnEmbers(container, data, color) {
@@ -2805,12 +2483,6 @@ spawnEmbers(document.getElementById('process-embers'), [
   [38,30, 1.2, 11,0.9],[52,12, 4.4,13,1.1],[44,24, 0.0,10,0.7],
   [62,18, 2.8, 9,1.0],[33,15, 1.8,12,0.8]
 ]);
-spawnEmbers(document.getElementById('ing-dust'), [
-  [20,70, 0.2, 9,2.0],[55,80, 1.5,11,1.4],[75,60, 2.8, 8,2.1],
-  [35,85, 0.8,10,1.7],[60,40, 3.5,12,1.3],[15,50, 1.2, 9,1.9],
-  [80,75, 2.1,10,1.5]
-], 'rgba(244,238,226,.85)');
-
 /* ── GSAP PARALLAX (statement bleed photo) ── */
 if (window.gsap && window.ScrollTrigger) {
   gsap.registerPlugin(ScrollTrigger);
@@ -3006,6 +2678,234 @@ preload().then(function (imgs) {
   } else {
     initST();
   }
+});
+
+}());
+
+/* ══ SASTOJCI FRAME SEQUENCE — cinematic scroll-driven ingredients reel ═══ */
+(function () {
+'use strict';
+
+const TOTAL    = 100;
+const EAGER    = 10;                 // frames loaded before scroll-rendering goes live
+const IS_TOUCH = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+const IS_SMALL = window.innerWidth < 900;
+const PATH     = IS_SMALL
+  ? 'Assets/sastojci-sequence-mobile/'
+  : 'Assets/sastojci-sequence-desktop/';
+
+const section = document.getElementById('sastojci-reel');
+const canvas  = document.getElementById('sv-canvas');
+if (!section || !canvas) return;
+
+const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+// Reduced motion: the poster <img> + statically-visible CSS text lines are
+// already sufficient — skip canvas rendering and scroll rigging entirely.
+if (reducedMotion) return;
+
+const ctx        = canvas.getContext('2d');
+const dpr        = Math.min(window.devicePixelRatio || 1, 2);
+const canvasWrap = canvas.parentElement; // .sv-canvas-wrap — carries the entrance/exit zoom+blur
+
+const curtainIn  = document.getElementById('sv-curtain-in');
+const curtainOut = document.getElementById('sv-curtain-out');
+const line1      = document.getElementById('sv-line-1');
+const line2      = document.getElementById('sv-line-2');
+
+const frames    = new Array(TOTAL);
+let currentIdx  = -1;
+let pendingDraw = false;
+let pendingProg = 0;
+let st          = null;
+let resizeTimer = null;
+let mobileTrack = null;
+let mobileScrollPx = 0;
+
+function frameUrl(i) { return PATH + 'frame_' + String(i + 1).padStart(3, '0') + '.webp'; }
+
+// Loads one frame; if the caller is currently parked on that exact index
+// (waiting on a lazy frame that hasn't arrived yet), redraw once it lands.
+function loadFrame(i, onDone) {
+  const img = new Image();
+  img.onload = img.onerror = function () {
+    if (onDone) onDone();
+    if (i === currentIdx) drawAt(i);
+  };
+  img.src = frameUrl(i);
+  frames[i] = img;
+}
+
+function sizeCanvas() {
+  const vw = window.innerWidth, vh = window.innerHeight;
+  canvas.style.width  = vw + 'px';
+  canvas.style.height = vh + 'px';
+  canvas.width  = Math.round(vw * dpr);
+  canvas.height = Math.round(vh * dpr);
+}
+
+// If the exact requested frame hasn't loaded yet, fall back to the closest
+// earlier frame that has — the canvas is never blank mid-scroll.
+function nearestLoaded(idx) {
+  for (let i = idx; i >= 0; i--) {
+    if (frames[i] && frames[i].complete && frames[i].naturalWidth) return i;
+  }
+  return -1;
+}
+
+// Cover-fit draw — same crop strategy as the hero sequence, so a portrait
+// source fills any canvas ratio without letterboxing.
+function drawAt(idx) {
+  const ready = (frames[idx] && frames[idx].complete && frames[idx].naturalWidth) ? idx : nearestLoaded(idx);
+  if (ready < 0) return;
+  const img = frames[ready];
+  const cw = canvas.width, ch = canvas.height;
+  const iw = img.naturalWidth, ih = img.naturalHeight;
+  const cr = cw / ch, ir = iw / ih;
+  let sx, sy, sw, sh;
+  if (cr > ir) { sw = iw; sh = iw / cr; sx = 0; sy = (ih - sh) / 2; }
+  else         { sh = ih; sw = ih * cr; sy = 0; sx = (iw - sw) / 2; }
+  ctx.clearRect(0, 0, cw, ch);
+  ctx.drawImage(img, sx, sy, sw, sh, 0, 0, cw, ch);
+}
+
+// Smoothstep — eases a 0..1 ramp so transitions accelerate then settle
+// instead of moving at a constant (mechanical-feeling) linear rate.
+function ease(t) { t = Math.max(0, Math.min(1, t)); return t * t * (3 - 2 * t); }
+
+// ── Text depth layers — each line fades/drifts/soft-focuses through its own
+// window of scroll progress, moving as an independent plane above the video.
+// Kept clear of the ENTRANCE/EXIT zoom-blur zones below (0–0.16 / 0.84–1). ──
+const LINES = [
+  { el: line1, inStart: 0.18, inEnd: 0.28, outStart: 0.36, outEnd: 0.46 },
+  { el: line2, inStart: 0.58, inEnd: 0.68, outStart: 0.74, outEnd: 0.82 }
+];
+
+function updateText(p) {
+  LINES.forEach(function (L) {
+    if (!L.el) return;
+    let op = 0;
+    if (p > L.inStart && p < L.outEnd) {
+      if (p < L.inEnd)         op = ease((p - L.inStart) / (L.inEnd - L.inStart));
+      else if (p < L.outStart) op = 1;
+      else                     op = 1 - ease((p - L.outStart) / (L.outEnd - L.outStart));
+    }
+    const local = Math.max(0, Math.min(1, (p - L.inStart) / (L.outEnd - L.inStart)));
+    const y     = 26 - local * 52;   // drifts upward across its window — parallax depth plane
+    const scale = 1.045 - local * 0.09;
+    const blur  = (1 - op) * 6;
+    L.el.style.opacity   = op.toFixed(3);
+    L.el.style.transform = 'translate(-50%,-50%) translateY(' + y.toFixed(1) + 'px) scale(' + scale.toFixed(3) + ')';
+    L.el.style.filter    = op > 0.001 ? 'blur(' + blur.toFixed(2) + 'px)' : 'none';
+  });
+}
+
+// Entrance/exit: instead of the video just popping into view and cutting out,
+// it arrives out of a soft-focus zoom (camera pulling back into frame) and
+// leaves the same way in reverse (pushing in and dissolving to black) —
+// the curtain wash, a slight zoom and a soft blur all resolve together.
+const ENTRANCE = 0.16;   // fraction of the pin's scroll spent resolving in
+const EXIT     = 0.16;   // fraction spent dissolving out at the end
+
+function updateCurtains(p) {
+  const inT  = ease(1 - Math.min(1, p / ENTRANCE));
+  const outT = ease(Math.max(0, (p - (1 - EXIT)) / EXIT));
+
+  if (curtainIn)  curtainIn.style.opacity  = inT.toFixed(3);
+  if (curtainOut) curtainOut.style.opacity = outT.toFixed(3);
+
+  if (canvasWrap) {
+    const zoom = 1 + Math.max(inT, outT) * 0.09;   // 1.09 → 1.00 → 1.09
+    const blur = Math.max(inT, outT) * 9;          // soft-focus at both ends, sharp mid-scroll
+    canvasWrap.style.transform = 'scale(' + zoom.toFixed(3) + ')';
+    canvasWrap.style.filter    = blur > 0.05 ? 'blur(' + blur.toFixed(2) + 'px)' : 'none';
+  }
+}
+
+// ── Throttle to one rAF per vsync; only redraw when the frame index changes ──
+function scheduleDraw(progress) {
+  pendingProg = progress;
+  if (pendingDraw) return;
+  pendingDraw = true;
+  requestAnimationFrame(function () {
+    pendingDraw = false;
+    const prog = pendingProg;
+    const idx  = Math.min(Math.round(prog * (TOTAL - 1)), TOTAL - 1);
+    if (idx !== currentIdx) { currentIdx = idx; drawAt(idx); }
+    updateText(prog);
+    updateCurtains(prog);
+  });
+}
+
+// ── Preload: first EAGER frames block init; the rest stream in lazily ──
+function preloadEager() {
+  return new Promise(function (resolve) {
+    let loaded = 0;
+    for (let i = 0; i < EAGER; i++) {
+      loadFrame(i, function () { if (++loaded === EAGER) resolve(); });
+    }
+  });
+}
+function preloadRest() {
+  for (let i = EAGER; i < TOTAL; i++) loadFrame(i, null);
+}
+
+function initST() {
+  gsap.registerPlugin(ScrollTrigger);
+  if (!window.__frankosSTNormalized) {
+    window.__frankosSTNormalized = true;
+    ScrollTrigger.normalizeScroll(true);
+  }
+  st = ScrollTrigger.create({
+    trigger  : '#sastojci-reel',
+    pin      : true,
+    start    : 'top top',
+    end      : '+=200%',
+    scrub    : 1,
+    onUpdate : function (self) { scheduleDraw(self.progress); },
+    onRefresh: function () { sizeCanvas(); drawAt(currentIdx < 0 ? 0 : currentIdx); }
+  });
+}
+
+window.addEventListener('resize', function () {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(function () {
+    sizeCanvas();
+    drawAt(currentIdx < 0 ? 0 : currentIdx);
+    if (mobileTrack) mobileScrollPx = Math.max(mobileTrack.offsetHeight - window.innerHeight, 1);
+    if (st) ScrollTrigger.refresh();
+  }, 150);
+}, { passive: true });
+
+sizeCanvas();
+
+preloadEager().then(function () {
+  drawAt(0);
+  updateText(0);
+  updateCurtains(0);
+  preloadRest();
+
+  if (IS_TOUCH) {
+    mobileTrack = document.createElement('div');
+    mobileTrack.id = 'sastojci-track';
+    section.parentNode.insertBefore(mobileTrack, section);
+    mobileTrack.appendChild(section);
+    mobileScrollPx = Math.max(mobileTrack.offsetHeight - window.innerHeight, 1);
+    window.addEventListener('scroll', function () {
+      const top  = mobileTrack.getBoundingClientRect().top;
+      const prog = Math.max(0, Math.min(1, -top / mobileScrollPx));
+      scheduleDraw(prog);
+    }, { passive: true });
+  } else if (window.gsap && window.ScrollTrigger) {
+    initST();
+  }
+});
+
+// Final safety net: once every asset on the page has settled (fonts, other
+// sections' images, etc.), re-measure every ScrollTrigger so pin distances
+// and spacers reflect final layout — this is what prevents the pinned
+// section from overlapping its neighbours or leaving a dead gap.
+window.addEventListener('load', function () {
+  if (window.ScrollTrigger) ScrollTrigger.refresh();
 });
 
 }());
